@@ -1,32 +1,32 @@
 {
 	"schema": 1,
-	"generated_at": "2026-10-22T21:22:33.829Z",
+	"generated_at": "2026-10-22T21:52:09.250Z",
 	"packages": {
 		"lachinata-core": {
-			"version": "0.4.1",
+			"version": "0.4.2",
 			"date": "2026-10-22",
-			"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.4.1/lachinata-core-0.4.1.zip",
-			"sha256": "e0a694455542e2192484807a230ce7651c250547f83a4b608c326446330e7a46",
+			"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.4.2/lachinata-core-0.4.2.zip",
+			"sha256": "897ad2a97e1a598036610e58d1340488f58c23566872b059a72f4f9e0c91efc3",
 			"requires": {
 				"wordpress": "6.8",
 				"php": "8.2",
 				"woocommerce": "10.0",
-				"lachinata": "0.4.1"
+				"lachinata": "0.4.2"
 			},
-			"notes": "### Cambiado\n- Proveedor DHL Express de Octolize verificado con la 4.3.14: el `business_days_in_transit` de DHL pasa como plazo a la entrega estimada, y su precio de reserva se usa solo si la instancia «Tarifa en vivo» no tiene el suyo (el motivo de DHL queda en Huecos de configuración).\n- Si la zona solo ofrecía una tarifa en vivo y no llega ninguna, el motivo es `zona_no_cubierta` (antes, el genérico de la zona).\n\n### Documentación\n- `docs/despliegue-envios.md`: pasar Octolize de la API XML (en retirada) a la REST en staging, con una tarifa real, antes de cambiarlo en producción.\n- `plugin/modules/shipping/README.md`: cómo se integra el módulo y por qué el adaptador de Octolize captura su tarifa en lugar de ejecutar su cálculo."
+			"notes": "### Corregido\n- Entrega estimada: abreviaturas de día y mes en minúscula, como las escribe el sistema («Llega jue 24 – vie 25 oct»), con cadenas propias traducibles en lugar de las de WordPress (es_ES daba «Lun», «Oct»); en la bolsa, en mitad de la línea, «· llega …».\n- Ficha: pasada la hora de corte dice «Pídelo ahora y lo recibes el …», no «Pídelo hoy»."
 		},
 		"lachinata": {
-			"version": "0.4.1",
+			"version": "0.4.2",
 			"date": "2026-10-22",
-			"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.4.1/lachinata-0.4.1.zip",
-			"sha256": "00fc78bf5801943f2a0e2a8cc3066ee22febe67f2414974ee62925ded3c30c1f",
+			"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.4.2/lachinata-0.4.2.zip",
+			"sha256": "2ea99112fce8cd393e54413a3adcd8957bb29707fdfe97d7f147528b1904f75c",
 			"requires": {
 				"wordpress": "6.8",
 				"php": "8.2",
 				"woocommerce": "10.0",
-				"lachinata-core": "0.4.1"
+				"lachinata-core": "0.4.2"
 			},
-			"notes": "### Cambiado\n- Proveedor DHL Express de Octolize verificado con la 4.3.14: el `business_days_in_transit` de DHL pasa como plazo a la entrega estimada, y su precio de reserva se usa solo si la instancia «Tarifa en vivo» no tiene el suyo (el motivo de DHL queda en Huecos de configuración).\n- Si la zona solo ofrecía una tarifa en vivo y no llega ninguna, el motivo es `zona_no_cubierta` (antes, el genérico de la zona).\n\n### Documentación\n- `docs/despliegue-envios.md`: pasar Octolize de la API XML (en retirada) a la REST en staging, con una tarifa real, antes de cambiarlo en producción.\n- `plugin/modules/shipping/README.md`: cómo se integra el módulo y por qué el adaptador de Octolize captura su tarifa en lugar de ejecutar su cálculo."
+			"notes": "### Corregido\n- Entrega estimada: abreviaturas de día y mes en minúscula, como las escribe el sistema («Llega jue 24 – vie 25 oct»), con cadenas propias traducibles en lugar de las de WordPress (es_ES daba «Lun», «Oct»); en la bolsa, en mitad de la línea, «· llega …».\n- Ficha: pasada la hora de corte dice «Pídelo ahora y lo recibes el …», no «Pídelo hoy»."
 		}
 	}
 }

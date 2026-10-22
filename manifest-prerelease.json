@@ -1,32 +1,32 @@
 {
 	"schema": 1,
-	"generated_at": "2026-10-22T19:13:03.506Z",
+	"generated_at": "2026-10-22T20:51:23.564Z",
 	"packages": {
 		"lachinata-core": {
-			"version": "0.3.3",
+			"version": "0.4.0",
 			"date": "2026-10-22",
-			"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.3.3/lachinata-core-0.3.3.zip",
-			"sha256": "f8c1be861104ca2decc38ddcaa1e5def6f6ba4cd9eb2b08a01962b369ff5e49b",
+			"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.4.0/lachinata-core-0.4.0.zip",
+			"sha256": "c081581c9c45690608b6807c2185e910f51692807469efe1708526f8483f9eb4",
 			"requires": {
 				"wordpress": "6.8",
 				"php": "8.2",
 				"woocommerce": "10.0",
-				"lachinata": "0.3.3"
+				"lachinata": "0.4.0"
 			},
-			"notes": "### Cambiado\n- Las notas de la versión se ven como HTML (títulos, listas y `código`) en WooCommerce → La Chinata → Actualizaciones y en «Ver detalles» del plugin, en lugar de Markdown en bruto."
+			"notes": "### Añadido\n- Módulo **Envíos** (`shipping`), sobre las zonas y métodos de WooCommerce sin sustituirlos (los IDs de instancia siguen siendo los que lee Odoo):\n  - En el panel de cada método, de cualquier tipo: peso desde / menos de, importe mínimo (fijo o el umbral de envío gratis de la zona) y máximo con la semántica del envío gratuito de Woo («ignorar cupones» incluido), clases exigidas y excluidas, prioridad, «si se ofrece, oculta» y nota para el cliente.\n  - WooCommerce → La Chinata → Envíos: por zona, peso máximo, umbral de envío gratis (fuente única de PromoBar, UspBar con `{envio_gratis}` y bolsa), aviso informativo y mensaje por causa (`zona_no_cubierta`, `producto_restringido`, `peso_max`, `importe` y el genérico `sin_metodo`); zona por defecto; restricciones de producto por destino (clase de envío o `_lc_excluir_internacional`, con países y provincias permitidos y excepciones); huecos de configuración (métodos que nunca aplican, productos sin peso, carritos sin envío sin causa conocida) y probador. `wp lachinata shipping simulate`.\n  - El motivo de «sin envío» sustituye al texto genérico en la bolsa y llega al checkout de bloques como error de carrito.\n  - Tipo de método «Tarifa en vivo» con proveedor seleccionable (interfaz `RateProvider`, filtro `lachinata/shipping/rate_providers`), recargo, caja, aduanas y precio de reserva propios; primer proveedor: adaptador sobre DHL Express de Octolize.\n  - `lachinata_producto_enviable( $producto, $destino )` para el catálogo por destino.\n  - Huecos de configuración avisa cuando un proveedor de tarifa en vivo no encuentra la tarifa del método configurado, con los IDs de tarifa presentes en el paquete (para verificar el de Octolize en cada sitio).\n- Módulo **Entrega estimada** (`eta`), sustituto de Estimated Delivery Date: días de tránsito, transportista y días sin entrega en el panel de cada método; cortes por día de la semana, días de preparación, transportistas, condiciones por clase de envío (días extra, corte propio, días de salida y de entrega), método de referencia por zona, festivos del almacén y de entrega por país (a mano, de Nager.Date con vista previa o por CSV). Fecha en cada opción de envío («Llega jue 24 – vie 25 oct»), en la bolsa, en la ficha («Pídelo antes de las 16:00 y lo recibes el jueves 24», con cuenta atrás tras refrescarse desde `GET /wp-json/lachinata/v1/eta`), en la confirmación y en los correos. Sin datos para zona y método no muestra fecha y lo anota.\n- Tema: hueco `lachinata/cart/shipping_summary` en la línea «Envío» de la bolsa.\n- `catalog`: aviso en la ficha de producto del panel cuando falta el peso y `wp lachinata catalog normalize --from-shipping-class=<slug>`.\n- Seed y tests con la configuración provisional de lachinata.es (`tools/fixtures/`), con Ceuta y Melilla como zona no cubierta; procedimiento de paso a producción en `docs/despliegue-envios.md`.\n\n### Cambiado\n- SantElia Script vuelve a cargarse después de `load` (`campaign-font.js`) y deja de precargarse: en el camino crítico retrasaba el LCP de la home (Lighthouse móvil 92–94 → 97). Se retira el filtro `lachinata/fonts/campaign`.\n\n### Documentación\n- Cierre del incremento 2: prueba real 0.2.0 → 0.3.2 (a mano) → 0.3.3 (desde el panel) correcta, anotada en `docs/actualizaciones.md`; `design-system/docs/` entero en Git."
 		},
 		"lachinata": {
-			"version": "0.3.3",
+			"version": "0.4.0",
 			"date": "2026-10-22",
-			"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.3.3/lachinata-0.3.3.zip",
-			"sha256": "36931e0ccef8c3879f86ca4a1716153e3b762510dc9536f7f7d5f00dc41f8962",
+			"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.4.0/lachinata-0.4.0.zip",
+			"sha256": "350a97b1ff280263b170831e40306602cca96e8f397fbdfbb700bae53c20dca0",
 			"requires": {
 				"wordpress": "6.8",
 				"php": "8.2",
 				"woocommerce": "10.0",
-				"lachinata-core": "0.3.3"
+				"lachinata-core": "0.4.0"
 			},
-			"notes": "### Cambiado\n- Las notas de la versión se ven como HTML (títulos, listas y `código`) en WooCommerce → La Chinata → Actualizaciones y en «Ver detalles» del plugin, en lugar de Markdown en bruto."
+			"notes": "### Añadido\n- Módulo **Envíos** (`shipping`), sobre las zonas y métodos de WooCommerce sin sustituirlos (los IDs de instancia siguen siendo los que lee Odoo):\n  - En el panel de cada método, de cualquier tipo: peso desde / menos de, importe mínimo (fijo o el umbral de envío gratis de la zona) y máximo con la semántica del envío gratuito de Woo («ignorar cupones» incluido), clases exigidas y excluidas, prioridad, «si se ofrece, oculta» y nota para el cliente.\n  - WooCommerce → La Chinata → Envíos: por zona, peso máximo, umbral de envío gratis (fuente única de PromoBar, UspBar con `{envio_gratis}` y bolsa), aviso informativo y mensaje por causa (`zona_no_cubierta`, `producto_restringido`, `peso_max`, `importe` y el genérico `sin_metodo`); zona por defecto; restricciones de producto por destino (clase de envío o `_lc_excluir_internacional`, con países y provincias permitidos y excepciones); huecos de configuración (métodos que nunca aplican, productos sin peso, carritos sin envío sin causa conocida) y probador. `wp lachinata shipping simulate`.\n  - El motivo de «sin envío» sustituye al texto genérico en la bolsa y llega al checkout de bloques como error de carrito.\n  - Tipo de método «Tarifa en vivo» con proveedor seleccionable (interfaz `RateProvider`, filtro `lachinata/shipping/rate_providers`), recargo, caja, aduanas y precio de reserva propios; primer proveedor: adaptador sobre DHL Express de Octolize.\n  - `lachinata_producto_enviable( $producto, $destino )` para el catálogo por destino.\n  - Huecos de configuración avisa cuando un proveedor de tarifa en vivo no encuentra la tarifa del método configurado, con los IDs de tarifa presentes en el paquete (para verificar el de Octolize en cada sitio).\n- Módulo **Entrega estimada** (`eta`), sustituto de Estimated Delivery Date: días de tránsito, transportista y días sin entrega en el panel de cada método; cortes por día de la semana, días de preparación, transportistas, condiciones por clase de envío (días extra, corte propio, días de salida y de entrega), método de referencia por zona, festivos del almacén y de entrega por país (a mano, de Nager.Date con vista previa o por CSV). Fecha en cada opción de envío («Llega jue 24 – vie 25 oct»), en la bolsa, en la ficha («Pídelo antes de las 16:00 y lo recibes el jueves 24», con cuenta atrás tras refrescarse desde `GET /wp-json/lachinata/v1/eta`), en la confirmación y en los correos. Sin datos para zona y método no muestra fecha y lo anota.\n- Tema: hueco `lachinata/cart/shipping_summary` en la línea «Envío» de la bolsa.\n- `catalog`: aviso en la ficha de producto del panel cuando falta el peso y `wp lachinata catalog normalize --from-shipping-class=<slug>`.\n- Seed y tests con la configuración provisional de lachinata.es (`tools/fixtures/`), con Ceuta y Melilla como zona no cubierta; procedimiento de paso a producción en `docs/despliegue-envios.md`.\n\n### Cambiado\n- SantElia Script vuelve a cargarse después de `load` (`campaign-font.js`) y deja de precargarse: en el camino crítico retrasaba el LCP de la home (Lighthouse móvil 92–94 → 97). Se retira el filtro `lachinata/fonts/campaign`.\n\n### Documentación\n- Cierre del incremento 2: prueba real 0.2.0 → 0.3.2 (a mano) → 0.3.3 (desde el panel) correcta, anotada en `docs/actualizaciones.md`; `design-system/docs/` entero en Git."
 		}
 	}
 }

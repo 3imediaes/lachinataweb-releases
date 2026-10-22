@@ -1,0 +1,32 @@
+{
+	"schema": 1,
+	"generated_at": "2026-10-22T18:58:56.700Z",
+	"packages": {
+		"lachinata-core": {
+			"version": "0.3.2",
+			"date": "2026-10-22",
+			"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.3.2/lachinata-core-0.3.2.zip",
+			"sha256": "56e22214fa032c26b259b49110410b266213efdd7030d9dc64b7e5796e8bacda",
+			"requires": {
+				"wordpress": "6.8",
+				"php": "8.2",
+				"woocommerce": "10.0",
+				"lachinata": "0.3.2"
+			},
+			"notes": "### Cambiado\n- Distribución pública sin tokens en los sitios: cada release publica los zips en `releases/<versión>/` y un `manifest.json` (estables) y `manifest-prerelease.json` en `3imediaes/lachinataweb-releases` (GitHub Pages), escrito por la acción con la deploy key `RELEASES_DEPLOY_KEY`. Las notas de la release salen del CHANGELOG.\n- El actualizador lee el manifiesto por HTTPS (caché 12 h, «Comprobar ahora») y comprueba el SHA-256 del zip antes de instalarlo. `Update URI` de tema y plugin: `https://3imediaes.github.io/lachinataweb-releases/`. La pestaña Actualizaciones explica el estado «sin manifiesto accesible».\n- El tema declara `WC requires at least: 10.0`.\n\n### Eliminado\n- `LACHINATA_GITHUB_TOKEN` y la descarga autenticada desde la API de GitHub. La 0.3.0 y la 0.3.1 no se instalan en los sitios: el salto manual es de la 0.2.0 a la 0.3.2."
+		},
+		"lachinata": {
+			"version": "0.3.2",
+			"date": "2026-10-22",
+			"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.3.2/lachinata-0.3.2.zip",
+			"sha256": "50a79e5a03bc46a60d7fc27cbd3a01dc1ae6b8249a5700bbdf207e81438ae24e",
+			"requires": {
+				"wordpress": "6.8",
+				"php": "8.2",
+				"woocommerce": "10.0",
+				"lachinata-core": "0.3.2"
+			},
+			"notes": "### Cambiado\n- Distribución pública sin tokens en los sitios: cada release publica los zips en `releases/<versión>/` y un `manifest.json` (estables) y `manifest-prerelease.json` en `3imediaes/lachinataweb-releases` (GitHub Pages), escrito por la acción con la deploy key `RELEASES_DEPLOY_KEY`. Las notas de la release salen del CHANGELOG.\n- El actualizador lee el manifiesto por HTTPS (caché 12 h, «Comprobar ahora») y comprueba el SHA-256 del zip antes de instalarlo. `Update URI` de tema y plugin: `https://3imediaes.github.io/lachinataweb-releases/`. La pestaña Actualizaciones explica el estado «sin manifiesto accesible».\n- El tema declara `WC requires at least: 10.0`.\n\n### Eliminado\n- `LACHINATA_GITHUB_TOKEN` y la descarga autenticada desde la API de GitHub. La 0.3.0 y la 0.3.1 no se instalan en los sitios: el salto manual es de la 0.2.0 a la 0.3.2."
+		}
+	}
+}

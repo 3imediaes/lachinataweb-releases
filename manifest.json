@@ -1,32 +1,96 @@
 {
 	"schema": 1,
-	"generated_at": "2026-10-24T14:55:27.582Z",
+	"generated_at": "2026-10-25T18:48:31.068Z",
 	"packages": {
 		"lachinata-core": {
-			"version": "0.8.1",
+			"version": "0.9.0",
 			"date": "2026-10-24",
-			"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.8.1/lachinata-core-0.8.1.zip",
-			"sha256": "74b31726157d8264ca9eca25c0f58e0bfa2220d713c2a38f92c296bc78b5cbc9",
+			"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.9.0/lachinata-core-0.9.0.zip",
+			"sha256": "4f19802544691912d17bc519f313eaa36112d7719ee3b28ddecc4f264b78ecd7",
 			"requires": {
 				"wordpress": "6.8",
 				"php": "8.2",
 				"woocommerce": "10.0",
-				"lachinata": "0.8.1"
+				"lachinata": "0.9.0"
 			},
-			"notes": "### Añadido\n- Página de pago de un pedido: Apple Pay y Google Pay de Stripe en una fila encima de los métodos, a 44 px y con «o» debajo, como en el checkout. El texto de la página nombra las carteras solo cuando aparecen; el del correo del pedido telefónico, solo si la tienda las ofrece (`lachinata/checkout/wallets`).\n- Formulario de tarjeta de la página de pago con la apariencia del checkout: control de 44 px, borde, radio 0, DIN y el foco del sistema, desde los tokens del tema.\n\n### Cambiado\n- Reembolso con PayPal: dos datos, «Importe» y «Devuelto a PayPal» con «En tu cuenta de PayPal».\n- «Pedido {nº}» de la página de pago con el estilo eyebrow del sistema (mayúsculas, tracking 0,16 em).\n- Contra reembolso fuera del entorno de desarrollo: el seed lo desactiva y los e2e completan pedidos con un «Pago de prueba» solo de desarrollo (`tools/dev/mu-plugins/lachinata-dev.php`)."
+			"notes": "### Añadido\n- **Contrato de módulos** (`docs/arquitectura-modulos.md`, documento oficial): estructura de un módulo, comunicación solo por hooks documentados, contratos del núcleo y utilidades sin estado, datos y migraciones, fallo aislado, API pública estable y README con secciones fijas.\n- **Fallo aislado**: los hooks de los módulos van envueltos (`LaChinata\\Core\\Hooks`). Un fallo apaga ese módulo el resto de la petición y se anota en su registro de huecos y en el registro de WooCommerce. Un día de aviso en el panel y prueba crítica en Salud del sitio. El checkout y el pedido siguen. Las rutas REST y los datos de la Store API de los módulos, también envueltos. Acción `lachinata/core/module_failed`.\n- **Interruptor de emergencia** sin panel: `define( 'LACHINATA_DISABLE_MODULES', 'gift,notify' )` (o `'*'`) en `wp-config.php`. Los módulos que necesitan uno apagado tampoco arrancan, y los demás arrancan en orden de dependencias.\n- **Migraciones versionadas por módulo** (`schema_version()`, `migrations()`), idempotentes y aditivas, antes del arranque. Primera: `gift` v2.\n- **«Borrar datos…»** de un módulo apagado en WooCommerce → La Chinata → Módulos (escribiendo su id) y `wp lachinata module delete-data <id>`. Antes de borrar se descarga su JSON de exportación. Nunca borra metadatos de pedido.\n- **Salud de cada módulo** en WooCommerce → Estado («La Chinata · módulos»), en Salud del sitio y en `wp lachinata module status`. Muestra si funciona, si está configurado, si tiene credenciales (sin su valor), la última incidencia y la versión de sus datos.\n- Contratos `Contracts\\ShippingRules` (de `shipping`) y `Contracts\\DeliveryEstimator` (de `eta`) con `Services::shipping_rules()` y `Services::delivery()`. Filtros `lachinata/catalog/no_ship_abroad` y acciones `lachinata/shipping/changed` y `lachinata/core/data_deleted`.\n- **Regalo:** la fecha de borrado del contacto del destinatario se guarda en el pedido (`_lc_gift_erase_at`) y un barrido diario borra los vencidos, también los que vencieron con el módulo apagado.\n- Catálogo de la API pública del plugin en `plugin/HOOKS.md` (servicios, hooks, REST, metadatos con su dueño y clases movidas). `theme/HOOKS.md` gana «Desde» y «Obsoleto desde».\n- Manifiesto de versiones con `previous`: las cinco versiones estables anteriores con URL y huella, para volver atrás a mano (`docs/actualizaciones.md`: circuito por tienda y vuelta atrás).\n- CI: reglas de PHPStan de fronteras entre módulos y de hooks solo con `Hooks`; `npm run check:docs` (catálogo de hooks y metadatos, READMEs, fronteras en tests); un job de e2e por perfil de tienda (`es`, `canarias`, `cz`, `off`, `all`: PHPUnit del perfil y humo de home, ficha, bolsa, pedido, gracias y correo); cada módulo solo con sus dependencias (`tools/tests/modules-isolated.sh`). Perfiles en `tests/profiles/` (Canarias y CZ, sintéticos) y `tools/seed-profile.sh`.\n\n### Cambiado\n- **La casilla de novedades es del módulo `newsletter`** (antes, `checkout`): sin `newsletter` no hay casilla. El campo y `_lc_newsletter_optin` no cambian. `newsletter` ya no necesita `checkout`.\n- `Estimate` y `Format` (de `eta`) y `Package` y `Destination` (de `shipping`) pasan al núcleo (`Delivery\\*`, `Shipping\\*`) con `Shipping\\Zones`. Los nombres antiguos quedan como alias hasta la 0.10.0. `eta` y `gift` ya no usan clases de otros módulos, y `shipping` ya no lee `catalog` directamente.\n- Los tests de `gift` y `shipment` usan un doble de `Contracts\\Notifier`. Lo que cruza módulos está en `tests/profiles/`.\n- Los README de los diez módulos siguen las secciones fijas. `catalog` y `eta` estrenan el suyo.\n\n### Obsoleto\n- `LaChinata\\Core\\Modules\\Eta\\Estimate`, `Modules\\Eta\\Format`, `Modules\\Shipping\\Package` y `Modules\\Shipping\\Destination`: usa `Delivery\\Estimate`, `Delivery\\Format`, `Shipping\\Package` y `Shipping\\Destination`. Se quitan en la 0.10.0.",
+			"previous": [
+				{
+					"version": "0.8.1",
+					"date": "2026-10-24",
+					"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.8.1/lachinata-core-0.8.1.zip",
+					"sha256": "74b31726157d8264ca9eca25c0f58e0bfa2220d713c2a38f92c296bc78b5cbc9"
+				},
+				{
+					"version": "0.8.0",
+					"date": "2026-10-24",
+					"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.8.0/lachinata-core-0.8.0.zip",
+					"sha256": "94b9679ce3aa3ab4d10462040f1c553bfa17f0970dc1d85ef8b1b1b2a7316096"
+				},
+				{
+					"version": "0.7.0",
+					"date": "2026-10-24",
+					"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.7.0/lachinata-core-0.7.0.zip",
+					"sha256": "ecac18170201317a231673d2c06b87f14df8bc9d9834a842c7b8c7082e4a451e"
+				},
+				{
+					"version": "0.6.1",
+					"date": "2026-10-23",
+					"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.6.1/lachinata-core-0.6.1.zip",
+					"sha256": "1601198e15221e51ec34e16e62127b2ed87d63817bc968e1831389948ab72ffc"
+				},
+				{
+					"version": "0.6.0",
+					"date": "2026-10-23",
+					"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.6.0/lachinata-core-0.6.0.zip",
+					"sha256": "194cde7a305c202d468b237f0d9807c43f96b870530a38f2ad60be6d972e3bb7"
+				}
+			]
 		},
 		"lachinata": {
-			"version": "0.8.1",
+			"version": "0.9.0",
 			"date": "2026-10-24",
-			"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.8.1/lachinata-0.8.1.zip",
-			"sha256": "54e62326552672961d5d48fe764a3ecb7ff1f2ba7ff1707271a8c0d1720423d0",
+			"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.9.0/lachinata-0.9.0.zip",
+			"sha256": "ed04d8cb75b0cddeb13b6cec5d0452278eea09a20ebb1cfc83556483b0a651c0",
 			"requires": {
 				"wordpress": "6.8",
 				"php": "8.2",
 				"woocommerce": "10.0",
-				"lachinata-core": "0.8.1"
+				"lachinata-core": "0.9.0"
 			},
-			"notes": "### Añadido\n- Página de pago de un pedido: Apple Pay y Google Pay de Stripe en una fila encima de los métodos, a 44 px y con «o» debajo, como en el checkout. El texto de la página nombra las carteras solo cuando aparecen; el del correo del pedido telefónico, solo si la tienda las ofrece (`lachinata/checkout/wallets`).\n- Formulario de tarjeta de la página de pago con la apariencia del checkout: control de 44 px, borde, radio 0, DIN y el foco del sistema, desde los tokens del tema.\n\n### Cambiado\n- Reembolso con PayPal: dos datos, «Importe» y «Devuelto a PayPal» con «En tu cuenta de PayPal».\n- «Pedido {nº}» de la página de pago con el estilo eyebrow del sistema (mayúsculas, tracking 0,16 em).\n- Contra reembolso fuera del entorno de desarrollo: el seed lo desactiva y los e2e completan pedidos con un «Pago de prueba» solo de desarrollo (`tools/dev/mu-plugins/lachinata-dev.php`)."
+			"notes": "### Añadido\n- **Contrato de módulos** (`docs/arquitectura-modulos.md`, documento oficial): estructura de un módulo, comunicación solo por hooks documentados, contratos del núcleo y utilidades sin estado, datos y migraciones, fallo aislado, API pública estable y README con secciones fijas.\n- **Fallo aislado**: los hooks de los módulos van envueltos (`LaChinata\\Core\\Hooks`). Un fallo apaga ese módulo el resto de la petición y se anota en su registro de huecos y en el registro de WooCommerce. Un día de aviso en el panel y prueba crítica en Salud del sitio. El checkout y el pedido siguen. Las rutas REST y los datos de la Store API de los módulos, también envueltos. Acción `lachinata/core/module_failed`.\n- **Interruptor de emergencia** sin panel: `define( 'LACHINATA_DISABLE_MODULES', 'gift,notify' )` (o `'*'`) en `wp-config.php`. Los módulos que necesitan uno apagado tampoco arrancan, y los demás arrancan en orden de dependencias.\n- **Migraciones versionadas por módulo** (`schema_version()`, `migrations()`), idempotentes y aditivas, antes del arranque. Primera: `gift` v2.\n- **«Borrar datos…»** de un módulo apagado en WooCommerce → La Chinata → Módulos (escribiendo su id) y `wp lachinata module delete-data <id>`. Antes de borrar se descarga su JSON de exportación. Nunca borra metadatos de pedido.\n- **Salud de cada módulo** en WooCommerce → Estado («La Chinata · módulos»), en Salud del sitio y en `wp lachinata module status`. Muestra si funciona, si está configurado, si tiene credenciales (sin su valor), la última incidencia y la versión de sus datos.\n- Contratos `Contracts\\ShippingRules` (de `shipping`) y `Contracts\\DeliveryEstimator` (de `eta`) con `Services::shipping_rules()` y `Services::delivery()`. Filtros `lachinata/catalog/no_ship_abroad` y acciones `lachinata/shipping/changed` y `lachinata/core/data_deleted`.\n- **Regalo:** la fecha de borrado del contacto del destinatario se guarda en el pedido (`_lc_gift_erase_at`) y un barrido diario borra los vencidos, también los que vencieron con el módulo apagado.\n- Catálogo de la API pública del plugin en `plugin/HOOKS.md` (servicios, hooks, REST, metadatos con su dueño y clases movidas). `theme/HOOKS.md` gana «Desde» y «Obsoleto desde».\n- Manifiesto de versiones con `previous`: las cinco versiones estables anteriores con URL y huella, para volver atrás a mano (`docs/actualizaciones.md`: circuito por tienda y vuelta atrás).\n- CI: reglas de PHPStan de fronteras entre módulos y de hooks solo con `Hooks`; `npm run check:docs` (catálogo de hooks y metadatos, READMEs, fronteras en tests); un job de e2e por perfil de tienda (`es`, `canarias`, `cz`, `off`, `all`: PHPUnit del perfil y humo de home, ficha, bolsa, pedido, gracias y correo); cada módulo solo con sus dependencias (`tools/tests/modules-isolated.sh`). Perfiles en `tests/profiles/` (Canarias y CZ, sintéticos) y `tools/seed-profile.sh`.\n\n### Cambiado\n- **La casilla de novedades es del módulo `newsletter`** (antes, `checkout`): sin `newsletter` no hay casilla. El campo y `_lc_newsletter_optin` no cambian. `newsletter` ya no necesita `checkout`.\n- `Estimate` y `Format` (de `eta`) y `Package` y `Destination` (de `shipping`) pasan al núcleo (`Delivery\\*`, `Shipping\\*`) con `Shipping\\Zones`. Los nombres antiguos quedan como alias hasta la 0.10.0. `eta` y `gift` ya no usan clases de otros módulos, y `shipping` ya no lee `catalog` directamente.\n- Los tests de `gift` y `shipment` usan un doble de `Contracts\\Notifier`. Lo que cruza módulos está en `tests/profiles/`.\n- Los README de los diez módulos siguen las secciones fijas. `catalog` y `eta` estrenan el suyo.\n\n### Obsoleto\n- `LaChinata\\Core\\Modules\\Eta\\Estimate`, `Modules\\Eta\\Format`, `Modules\\Shipping\\Package` y `Modules\\Shipping\\Destination`: usa `Delivery\\Estimate`, `Delivery\\Format`, `Shipping\\Package` y `Shipping\\Destination`. Se quitan en la 0.10.0.",
+			"previous": [
+				{
+					"version": "0.8.1",
+					"date": "2026-10-24",
+					"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.8.1/lachinata-0.8.1.zip",
+					"sha256": "54e62326552672961d5d48fe764a3ecb7ff1f2ba7ff1707271a8c0d1720423d0"
+				},
+				{
+					"version": "0.8.0",
+					"date": "2026-10-24",
+					"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.8.0/lachinata-0.8.0.zip",
+					"sha256": "0aa6fff3273d8aae72c28b149ca8e805f7c4f42ceed32cf49d74966da4ec6d76"
+				},
+				{
+					"version": "0.7.0",
+					"date": "2026-10-24",
+					"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.7.0/lachinata-0.7.0.zip",
+					"sha256": "14bad4305c371a6c0b3563429bfa05e7a9bdb8840b01ee3e9c06a0609b5923a9"
+				},
+				{
+					"version": "0.6.1",
+					"date": "2026-10-23",
+					"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.6.1/lachinata-0.6.1.zip",
+					"sha256": "f9ed3884394e630a90abecbdeb7c1de075a17709e4879b8251fb9fd239b94be0"
+				},
+				{
+					"version": "0.6.0",
+					"date": "2026-10-23",
+					"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.6.0/lachinata-0.6.0.zip",
+					"sha256": "1519fe310a35b4e1eab42b901ee77ec8635138bb6b5a8df9130aa7c019e53732"
+				}
+			]
 		}
 	}
 }

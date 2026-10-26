@@ -1,20 +1,26 @@
 {
 	"schema": 1,
-	"generated_at": "2026-10-25T18:48:31.068Z",
+	"generated_at": "2026-10-26T08:16:36.536Z",
 	"packages": {
 		"lachinata-core": {
-			"version": "0.9.0",
-			"date": "2026-10-24",
-			"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.9.0/lachinata-core-0.9.0.zip",
-			"sha256": "4f19802544691912d17bc519f313eaa36112d7719ee3b28ddecc4f264b78ecd7",
+			"version": "0.9.1",
+			"date": "2026-10-25",
+			"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.9.1/lachinata-core-0.9.1.zip",
+			"sha256": "9d953843e8f99f6490c7afceae0bbb4c31bc28d35b3e0f45b8c2786584cfc1d3",
 			"requires": {
 				"wordpress": "6.8",
 				"php": "8.2",
 				"woocommerce": "10.0",
-				"lachinata": "0.9.0"
+				"lachinata": "0.9.1"
 			},
-			"notes": "### Añadido\n- **Contrato de módulos** (`docs/arquitectura-modulos.md`, documento oficial): estructura de un módulo, comunicación solo por hooks documentados, contratos del núcleo y utilidades sin estado, datos y migraciones, fallo aislado, API pública estable y README con secciones fijas.\n- **Fallo aislado**: los hooks de los módulos van envueltos (`LaChinata\\Core\\Hooks`). Un fallo apaga ese módulo el resto de la petición y se anota en su registro de huecos y en el registro de WooCommerce. Un día de aviso en el panel y prueba crítica en Salud del sitio. El checkout y el pedido siguen. Las rutas REST y los datos de la Store API de los módulos, también envueltos. Acción `lachinata/core/module_failed`.\n- **Interruptor de emergencia** sin panel: `define( 'LACHINATA_DISABLE_MODULES', 'gift,notify' )` (o `'*'`) en `wp-config.php`. Los módulos que necesitan uno apagado tampoco arrancan, y los demás arrancan en orden de dependencias.\n- **Migraciones versionadas por módulo** (`schema_version()`, `migrations()`), idempotentes y aditivas, antes del arranque. Primera: `gift` v2.\n- **«Borrar datos…»** de un módulo apagado en WooCommerce → La Chinata → Módulos (escribiendo su id) y `wp lachinata module delete-data <id>`. Antes de borrar se descarga su JSON de exportación. Nunca borra metadatos de pedido.\n- **Salud de cada módulo** en WooCommerce → Estado («La Chinata · módulos»), en Salud del sitio y en `wp lachinata module status`. Muestra si funciona, si está configurado, si tiene credenciales (sin su valor), la última incidencia y la versión de sus datos.\n- Contratos `Contracts\\ShippingRules` (de `shipping`) y `Contracts\\DeliveryEstimator` (de `eta`) con `Services::shipping_rules()` y `Services::delivery()`. Filtros `lachinata/catalog/no_ship_abroad` y acciones `lachinata/shipping/changed` y `lachinata/core/data_deleted`.\n- **Regalo:** la fecha de borrado del contacto del destinatario se guarda en el pedido (`_lc_gift_erase_at`) y un barrido diario borra los vencidos, también los que vencieron con el módulo apagado.\n- Catálogo de la API pública del plugin en `plugin/HOOKS.md` (servicios, hooks, REST, metadatos con su dueño y clases movidas). `theme/HOOKS.md` gana «Desde» y «Obsoleto desde».\n- Manifiesto de versiones con `previous`: las cinco versiones estables anteriores con URL y huella, para volver atrás a mano (`docs/actualizaciones.md`: circuito por tienda y vuelta atrás).\n- CI: reglas de PHPStan de fronteras entre módulos y de hooks solo con `Hooks`; `npm run check:docs` (catálogo de hooks y metadatos, READMEs, fronteras en tests); un job de e2e por perfil de tienda (`es`, `canarias`, `cz`, `off`, `all`: PHPUnit del perfil y humo de home, ficha, bolsa, pedido, gracias y correo); cada módulo solo con sus dependencias (`tools/tests/modules-isolated.sh`). Perfiles en `tests/profiles/` (Canarias y CZ, sintéticos) y `tools/seed-profile.sh`.\n\n### Cambiado\n- **La casilla de novedades es del módulo `newsletter`** (antes, `checkout`): sin `newsletter` no hay casilla. El campo y `_lc_newsletter_optin` no cambian. `newsletter` ya no necesita `checkout`.\n- `Estimate` y `Format` (de `eta`) y `Package` y `Destination` (de `shipping`) pasan al núcleo (`Delivery\\*`, `Shipping\\*`) con `Shipping\\Zones`. Los nombres antiguos quedan como alias hasta la 0.10.0. `eta` y `gift` ya no usan clases de otros módulos, y `shipping` ya no lee `catalog` directamente.\n- Los tests de `gift` y `shipment` usan un doble de `Contracts\\Notifier`. Lo que cruza módulos está en `tests/profiles/`.\n- Los README de los diez módulos siguen las secciones fijas. `catalog` y `eta` estrenan el suyo.\n\n### Obsoleto\n- `LaChinata\\Core\\Modules\\Eta\\Estimate`, `Modules\\Eta\\Format`, `Modules\\Shipping\\Package` y `Modules\\Shipping\\Destination`: usa `Delivery\\Estimate`, `Delivery\\Format`, `Shipping\\Package` y `Shipping\\Destination`. Se quitan en la 0.10.0.",
+			"notes": "### Añadido\n- **Aviso temprano de WooCommerce:** workflow semanal y lanzable a mano («WooCommerce siguiente»). Corre PHPUnit y el e2e del checkout del perfil es contra la beta o candidata más reciente de WooCommerce y, si falla, abre o comenta un issue con el resultado. No bloquea ninguna release.\n\n### Cambiado\n- **Tarifa en vivo solo con la dirección completa:** hasta que el destino tiene país, ciudad y, donde el país lo usa, código postal, no se pide tarifa a DHL (el método de Octolize no está disponible), no se calcula «Tarifa en vivo», no se anota ningún hueco y la bolsa no dice «no enviamos a tu zona». Se acaban las incidencias «City name must not be empty» mientras el cliente escribe la dirección.\n- Pantalla Módulos: fuera la columna «Documentación», que mostraba rutas del repositorio que no sirven en una tienda.\n- El e2e que simula que WooCommerce quita la acción interna de la facturación borra la incidencia que provoca, para que no quede en WooCommerce → Estado del sitio de pruebas.",
 			"previous": [
+				{
+					"version": "0.9.0",
+					"date": "2026-10-24",
+					"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.9.0/lachinata-core-0.9.0.zip",
+					"sha256": "4f19802544691912d17bc519f313eaa36112d7719ee3b28ddecc4f264b78ecd7"
+				},
 				{
 					"version": "0.8.1",
 					"date": "2026-10-24",
@@ -38,28 +44,28 @@
 					"date": "2026-10-23",
 					"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.6.1/lachinata-core-0.6.1.zip",
 					"sha256": "1601198e15221e51ec34e16e62127b2ed87d63817bc968e1831389948ab72ffc"
-				},
-				{
-					"version": "0.6.0",
-					"date": "2026-10-23",
-					"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.6.0/lachinata-core-0.6.0.zip",
-					"sha256": "194cde7a305c202d468b237f0d9807c43f96b870530a38f2ad60be6d972e3bb7"
 				}
 			]
 		},
 		"lachinata": {
-			"version": "0.9.0",
-			"date": "2026-10-24",
-			"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.9.0/lachinata-0.9.0.zip",
-			"sha256": "ed04d8cb75b0cddeb13b6cec5d0452278eea09a20ebb1cfc83556483b0a651c0",
+			"version": "0.9.1",
+			"date": "2026-10-25",
+			"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.9.1/lachinata-0.9.1.zip",
+			"sha256": "756e0e3d9c84bc9f52b2a5c5c2741595a91bff5909bd11f24b70a00780e9bf50",
 			"requires": {
 				"wordpress": "6.8",
 				"php": "8.2",
 				"woocommerce": "10.0",
-				"lachinata-core": "0.9.0"
+				"lachinata-core": "0.9.1"
 			},
-			"notes": "### Añadido\n- **Contrato de módulos** (`docs/arquitectura-modulos.md`, documento oficial): estructura de un módulo, comunicación solo por hooks documentados, contratos del núcleo y utilidades sin estado, datos y migraciones, fallo aislado, API pública estable y README con secciones fijas.\n- **Fallo aislado**: los hooks de los módulos van envueltos (`LaChinata\\Core\\Hooks`). Un fallo apaga ese módulo el resto de la petición y se anota en su registro de huecos y en el registro de WooCommerce. Un día de aviso en el panel y prueba crítica en Salud del sitio. El checkout y el pedido siguen. Las rutas REST y los datos de la Store API de los módulos, también envueltos. Acción `lachinata/core/module_failed`.\n- **Interruptor de emergencia** sin panel: `define( 'LACHINATA_DISABLE_MODULES', 'gift,notify' )` (o `'*'`) en `wp-config.php`. Los módulos que necesitan uno apagado tampoco arrancan, y los demás arrancan en orden de dependencias.\n- **Migraciones versionadas por módulo** (`schema_version()`, `migrations()`), idempotentes y aditivas, antes del arranque. Primera: `gift` v2.\n- **«Borrar datos…»** de un módulo apagado en WooCommerce → La Chinata → Módulos (escribiendo su id) y `wp lachinata module delete-data <id>`. Antes de borrar se descarga su JSON de exportación. Nunca borra metadatos de pedido.\n- **Salud de cada módulo** en WooCommerce → Estado («La Chinata · módulos»), en Salud del sitio y en `wp lachinata module status`. Muestra si funciona, si está configurado, si tiene credenciales (sin su valor), la última incidencia y la versión de sus datos.\n- Contratos `Contracts\\ShippingRules` (de `shipping`) y `Contracts\\DeliveryEstimator` (de `eta`) con `Services::shipping_rules()` y `Services::delivery()`. Filtros `lachinata/catalog/no_ship_abroad` y acciones `lachinata/shipping/changed` y `lachinata/core/data_deleted`.\n- **Regalo:** la fecha de borrado del contacto del destinatario se guarda en el pedido (`_lc_gift_erase_at`) y un barrido diario borra los vencidos, también los que vencieron con el módulo apagado.\n- Catálogo de la API pública del plugin en `plugin/HOOKS.md` (servicios, hooks, REST, metadatos con su dueño y clases movidas). `theme/HOOKS.md` gana «Desde» y «Obsoleto desde».\n- Manifiesto de versiones con `previous`: las cinco versiones estables anteriores con URL y huella, para volver atrás a mano (`docs/actualizaciones.md`: circuito por tienda y vuelta atrás).\n- CI: reglas de PHPStan de fronteras entre módulos y de hooks solo con `Hooks`; `npm run check:docs` (catálogo de hooks y metadatos, READMEs, fronteras en tests); un job de e2e por perfil de tienda (`es`, `canarias`, `cz`, `off`, `all`: PHPUnit del perfil y humo de home, ficha, bolsa, pedido, gracias y correo); cada módulo solo con sus dependencias (`tools/tests/modules-isolated.sh`). Perfiles en `tests/profiles/` (Canarias y CZ, sintéticos) y `tools/seed-profile.sh`.\n\n### Cambiado\n- **La casilla de novedades es del módulo `newsletter`** (antes, `checkout`): sin `newsletter` no hay casilla. El campo y `_lc_newsletter_optin` no cambian. `newsletter` ya no necesita `checkout`.\n- `Estimate` y `Format` (de `eta`) y `Package` y `Destination` (de `shipping`) pasan al núcleo (`Delivery\\*`, `Shipping\\*`) con `Shipping\\Zones`. Los nombres antiguos quedan como alias hasta la 0.10.0. `eta` y `gift` ya no usan clases de otros módulos, y `shipping` ya no lee `catalog` directamente.\n- Los tests de `gift` y `shipment` usan un doble de `Contracts\\Notifier`. Lo que cruza módulos está en `tests/profiles/`.\n- Los README de los diez módulos siguen las secciones fijas. `catalog` y `eta` estrenan el suyo.\n\n### Obsoleto\n- `LaChinata\\Core\\Modules\\Eta\\Estimate`, `Modules\\Eta\\Format`, `Modules\\Shipping\\Package` y `Modules\\Shipping\\Destination`: usa `Delivery\\Estimate`, `Delivery\\Format`, `Shipping\\Package` y `Shipping\\Destination`. Se quitan en la 0.10.0.",
+			"notes": "### Añadido\n- **Aviso temprano de WooCommerce:** workflow semanal y lanzable a mano («WooCommerce siguiente»). Corre PHPUnit y el e2e del checkout del perfil es contra la beta o candidata más reciente de WooCommerce y, si falla, abre o comenta un issue con el resultado. No bloquea ninguna release.\n\n### Cambiado\n- **Tarifa en vivo solo con la dirección completa:** hasta que el destino tiene país, ciudad y, donde el país lo usa, código postal, no se pide tarifa a DHL (el método de Octolize no está disponible), no se calcula «Tarifa en vivo», no se anota ningún hueco y la bolsa no dice «no enviamos a tu zona». Se acaban las incidencias «City name must not be empty» mientras el cliente escribe la dirección.\n- Pantalla Módulos: fuera la columna «Documentación», que mostraba rutas del repositorio que no sirven en una tienda.\n- El e2e que simula que WooCommerce quita la acción interna de la facturación borra la incidencia que provoca, para que no quede en WooCommerce → Estado del sitio de pruebas.",
 			"previous": [
+				{
+					"version": "0.9.0",
+					"date": "2026-10-24",
+					"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.9.0/lachinata-0.9.0.zip",
+					"sha256": "ed04d8cb75b0cddeb13b6cec5d0452278eea09a20ebb1cfc83556483b0a651c0"
+				},
 				{
 					"version": "0.8.1",
 					"date": "2026-10-24",
@@ -83,12 +89,6 @@
 					"date": "2026-10-23",
 					"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.6.1/lachinata-0.6.1.zip",
 					"sha256": "f9ed3884394e630a90abecbdeb7c1de075a17709e4879b8251fb9fd239b94be0"
-				},
-				{
-					"version": "0.6.0",
-					"date": "2026-10-23",
-					"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.6.0/lachinata-0.6.0.zip",
-					"sha256": "1519fe310a35b4e1eab42b901ee77ec8635138bb6b5a8df9130aa7c019e53732"
 				}
 			]
 		}

@@ -1,0 +1,343 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Envíos · Guías de La Chinata Core</title>
+<style>
+:root { color-scheme: light dark; --ink: #231f20; --soft: #5b5657; --line: #e8ebed; --bg: #fff; --code: #f3eee6; }
+@media (prefers-color-scheme: dark) { :root { --ink: #f3eee6; --soft: #c9c3bd; --line: #3a3637; --bg: #1b1a18; --code: #2b2926; } }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 17px/1.6 system-ui, -apple-system, "Segoe UI", sans-serif; }
+main { max-width: 760px; margin: 0 auto; padding: 24px 16px 64px; }
+nav { font-size: 15px; margin-bottom: 24px; }
+a { color: inherit; }
+h1, h2, h3 { line-height: 1.25; }
+h2 { margin-top: 2em; border-top: 1px solid var(--line); padding-top: 1em; }
+code { background: var(--code); padding: 0 4px; border-radius: 4px; font-size: .9em; }
+pre { background: var(--code); padding: 12px; overflow-x: auto; border-radius: 6px; }
+table { border-collapse: collapse; width: 100%; display: block; overflow-x: auto; font-size: 15px; }
+th, td { border: 1px solid var(--line); padding: 6px 8px; text-align: left; vertical-align: top; }
+footer { color: var(--soft); font-size: 14px; margin-top: 48px; }
+</style>
+</head>
+<body>
+<main>
+<nav><a href="index.html">Guías de La Chinata Core</a></nav>
+<h1>Envíos</h1>
+<p>Decide qué métodos de envío ve cada cliente según el peso, el importe y los productos de su pedido, pone límites y mensajes por zona, impide enviar ciertos productos a ciertos destinos y permite cobrar tarifas en vivo de un transportista. Trabaja sobre las zonas y métodos de WooCommerce: no los sustituye.</p>
+<h2>Antes de empezar</h2>
+<ul>
+<li>No necesita ningún otro módulo. Necesita WooCommerce 10 o posterior.</li>
+<li><strong>Primero, las zonas y los métodos de WooCommerce.</strong> Créalos como siempre en WooCommerce → Ajustes → Envío (por ejemplo, la zona «Península» con «Envío estándar» y «Envío gratis»). El módulo añade condiciones a esos métodos, pero no crea ninguno.</li>
+<li>Tus productos deben tener <strong>peso</strong> (Datos del producto → Envío). Un producto sin peso cuenta como 0 kg.</li>
+<li>Para limitar destinos con la casilla «Exclusión internacional» del producto necesitas el módulo <a href="catalog.html">Catálogo</a>. Sin él, las restricciones solo funcionan por clase de envío.</li>
+<li><a href="eta.html">Entrega estimada</a> depende de este módulo: si apagas Envíos, se apaga también.</li>
+<li><strong>Desactiva otros plugins que hagan lo mismo</strong> (envíos condicionales, barras de envío gratis, fechas de entrega). Si siguen activos, verás un aviso en el panel y las reglas se aplicarían dos veces.</li>
+</ul>
+<h2>Dónde se configura</h2>
+<p>En dos sitios:</p>
+<table>
+<thead>
+<tr>
+<th>Qué</th>
+<th>Dónde</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Condiciones de cada método (peso, importe, clases, prioridad, a quién oculta, nota)</td>
+<td>WooCommerce → Ajustes → Envío → editar la zona → <strong>Editar</strong> en cada método, apartado «Cuándo se ofrece (La Chinata)»</td>
+</tr>
+<tr>
+<td>Límites y mensajes de cada zona, zona por defecto</td>
+<td>WooCommerce → La Chinata → <strong>Envíos</strong> → Zonas</td>
+</tr>
+<tr>
+<td>Productos que no se envían a ciertos destinos</td>
+<td>WooCommerce → La Chinata → Envíos → Restricciones de producto</td>
+</tr>
+<tr>
+<td>Revisión de la configuración y avisos</td>
+<td>WooCommerce → La Chinata → Envíos → Huecos de configuración</td>
+</tr>
+<tr>
+<td>Probar un pedido imaginario</td>
+<td>WooCommerce → La Chinata → Envíos → Probador</td>
+</tr>
+</tbody></table>
+<h2>Ajustes</h2>
+<h3>Condiciones de cada método</h3>
+<p>Al editar cualquier método de una zona (precio fijo, envío gratuito, tarifa en vivo o el de otro plugin) aparece el apartado <strong>Cuándo se ofrece (La Chinata)</strong>. El método se ofrece si el pedido cumple <strong>todas</strong> las condiciones que rellenes; las vacías no cuentan. «Desde» incluye el valor; «menos de» no lo incluye.</p>
+<table>
+<thead>
+<tr>
+<th>Campo</th>
+<th>Qué es</th>
+<th>De serie</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Peso desde (kg)</strong></td>
+<td>Se ofrece con este peso o más.</td>
+<td>Vacío</td>
+</tr>
+<tr>
+<td><strong>Peso menos de (kg)</strong></td>
+<td>Se ofrece con menos de este peso.</td>
+<td>Vacío</td>
+</tr>
+<tr>
+<td><strong>Importe mínimo</strong></td>
+<td>«Sin mínimo», «Importe fijo (abajo)» o «Umbral de envío gratis de la zona» (el que pongas en La Chinata → Envíos → Zonas).</td>
+<td>Sin mínimo</td>
+</tr>
+<tr>
+<td><strong>Importe desde</strong></td>
+<td>El mínimo cuando eliges «Importe fijo». Se compara con el subtotal de productos con impuestos, después de descuentos y sin envío, como hace el envío gratuito de WooCommerce.</td>
+<td>Vacío</td>
+</tr>
+<tr>
+<td><strong>Importe menos de</strong></td>
+<td>Se ofrece con un importe menor que este.</td>
+<td>Vacío</td>
+</tr>
+<tr>
+<td><strong>Descuentos</strong></td>
+<td>«Comparar el importe antes de aplicar cupones de descuento».</td>
+<td>Sin marcar</td>
+</tr>
+<tr>
+<td><strong>Clases exigidas</strong></td>
+<td>Se ofrece solo si el pedido lleva algún producto de una de estas clases de envío.</td>
+<td>Ninguna</td>
+</tr>
+<tr>
+<td><strong>Clases excluidas</strong></td>
+<td>No se ofrece si el pedido lleva algún producto de estas clases.</td>
+<td>Ninguna</td>
+</tr>
+<tr>
+<td><strong>Prioridad</strong></td>
+<td>Número; menor primero. Ordena las opciones que ve el cliente y decide quién oculta a quién.</td>
+<td>10</td>
+</tr>
+<tr>
+<td><strong>Si se ofrece, oculta</strong></td>
+<td>Métodos de la misma zona que desaparecen cuando este se ofrece. Por ejemplo, el envío gratis oculta el de pago.</td>
+<td>Ninguno</td>
+</tr>
+<tr>
+<td><strong>Nota para el cliente</strong></td>
+<td>Frase que se muestra en la bolsa cuando se elige este método y acompaña a la opción en el checkout.</td>
+<td>Vacía</td>
+</tr>
+</tbody></table>
+<p>Consejo para el caso más habitual, «envío gratis a partir de cierto importe»: en el método de envío gratis elige <strong>Importe mínimo → Umbral de envío gratis de la zona</strong> y en <strong>Si se ofrece, oculta</strong> marca el envío de pago. Así el umbral se escribe en un solo sitio y es el mismo que anuncian la barra superior y la bolsa.</p>
+<p>Cómo decide: primero mira si la zona tiene métodos, si algún producto del pedido está restringido para el destino y si el pedido supera el peso máximo de la zona. Después filtra los métodos por sus condiciones, los ordena por prioridad y, en ese orden, cada método que sigue visible oculta los de su lista (un método oculto no oculta a nadie).</p>
+<h3>Zonas (La Chinata → Envíos → Zonas)</h3>
+<p>Hay una tarjeta por cada zona de WooCommerce, con su nombre, sus destinos y sus métodos (con el número de ID de cada uno; «[desactivado]» si está apagado). Si una zona no tiene métodos, pone «Sin métodos: la zona no está cubierta».</p>
+<table>
+<thead>
+<tr>
+<th>Campo</th>
+<th>Qué es</th>
+<th>De serie</th>
+<th>Cuándo cambiarlo</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Zona por defecto</strong></td>
+<td>La zona que se usa cuando aún no se conoce el destino del visitante: barra superior, barra de ventajas y ficha de producto. Solo puede haber una.</td>
+<td>La zona «resto del mundo» de WooCommerce (los destinos que no están en ninguna otra zona)</td>
+<td>Márcala en tu zona principal (por ejemplo, «Península») para que el umbral de envío gratis y la fecha de entrega de la ficha sean los de tus clientes habituales.</td>
+</tr>
+<tr>
+<td><strong>Peso máximo (kg)</strong></td>
+<td>Por encima de este peso (incluido el valor) no se ofrece ningún método de la zona.</td>
+<td>Vacío (sin límite)</td>
+<td>Si tu transportista tiene un límite por envío.</td>
+</tr>
+<tr>
+<td><strong>Umbral de envío gratis</strong></td>
+<td>Importe a partir del cual el envío es gratis en la zona. Lo anuncian la barra superior («Envío gratis desde…»), la barra de ventajas y la bolsa («Te faltan… para el envío gratis»), y lo usan los métodos con «Umbral de envío gratis de la zona».</td>
+<td>Vacío (no se anuncia)</td>
+<td>Si ofreces envío gratis en la zona.</td>
+</tr>
+<tr>
+<td><strong>Aviso informativo</strong></td>
+<td>Frase que se muestra en la bolsa a quien envía a esta zona.</td>
+<td>Vacío</td>
+<td>Para avisos de la zona (por ejemplo, plazos especiales o aduanas).</td>
+</tr>
+</tbody></table>
+<p><strong>Umbral en los textos del menú.</strong> Si escribes <code>{envio_gratis}</code> en un texto de la barra superior o de la barra de ventajas, se sustituye por el umbral de la zona del visitante. Si la zona no tiene umbral, ese texto no se muestra.</p>
+<p><strong>Mensajes cuando no hay envío.</strong> Desplegable dentro de cada zona, con un mensaje por causa:</p>
+<table>
+<thead>
+<tr>
+<th>Causa</th>
+<th>Cuándo ocurre</th>
+<th>Texto de serie (resumido)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Zona no cubierta</td>
+<td>La zona no tiene métodos.</td>
+<td>«Todavía no enviamos a {pais}.»</td>
+</tr>
+<tr>
+<td>Producto restringido en el destino</td>
+<td>Un producto del pedido no puede ir a ese destino (ver Restricciones).</td>
+<td>«{producto} no se puede enviar a {pais}. Quítalo de la bolsa o cambia la dirección de entrega.»</td>
+</tr>
+<tr>
+<td>Peso por encima del máximo</td>
+<td>Se supera el peso máximo de la zona, o todos los métodos fallan por peso.</td>
+<td>«No podemos enviar {peso} a {pais}: el máximo son {max}. Divide el pedido en dos o escríbenos…»</td>
+</tr>
+<tr>
+<td>Importe fuera de los límites</td>
+<td>Todos los métodos fallan por importe.</td>
+<td>«No hay ningún envío a {pais} para el importe de tu pedido…»</td>
+</tr>
+<tr>
+<td>Mensaje genérico (ningún método aplica)</td>
+<td>Ninguna de las anteriores explica por qué no hay método.</td>
+<td>«No encontramos un envío para tu pedido a {pais}…»</td>
+</tr>
+</tbody></table>
+<p>Puedes usar <code>{peso}</code>, <code>{max}</code>, <code>{pais}</code> y <code>{producto}</code> en tus mensajes. Vacío: el texto de serie. Si una causa no tiene mensaje propio pero la zona sí tiene <strong>mensaje genérico</strong>, se usa el genérico. Cuando no hay envío, el pedido no se puede completar y el cliente ve el motivo en la bolsa y en el checkout.</p>
+<p>Pulsa <strong>Guardar zonas</strong> al terminar.</p>
+<h3>Restricciones de producto</h3>
+<p>Cada fila dice: «los productos de este <strong>Origen</strong> solo se envían a estos destinos, <strong>Excepto</strong> estos». Si un pedido lleva uno a otro destino, no hay envío y la causa es «Producto restringido en el destino»; bajo el producto, la bolsa indica «No se envía a…».</p>
+<table>
+<thead>
+<tr>
+<th>Columna</th>
+<th>Qué es</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Origen</strong></td>
+<td>Una clase de envío («Clase de envío &quot;…&quot;») o el campo «Exclusión internacional» del producto (necesita <a href="catalog.html">Catálogo</a>).</td>
+</tr>
+<tr>
+<td><strong>Solo se envía a</strong></td>
+<td>Países, o país y provincia, permitidos. Si la dejas vacía, los productos de ese origen no se envían a ningún sitio.</td>
+</tr>
+<tr>
+<td><strong>Excepto</strong></td>
+<td>Destinos que se quitan de los permitidos. Ejemplo: «España» excepto las provincias insulares deja solo la península.</td>
+</tr>
+<tr>
+<td><strong>Quitar</strong></td>
+<td>Márcala y guarda para borrar la fila.</td>
+</tr>
+</tbody></table>
+<p>Para añadir una, usa la última fila («Añadir una restricción…») y pulsa <strong>Guardar restricciones</strong>.</p>
+<h3>Tarifa en vivo</h3>
+<p>Es un tipo de método más en WooCommerce → Ajustes → Envío → editar zona → Añadir método de envío → <strong>Tarifa en vivo</strong>. Cobra el precio que devuelve un transportista a través de un proveedor de tarifas instalado en la tienda. Además de las condiciones de arriba, tiene:</p>
+<table>
+<thead>
+<tr>
+<th>Campo</th>
+<th>Qué es</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Nombre</td>
+<td>Lo que ve el cliente. Trae un nombre de serie: cámbialo por el tuyo.</td>
+</tr>
+<tr>
+<td>Estado del impuesto</td>
+<td>Imponible o ninguno, como en cualquier método.</td>
+</tr>
+<tr>
+<td>Proveedor</td>
+<td>El proveedor de tarifas. Se puede cambiar sin cambiar el ID del método.</td>
+</tr>
+<tr>
+<td>Servicios</td>
+<td>Códigos de servicio del transportista separados por comas. Vacío: todos los que devuelva.</td>
+</tr>
+<tr>
+<td>Recargo (%) y Recargo fijo</td>
+<td>Se suman al precio del transportista; el fijo, después del porcentaje.</td>
+</tr>
+<tr>
+<td>Caja (cm) y Peso máximo por caja (kg)</td>
+<td>Medidas y peso de la caja con la que se pide la tarifa. De serie, 40 × 40 × 40 cm y 10 kg. Si el proveedor empaqueta por su cuenta, no se usan.</td>
+</tr>
+<tr>
+<td>Aduanas</td>
+<td>«Declarar el envío con aranceles», para envíos fuera de la UE.</td>
+</tr>
+<tr>
+<td>Precio si el transportista no responde</td>
+<td>Vacío: si el transportista no responde, el método no aparece. Recomendado rellenarlo.</td>
+</tr>
+</tbody></table>
+<p>La tarifa solo se pide cuando el cliente ha dado la dirección completa (país, ciudad y, donde se usa, código postal). <strong>Configura del todo el plugin del transportista (cuenta y credenciales) antes de activarlo</strong>: una configuración a medias puede impedir que cargue la bolsa.</p>
+<h3>Probar desde la línea de órdenes</h3>
+<p>Quien mantiene el sitio puede usar el mismo probador con WP-CLI:</p>
+<pre><code class="language-bash">wp lachinata shipping simulate --to=ES --weight=3 --amount=45
+</code></pre>
+<p>Opciones: <code>--to</code> (país, o país y provincia con dos puntos), <code>--postcode</code>, <code>--weight</code> (kg, de serie 1), <code>--amount</code> (de serie 30), <code>--classes</code> (slugs separados por comas) y <code>--flag</code> (lleva un producto con exclusión internacional).</p>
+<h2>Comprobar que funciona</h2>
+<ol>
+<li>Ve a WooCommerce → La Chinata → Envíos → <strong>Probador</strong>. Elige un destino, un peso, un importe y, si quieres, clases de envío. Pulsa <strong>Probar</strong>.</li>
+<li>Verás la zona que corresponde y una fila por método: «Se ofrece (posición N)» o «No se ofrece» con el motivo (peso, importe, clases de envío, oculto por otro método…). Si <a href="eta.html">Entrega estimada</a> está encendido, también la fecha de cada método.</li>
+<li>Prueba los bordes: un importe justo por debajo y justo en el umbral de envío gratis; un peso por encima del máximo de la zona; un destino con un producto restringido.</li>
+<li>En la tienda, añade productos a la bolsa y pon una dirección de esa zona: comprueba el aviso «Te faltan… para el envío gratis», la nota del método elegido y el aviso informativo de la zona.</li>
+<li>Prueba un pedido sin envío posible y comprueba que el checkout muestra el motivo y no deja pagar.</li>
+</ol>
+<p>El probador aplica las condiciones de este módulo. El precio y las condiciones propias de cada método de WooCommerce (por ejemplo, el mínimo de un envío gratuito configurado en el propio método) solo se ven probando la bolsa.</p>
+<h2>Si algo falla</h2>
+<table>
+<thead>
+<tr>
+<th>Síntoma</th>
+<th>Qué revisar</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>El envío gratis no aparece nunca</td>
+<td>Envíos → Huecos de configuración: si el método usa «Umbral de envío gratis de la zona» y la zona no tiene umbral, sale un aviso. Rellena el umbral en Envíos → Zonas.</td>
+</tr>
+<tr>
+<td>Salen a la vez el envío gratis y el de pago</td>
+<td>En el método gratis, «Si se ofrece, oculta» debe incluir el de pago, y los dos deben estar en la misma zona.</td>
+</tr>
+<tr>
+<td>Un método no aparece y no sabes por qué</td>
+<td>Prueba el pedido en el Probador: dice qué condición falla.</td>
+</tr>
+<tr>
+<td>Las condiciones de peso no funcionan bien</td>
+<td>Envíos → Huecos de configuración → «Productos sin peso»: usa «Ver la lista para corregirlos».</td>
+</tr>
+<tr>
+<td>El cliente ve el mensaje genérico</td>
+<td>Ninguna causa conocida explica la falta de envío (hay un hueco en la configuración). Queda anotado en Huecos de configuración → «Pedidos sin envío y tarifas en vivo que no llegaron», con los datos del pedido.</td>
+</tr>
+<tr>
+<td>La tarifa en vivo no aparece</td>
+<td>Huecos de configuración: avisa si el método no tiene proveedor y anota las veces que el transportista no dio tarifa. Comprueba las credenciales del plugin del transportista y rellena el precio de reserva.</td>
+</tr>
+<tr>
+<td>Aviso «El módulo Envíos de La Chinata está activo junto a…»</td>
+<td>Otro plugin hace el mismo trabajo. Desactívalo.</td>
+</tr>
+<tr>
+<td>«oculta el ID…, que no está en su zona»</td>
+<td>La lista «Si se ofrece, oculta» solo funciona dentro de la misma zona. Quita ese método de la lista.</td>
+</tr>
+</tbody></table>
+<p>Los avisos del módulo quedan también en WooCommerce → Estado → Registros (<code>lachinata-shipping</code>). En WooCommerce → Estado, tabla «La Chinata · módulos», Envíos aparece como configurado cuando alguna zona tiene métodos activos.</p>
+<h2>Al apagarlo</h2>
+<p>WooCommerce vuelve a ofrecer sus zonas y métodos tal cual: sin condiciones, sin peso máximo, sin umbral de envío gratis anunciado, sin restricciones de producto, sin mensajes propios de «sin envío» y sin «Tarifa en vivo» (esos métodos dejan de calcular). <a href="eta.html">Entrega estimada</a> se apaga con él.</p>
+<p><strong>Los datos se conservan</strong>: los límites y mensajes de zona, las restricciones y las condiciones guardadas en cada método vuelven al encenderlo. «Borrar datos…» (WooCommerce → La Chinata → Módulos, con el módulo apagado) borra los ajustes de zonas y restricciones tras descargar una copia; las condiciones de cada método y los pedidos no se tocan.</p>
+
+<footer>La Chinata Core 0.10.0</footer>
+</main>
+</body>
+</html>

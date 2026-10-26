@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cookies y medición · Guías de La Chinata Core</title>
+<style>
+:root { color-scheme: light dark; --ink: #231f20; --soft: #5b5657; --line: #e8ebed; --bg: #fff; --code: #f3eee6; }
+@media (prefers-color-scheme: dark) { :root { --ink: #f3eee6; --soft: #c9c3bd; --line: #3a3637; --bg: #1b1a18; --code: #2b2926; } }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 17px/1.6 system-ui, -apple-system, "Segoe UI", sans-serif; }
+main { max-width: 760px; margin: 0 auto; padding: 24px 16px 64px; }
+nav { font-size: 15px; margin-bottom: 24px; }
+a { color: inherit; }
+h1, h2, h3 { line-height: 1.25; }
+h2 { margin-top: 2em; border-top: 1px solid var(--line); padding-top: 1em; }
+code { background: var(--code); padding: 0 4px; border-radius: 4px; font-size: .9em; }
+pre { background: var(--code); padding: 12px; overflow-x: auto; border-radius: 6px; }
+table { border-collapse: collapse; width: 100%; display: block; overflow-x: auto; font-size: 15px; }
+th, td { border: 1px solid var(--line); padding: 6px 8px; text-align: left; vertical-align: top; }
+footer { color: var(--soft); font-size: 14px; margin-top: 48px; }
+</style>
+</head>
+<body>
+<main>
+<nav><a href="index.html">Guías de La Chinata Core</a></nav>
+<h1>Cookies y medición</h1>
+<p>El aviso de cookies de la tienda y la medición del comercio con Google Analytics 4, Google Ads y el píxel de Meta. Cada servicio es opcional: se activa al rellenar su ID y se apaga al vaciarlo. Una tienda sin servicios de analítica ni de publicidad no muestra aviso de cookies.</p>
+<h2>Antes de empezar</h2>
+<ul>
+<li>Rellena <strong>Datos de la empresa</strong> (WooCommerce → La Chinata, guía <a href="core.html">Núcleo</a>): el nombre comercial, la razón social, el NIF, el correo de privacidad y las páginas legales. El aviso y la política los usan.</li>
+<li>Revisa <strong>IDs de producto</strong> (misma guía) si vas a usar Google Ads o Meta con catálogo. Los eventos envían el ID que conoce cada catálogo.</li>
+<li>El aviso usa los estilos del tema <code>lachinata</code>. Con otro tema funciona igual, pero sin su aspecto.</li>
+<li>Qué se mide y cómo se comprueba cada servicio está en la guía <a href="medicion.html">Medición del comercio</a>.</li>
+</ul>
+<h2>Dónde se configura</h2>
+<p>WooCommerce → La Chinata → <strong>Cookies y medición</strong>. Arriba, una tabla con el estado de cada servicio:</p>
+<ul>
+<li><strong>Activo</strong>: el servicio está configurado y funciona.</li>
+<li><strong>Sin configurar</strong>: el servicio no se carga.</li>
+<li><strong>Mal configurado: apagado</strong>: hay un dato con un formato incorrecto o falta uno obligatorio. Nada se carga hasta corregirlo.</li>
+</ul>
+<h2>Ajustes</h2>
+<h3>Google Analytics 4</h3>
+<table>
+<thead>
+<tr>
+<th>Campo</th>
+<th>Qué es</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>ID de medición</td>
+<td>En GA4 → Administrar → Flujos de datos → tu web. Empieza por <code>G-</code></td>
+</tr>
+<tr>
+<td>Secreto de la API de Measurement Protocol</td>
+<td>En el mismo flujo → Secretos de la API de Measurement Protocol. Con él, la compra, los reembolsos y los pasos del checkout se envían desde el servidor, solo de quien ha aceptado la analítica</td>
+</tr>
+</tbody></table>
+<h3>Google Ads</h3>
+<table>
+<thead>
+<tr>
+<th>Campo</th>
+<th>Qué es</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>ID de conversión</td>
+<td>En Google Ads → Objetivos → Conversiones → la acción → Configuración de etiquetas. Empieza por <code>AW-</code></td>
+</tr>
+<tr>
+<td>Etiqueta de la compra</td>
+<td>Obligatoria para activar Google Ads: lo que va tras la barra en «send_to»</td>
+</tr>
+<tr>
+<td>Etiquetas de añadir a la bolsa, inicio del checkout y lead</td>
+<td>Opcionales. Vacías: esas conversiones no se envían</td>
+</tr>
+<tr>
+<td>Conversiones mejoradas</td>
+<td>Envía el correo del comprador cifrado, solo con consentimiento de publicidad</td>
+</tr>
+<tr>
+<td>Remarketing dinámico</td>
+<td>Envía los IDs de producto del feed de Google</td>
+</tr>
+</tbody></table>
+<p>Si tus conversiones de compra se importan de GA4, deja Google Ads vacío para no contarlas dos veces.</p>
+<h3>Píxel de Meta</h3>
+<table>
+<thead>
+<tr>
+<th>Campo</th>
+<th>Qué es</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>ID del píxel</td>
+<td>En el Administrador de eventos de Meta → tu conjunto de datos. Solo números</td>
+</tr>
+<tr>
+<td>Token de la API de conversiones</td>
+<td>En el conjunto de datos → Configuración → API de conversiones → Generar token de acceso. Con él, la compra y otros pasos se envían también desde el servidor, con el mismo identificador que el píxel</td>
+</tr>
+<tr>
+<td>Código de prueba (Test Events)</td>
+<td>Solo mientras pruebas: los eventos del servidor salen en «Probar eventos». Vacíalo al terminar</td>
+</tr>
+</tbody></table>
+<h3>Google: medición sin cookies</h3>
+<p><strong>Tras rechazar</strong> carga GA4 y Google Ads también cuando la persona rechaza, sin cookies (el «modo de consentimiento avanzado» de Google). Está <strong>apagado de serie</strong>: así, nada de Google se carga sin consentimiento. Consulta con quien lleve la parte legal antes de encenderlo. Si lo enciendes, la política de cookies lo explica sola.</p>
+<h3>Mailchimp for WooCommerce</h3>
+<p>Si usas ese plugin, deja marcado <strong>Consentimiento</strong>. Sus scripts y cookies se cargan solo con consentimiento de publicidad: la atribución de campañas, la captura del correo para los carritos abandonados y su píxel. La sincronización de productos, pedidos y clientes sigue igual, porque la hace el servidor.</p>
+<h3>Pruebas del consentimiento</h3>
+<p>Cada elección del aviso se guarda sin datos personales: un identificador aleatorio, la fecha, la versión de la política, las opciones y los servicios activos. <strong>Conservar</strong> indica cuántos meses se guarda. De serie son 36: los 12 que dura el consentimiento y los 24 en que prescribe una infracción grave.</p>
+<p>Los secretos (el de GA4 y el token de Meta) no se muestran una vez guardados. Para cambiarlos escribe otro; para quitarlos, marca «Quitar». Cada campo se comprueba al guardar, y si algo no vale no se guarda nada: el error sale junto al campo.</p>
+<h2>El aviso y la política de cookies</h2>
+<ul>
+<li><strong>El aviso</strong> tiene tres botones del mismo tamaño: «Configurar», «Rechazar todo» y «Aceptar todo».<ul>
+<li>En «Configurar», cada tipo de cookie (analítica, publicidad) aparece <strong>apagado</strong> hasta que la persona lo enciende, y solo salen los tipos con algún servicio activo.</li>
+<li>La elección dura 12 meses.</li>
+<li>Si cambias los servicios activos, se vuelve a preguntar a todos. <strong>Volver a preguntar a todos</strong> hace lo mismo cuando quieras.</li>
+<li>El aviso no sale en la página de pago: allí no se carga ninguna etiqueta de medición, y la elección queda para la página siguiente.</li>
+</ul>
+</li>
+<li><strong>Configurar cookies</strong>, en el pie de cada página, reabre el panel.</li>
+<li><strong>La política de cookies.</strong> <strong>Crear la política de cookies (borrador)</strong> crea la página como borrador, con tus datos de la empresa.<ul>
+<li><strong>Haz que la revise quien lleve la parte legal</strong>, publícala y pulsa <strong>Marcar como revisada</strong>.</li>
+<li>Las partes que dependen de los servicios se actualizan solas: la tabla de cookies, los tipos, quién recibe los datos y la fecha del último cambio. No las edites a mano.</li>
+</ul>
+</li>
+<li><strong>Probar conexión.</strong><ul>
+<li><strong>Probar GA4</strong> valida un evento de prueba en Google. Google no comprueba el secreto en esa validación: la llegada real se ve en DebugView con una compra.</li>
+<li><strong>Probar Meta</strong> envía un evento a «Probar eventos». Necesita el código de prueba.</li>
+</ul>
+</li>
+</ul>
+<h2>Comprobar que funciona</h2>
+<ol>
+<li>En una ventana privada, abre la tienda: sale el aviso y no se carga nada de Google ni de Meta.</li>
+<li>Pulsa «Configurar»: los interruptores están apagados.</li>
+<li>Acepta y recorre una compra de prueba. Comprueba los eventos con la guía <a href="medicion.html">Medición del comercio</a>, en el apartado «Comprobarlo».</li>
+<li>Rechaza en otra ventana privada: no se carga ninguna etiqueta.</li>
+</ol>
+<h2>Si algo falla</h2>
+<ul>
+<li><strong>Un servicio aparece como «Mal configurado».</strong> Revisa el formato del ID o la etiqueta obligatoria. El error sale al guardar.</li>
+<li><strong>No sale el aviso.</strong> No hay ningún servicio de analítica ni de publicidad activo, o ya elegiste. Pruébalo en una ventana privada.</li>
+<li><strong>Un evento del servidor no llega.</strong> Los fallos de envío a GA4 o Meta aparecen en WooCommerce → Estado, en la fila de este módulo, sin mostrar nunca el token.</li>
+<li><strong>La salud avisa de la política.</strong> Falta la página de cookies en Datos de la empresa, o sigue pendiente de revisión legal.</li>
+</ul>
+<h2>Al apagarlo</h2>
+<p>Desaparecen el aviso, el enlace del pie y toda la medición. Si la tienda tiene Mailchimp for WooCommerce, vuelve a poner sus cookies sin preguntar: necesitarás otro aviso de cookies. La página de la política conserva su texto fijo, pero ya no pinta la tabla. Las pruebas del consentimiento y los ajustes se conservan.</p>
+
+<footer>La Chinata Core 0.10.0</footer>
+</main>
+</body>
+</html>

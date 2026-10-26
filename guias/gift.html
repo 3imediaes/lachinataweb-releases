@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Regalo · Guías de La Chinata Core</title>
+<style>
+:root { color-scheme: light dark; --ink: #231f20; --soft: #5b5657; --line: #e8ebed; --bg: #fff; --code: #f3eee6; }
+@media (prefers-color-scheme: dark) { :root { --ink: #f3eee6; --soft: #c9c3bd; --line: #3a3637; --bg: #1b1a18; --code: #2b2926; } }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 17px/1.6 system-ui, -apple-system, "Segoe UI", sans-serif; }
+main { max-width: 760px; margin: 0 auto; padding: 24px 16px 64px; }
+nav { font-size: 15px; margin-bottom: 24px; }
+a { color: inherit; }
+h1, h2, h3 { line-height: 1.25; }
+h2 { margin-top: 2em; border-top: 1px solid var(--line); padding-top: 1em; }
+code { background: var(--code); padding: 0 4px; border-radius: 4px; font-size: .9em; }
+pre { background: var(--code); padding: 12px; overflow-x: auto; border-radius: 6px; }
+table { border-collapse: collapse; width: 100%; display: block; overflow-x: auto; font-size: 15px; }
+th, td { border: 1px solid var(--line); padding: 6px 8px; text-align: left; vertical-align: top; }
+footer { color: var(--soft); font-size: 14px; margin-top: 48px; }
+</style>
+</head>
+<body>
+<main>
+<nav><a href="index.html">Guías de La Chinata Core</a></nav>
+<h1>Regalo</h1>
+<p>Añade al checkout la tarjeta «¿Es un regalo?»: el comprador escribe para quién es, un mensaje que irá escrito a mano en la tarjeta y, si quiere, cómo avisar a quien lo recibe (correo, WhatsApp o SMS) cuando sale el paquete, para que nadie rechace un paquete que no ha pedido. El aviso nunca dice qué contiene ni cuánto ha costado.</p>
+<h2>Antes de empezar</h2>
+<p>Este módulo necesita otros dos encendidos en <strong>WooCommerce → La Chinata → Módulos</strong>:</p>
+<ul>
+<li><strong>Checkout</strong>: es el que deja el hueco de la tarjeta en la página de pago.</li>
+<li><strong>Avisos</strong>: dice qué canales se pueden ofrecer y envía el WhatsApp y el SMS. Los canales y sus cuentas (Meta para WhatsApp, OVH para SMS) se configuran allí: mira la guía de <a href="notify.html">Avisos</a>.</li>
+</ul>
+<p>Si falta alguno, la pantalla de Módulos muestra «Regalo» como «Activado, pero no se ejecuta» y la tarjeta no aparece.</p>
+<p>Le vienen bien, aunque no son obligatorios:</p>
+<ul>
+<li><strong>Entrega estimada</strong>: calcula la fecha de llegada desde el día real de salida. Sin él, el aviso usa la fecha guardada en el pedido o no lleva fecha («en los próximos días» en el WhatsApp).</li>
+<li><strong>Odoo</strong> (o el módulo que conecte tu sistema de gestión): da el nombre del transportista. Sin él, el aviso dice «nuestro transportista».</li>
+<li>La extensión <strong>WooCommerce Shipment Tracking</strong> con el número de seguimiento del paquete: con ella, el aviso lleva el enlace para seguir el paquete; sin ella, solo la fecha.</li>
+</ul>
+<h2>Dónde se configura</h2>
+<p><strong>WooCommerce → La Chinata → Regalo.</strong> Tiene dos apartados: <strong>Ajustes</strong> y <strong>Huecos de configuración</strong> (los avisos que no salieron).</p>
+<p>Los canales del aviso (correo, WhatsApp, SMS) y sus credenciales no están aquí, sino en <strong>WooCommerce → La Chinata → Avisos</strong>.</p>
+<p>El correo que recibe el destinatario es un correo más de WooCommerce: lo encuentras en <strong>WooCommerce → Ajustes → Correos</strong> como «Aviso de regalo», donde puedes cambiar su asunto o desactivarlo.</p>
+<h2>Ajustes</h2>
+<h3>Aviso a quien lo recibe</h3>
+<ul>
+<li><strong>Se envía cuando el pedido pasa a</strong> — Los estados de pedido que disparan el aviso. De serie: <strong>Completado</strong> (el que se marca cuando sale el paquete). Cámbialo solo si en tu tienda el paquete sale en otro estado. Si no marcas ninguno, se guarda «Completado». Solo hay un aviso por pedido: si el pedido vuelve a pasar por ese estado, no se repite. Si en ese momento el pedido ya tiene número de seguimiento, el aviso lleva el enlace; si no, solo la fecha. Por eso conviene que el seguimiento se añada al pedido <strong>antes</strong> de cambiarle el estado.</li>
+<li><strong>Enlace «¿Qué es {tu tienda}?»</strong> (sale con tu nombre comercial) — La página a la que lleva el enlace del pie del correo que recibe el destinatario. De serie: <strong>vacío</strong>, que lleva a la portada de la tienda. Pon aquí la dirección de tu página «Quiénes somos» o similar si quieres que quien recibe el regalo conozca la marca.</li>
+</ul>
+<h3>Datos personales</h3>
+<ul>
+<li><strong>Borrar el contacto … días después de la entrega</strong> — Cuántos días se guarda el correo o el móvil de quien recibe el regalo. De serie: <strong>30</strong> (entre 1 y 365). Se cuentan desde la última fecha de entrega prevista o, si el pedido se cancela, se reembolsa o falla, desde ese momento. Ese contacto solo se guarda en el pedido y solo para el aviso: no crea una cuenta ni entra en ninguna lista. Ajústalo a lo que diga tu política de privacidad.</li>
+<li><strong>Texto de privacidad</strong> — El texto que el módulo propone para tu política de privacidad; aparece en <strong>Ajustes → Privacidad → Guía de la política de privacidad</strong>. Escribe <code>{dias}</code> donde quieras que salga el número de días del ajuste anterior. De serie: <strong>vacío</strong>, que usa un borrador provisional (lo ves como texto gris dentro del campo). Revísalo con quien lleve la parte legal y escribe aquí la versión definitiva.</li>
+</ul>
+<h3>Canales del aviso</h3>
+<p>No es un ajuste, sino un resumen: «El checkout ofrece: correo, WhatsApp, SMS» (los que estén activos y listos en Avisos) o «No hay ningún canal activo en Avisos: el checkout solo ofrece «No avisar»». El enlace <strong>Ir a Avisos</strong> te lleva a configurarlos.</p>
+<h2>Qué ve el comprador</h2>
+<p>En el checkout, entre Envío y Facturación, aparece la tarjeta plegada «¿Es un regalo?» (solo si la bolsa tiene algo que enviar). Al marcar «Es un regalo» se abre con:</p>
+<ul>
+<li><strong>Para</strong>: se rellena con el nombre de la dirección de entrega.</li>
+<li><strong>Tu mensaje</strong>: hasta 200 caracteres, para la tarjeta escrita a mano.</li>
+<li><strong>Avisar a quien lo recibe</strong>: un botón por cada canal activo en Avisos (Por correo, Por WhatsApp, Por SMS) y «No avisar». Según el canal, pide un correo o un móvil.</li>
+<li><strong>De parte de</strong>: obligatorio si se avisa. Con sesión iniciada, se rellena con el nombre de la cuenta.</li>
+</ul>
+<p>«No avisar» con «De parte de» vacío es un regalo anónimo.</p>
+<p>En el panel, los pedidos de regalo llevan la marca «Regalo» en la lista de pedidos, y dentro del pedido, bajo la dirección de envío, ves para quién es, el mensaje para la tarjeta y el estado del aviso.</p>
+<h2>Comprobar que funciona</h2>
+<ol>
+<li>En <strong>Avisos</strong>, pon WhatsApp y SMS en modo «Registro» para no enviar nada de verdad (o usa solo el correo hacia una dirección tuya).</li>
+<li>Haz un pedido de prueba con un producto que se envíe. En el checkout, marca «Es un regalo», rellena Para, un mensaje, elige un canal y escribe «De parte de».</li>
+<li>En el pedido, comprueba que sale la marca «Regalo» y, bajo la dirección de envío, el mensaje y el aviso pendiente.</li>
+<li>Pasa el pedido a <strong>Completado</strong> (o al estado que hayas elegido). En las notas del pedido debe aparecer «Regalo: aviso enviado a … por …», con o sin enlace de seguimiento.</li>
+<li>Si usaste el correo, comprueba que ha llegado «… te envía un regalo». Si usaste WhatsApp o SMS en modo «Registro», míralo en WooCommerce → Estado → Registros (<code>lachinata-notify</code>).</li>
+<li>Vuelve a poner el pedido en Completado: no debe salir un segundo aviso.</li>
+</ol>
+<h2>Si algo falla</h2>
+<p>Un aviso que no sale no bloquea el pedido ni se reintenta: queda en la nota del pedido, en <strong>Regalo → Huecos de configuración</strong> y en WooCommerce → Estado → Registros (archivo <code>lachinata-gift</code>). Cuando lo hayas resuelto, puedes usar «Vaciar la lista».</p>
+<ul>
+<li><strong>La tarjeta «¿Es un regalo?» no aparece</strong> → comprueba en Módulos que Regalo, Checkout y Avisos estén encendidos, y que la bolsa tenga algún producto que se envíe.</li>
+<li><strong>Solo se ofrece «No avisar»</strong> → no hay ningún canal activo y listo en <a href="notify.html">Avisos</a>.</li>
+<li><strong>Falta un canal en el checkout</strong> → ese canal está apagado o le faltan datos en Avisos.</li>
+<li><strong>«el correo «Aviso de regalo» está desactivado en WooCommerce → Ajustes → Correos»</strong> → actívalo allí.</li>
+<li><strong>«WordPress no pudo enviar el correo»</strong> → revisa la salida de correo de tu sitio.</li>
+<li><strong>«el módulo Avisos está apagado»</strong> → enciéndelo en Módulos.</li>
+<li><strong>«Regalo: el WhatsApp a … no se pudo entregar y el SMS tampoco salió»</strong> → el número no tiene WhatsApp y el SMS de respaldo falló o no está activo; revísalo en <a href="notify.html">Avisos</a>.</li>
+<li><strong>El aviso lleva solo la fecha, sin enlace de seguimiento</strong> → el número de seguimiento se añadió al pedido después de cambiarle el estado. Tiene que estar antes.</li>
+<li><strong>El aviso dice «nuestro transportista»</strong> → no se conoce el nombre del transportista para ese método de envío; revisa la correspondencia de transportistas en el módulo que conecta tu sistema de gestión.</li>
+<li><strong>El aviso no lleva fecha</strong> → el módulo Entrega estimada está apagado o el pedido no tiene fecha guardada.</li>
+</ul>
+<h2>Al apagarlo</h2>
+<p>En <strong>WooCommerce → La Chinata → Módulos</strong>, desmarca «Regalo» y guarda.</p>
+<ul>
+<li>La tarjeta «¿Es un regalo?» desaparece del checkout.</li>
+<li>No salen avisos a destinatarios.</li>
+<li>Las notas de regalo dejan de salir en los correos y en la página de gracias.</li>
+</ul>
+<p>Los pedidos conservan todos sus datos de regalo. Un borrado de contacto que venza con el módulo apagado no se hace en su día, pero la fecha queda en el pedido: al encenderlo de nuevo, un repaso diario borra los que estén vencidos. Si vas a dejarlo apagado para siempre, enciéndelo un día para que ese repaso borre los contactos pendientes. «Borrar datos…» (con el módulo apagado) quita solo los ajustes, nunca los datos de los pedidos.</p>
+
+<footer>La Chinata Core 0.10.0</footer>
+</main>
+</body>
+</html>

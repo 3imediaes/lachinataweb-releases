@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Núcleo de La Chinata Core · Guías de La Chinata Core</title>
+<style>
+:root { color-scheme: light dark; --ink: #231f20; --soft: #5b5657; --line: #e8ebed; --bg: #fff; --code: #f3eee6; }
+@media (prefers-color-scheme: dark) { :root { --ink: #f3eee6; --soft: #c9c3bd; --line: #3a3637; --bg: #1b1a18; --code: #2b2926; } }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 17px/1.6 system-ui, -apple-system, "Segoe UI", sans-serif; }
+main { max-width: 760px; margin: 0 auto; padding: 24px 16px 64px; }
+nav { font-size: 15px; margin-bottom: 24px; }
+a { color: inherit; }
+h1, h2, h3 { line-height: 1.25; }
+h2 { margin-top: 2em; border-top: 1px solid var(--line); padding-top: 1em; }
+code { background: var(--code); padding: 0 4px; border-radius: 4px; font-size: .9em; }
+pre { background: var(--code); padding: 12px; overflow-x: auto; border-radius: 6px; }
+table { border-collapse: collapse; width: 100%; display: block; overflow-x: auto; font-size: 15px; }
+th, td { border: 1px solid var(--line); padding: 6px 8px; text-align: left; vertical-align: top; }
+footer { color: var(--soft); font-size: 14px; margin-top: 48px; }
+</style>
+</head>
+<body>
+<main>
+<nav><a href="index.html">Guías de La Chinata Core</a></nav>
+<h1>Núcleo de La Chinata Core</h1>
+<p>Lo que el plugin trae siempre, sin depender de ningún módulo: la lista de módulos, los datos de la tienda que usan varios módulos, los IDs de producto, la copia de la configuración y las actualizaciones. Todo está en WooCommerce → La Chinata.</p>
+<h2>Antes de empezar</h2>
+<ul>
+<li>Necesitas WooCommerce activo: el plugin lo exige.</li>
+<li>El tema <code>lachinata</code> y el plugin comparten número de versión. Si uno pide una versión mínima del otro y no se cumple, el panel lo avisa, pero no bloquea nada.</li>
+<li>Los datos de cada tienda (contacto, empresa, IDs de los servicios) se rellenan en cada sitio. La exportación de configuración no los copia.</li>
+</ul>
+<h2>Dónde se configura</h2>
+<p>WooCommerce → La Chinata, con una pestaña por área: <strong>Módulos</strong>, <strong>Atención al cliente</strong>, <strong>Datos de la empresa</strong>, <strong>IDs de producto</strong>, <strong>Exportar/importar</strong> y <strong>Actualizaciones</strong>. Los módulos encendidos añaden sus pestañas.</p>
+<h2>Ajustes</h2>
+<h3>Módulos</h3>
+<p>Cada módulo se enciende o se apaga para esta tienda. Junto a cada uno verás qué hace, desde qué versión existe y un enlace a su guía.</p>
+<ul>
+<li><strong>Apagar un módulo no borra sus datos.</strong> Al volver a encenderlo, está como lo dejaste.</li>
+<li>Si un módulo necesita otro que está apagado, no arranca, y la pantalla dice cuál le falta.</li>
+<li><strong>Borrar datos…</strong> solo aparece con el módulo apagado. Para confirmarlo hay que escribir su identificador, y antes de borrar se descarga una copia de su configuración. Nunca borra nada de los pedidos.</li>
+</ul>
+<h3>Atención al cliente</h3>
+<table>
+<thead>
+<tr>
+<th>Campo</th>
+<th>Qué es</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Teléfono</td>
+<td>El que leen los clientes, por ejemplo «900 000 000». Sin prefijo, se usa el del país de la tienda</td>
+</tr>
+<tr>
+<td>WhatsApp</td>
+<td>El número que atiende WhatsApp</td>
+</tr>
+<tr>
+<td>Correo de atención</td>
+<td>Responder a los correos de la tienda llega aquí. Vacío: el remitente de WooCommerce</td>
+</tr>
+<tr>
+<td>Horario</td>
+<td>Una frase completa, por ejemplo «De lunes a viernes, de 9 a 18 h.»</td>
+</tr>
+</tbody></table>
+<p>Lo leen el pie de la web, la franja de ventajas y el pie de los correos. En los menús de la barra de promoción y de la franja de ventajas puedes escribir <code>{telefono}</code>, <code>{whatsapp}</code>, <code>{correo}</code> y <code>{horario}</code>. Si el dato está vacío, ese elemento no se muestra.</p>
+<h3>Datos de la empresa</h3>
+<table>
+<thead>
+<tr>
+<th>Campo</th>
+<th>Qué es</th>
+<th>Vacío</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Nombre comercial</td>
+<td>El nombre de la tienda tal como lo leen los clientes: en el aviso de cookies, la política de cookies, el pie y los correos</td>
+<td>El nombre del sitio de WordPress (Ajustes → Generales)</td>
+</tr>
+<tr>
+<td>Razón social, NIF / CIF / número de IVA</td>
+<td>Los datos legales de quien vende</td>
+<td>La política de cookies los deja entre corchetes, para que se vean</td>
+</tr>
+<tr>
+<td>Domicilio social</td>
+<td>La dirección legal</td>
+<td>La dirección de la tienda en WooCommerce → Ajustes → Generales</td>
+</tr>
+<tr>
+<td>Correo de privacidad</td>
+<td>Donde se ejercen los derechos sobre los datos</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Marca</td>
+<td>La marca de los productos que no tienen la suya en WooCommerce → Productos → Marcas. Va en los feeds y en la medición</td>
+<td>El nombre comercial</td>
+</tr>
+<tr>
+<td>Política de privacidad, política de cookies, aviso legal</td>
+<td>Las páginas legales de la tienda</td>
+<td>Privacidad: la de Ajustes → Privacidad</td>
+</tr>
+</tbody></table>
+<p>Un correo con un formato incorrecto no se guarda, y el error sale junto al campo.</p>
+<h3>IDs de producto</h3>
+<p>Google (Merchant Center y el remarketing de Google Ads), Meta (catálogo, píxel y API de conversiones) y GA4 conocen cada producto por un ID. <strong>Merchant Center y Meta guardan el historial y las campañas de cada producto por ese ID</strong>: si cambia, el producto empieza de cero. Los módulos de medición y de feeds usan siempre el mismo ID para cada destino.</p>
+<table>
+<thead>
+<tr>
+<th>Formato</th>
+<th>ID que sale</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>ID de producto</td>
+<td>El número del producto o de la variación</td>
+</tr>
+<tr>
+<td>SKU</td>
+<td>El SKU; sin SKU, el número</td>
+</tr>
+<tr>
+<td>Compatible con WooCommerce Google Product Feed</td>
+<td><code>woocommerce_gpf_</code> seguido del número</td>
+</tr>
+<tr>
+<td>Compatible con Facebook for WooCommerce 3.5.17 o posterior</td>
+<td>El número del producto o de la variación</td>
+</tr>
+<tr>
+<td>Compatible con Facebook for WooCommerce anterior a 3.5.17</td>
+<td><code>SKU_número</code> o, sin SKU, <code>wc_post_id_número</code></td>
+</tr>
+<tr>
+<td>Personalizada</td>
+<td>La plantilla que escribas, con <code>{product_id}</code>, <code>{variation_id}</code>, <code>{parent_id}</code> y <code>{sku}</code></td>
+</tr>
+</tbody></table>
+<p>De serie, Google y Meta usan «ID de producto» y GA4 usa «SKU».</p>
+<p><strong>Si vienes de otro plugin</strong>, elige el formato que usaba y compáralo con lo que muestra tu catálogo:</p>
+<ul>
+<li>en Merchant Center, el «ID» de un producto;</li>
+<li>en Meta, la columna <code>id</code> de una exportación del catálogo.</li>
+</ul>
+<p>Debajo de cada destino, la pantalla muestra el ID que saldría para un producto simple y para una variación. Una plantilla personalizada tiene que incluir <code>{product_id}</code>, <code>{variation_id}</code> o <code>{sku}</code>, porque si no todos los productos tendrían el mismo ID. Si no es válida, no se guarda y el error sale junto al campo.</p>
+<h3>Exportar/importar</h3>
+<p>Descarga la configuración de esta tienda en un archivo JSON, o importa la de otra. Al importar se muestra antes qué cambiaría, y no se escribe nada si el archivo tiene errores. Viajan los módulos encendidos, sus ajustes de comportamiento y los IDs de producto. No viajan los datos propios de cada sitio: atención al cliente, datos de la empresa, credenciales ni los IDs de los servicios de medición.</p>
+<h3>Actualizaciones</h3>
+<p>Muestra la versión instalada y la última publicada. Tema y plugin se actualizan juntos desde Escritorio → Actualizaciones, como cualquier plugin. Antes de actualizar una tienda en producción, prueba la versión en una copia (staging) y haz una copia de seguridad.</p>
+<h2>Comprobar que funciona</h2>
+<ul>
+<li>WooCommerce → Estado, tabla «La Chinata · módulos»: cada módulo encendido aparece como «funcionando», si tiene configuración, si sus credenciales están (nunca su valor) y la versión de sus datos.</li>
+<li>Herramientas → Salud del sitio: la prueba «Módulos de La Chinata» está en verde.</li>
+</ul>
+<h2>Si algo falla</h2>
+<ul>
+<li><strong>Un módulo falla en una página.</strong> Se apaga solo durante esa petición y la tienda sigue vendiendo. Durante un día verás un aviso en el panel, y el detalle en WooCommerce → Estado → Registros (<code>lachinata-&lt;módulo&gt;</code>).</li>
+<li><strong>Hay que apagar un módulo sin entrar en el panel.</strong> Quien gestione el servidor puede añadir <code>define( &#39;LACHINATA_DISABLE_MODULES&#39;, &#39;nombre-del-módulo&#39; );</code> en <code>wp-config.php</code>.</li>
+<li><strong>Una importación no se aplica.</strong> Lee la lista de errores: el archivo no se ha escrito.</li>
+</ul>
+<h2>Al apagarlo</h2>
+<p>El núcleo no se apaga: es el plugin. Al desactivar el plugin, el tema sigue funcionando con WooCommerce de serie, sin las funciones de los módulos. Los datos se conservan.</p>
+
+<footer>La Chinata Core 0.10.0</footer>
+</main>
+</body>
+</html>

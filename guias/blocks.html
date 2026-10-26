@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bloques editoriales · Guías de La Chinata Core</title>
+<style>
+:root { color-scheme: light dark; --ink: #231f20; --soft: #5b5657; --line: #e8ebed; --bg: #fff; --code: #f3eee6; }
+@media (prefers-color-scheme: dark) { :root { --ink: #f3eee6; --soft: #c9c3bd; --line: #3a3637; --bg: #1b1a18; --code: #2b2926; } }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 17px/1.6 system-ui, -apple-system, "Segoe UI", sans-serif; }
+main { max-width: 760px; margin: 0 auto; padding: 24px 16px 64px; }
+nav { font-size: 15px; margin-bottom: 24px; }
+a { color: inherit; }
+h1, h2, h3 { line-height: 1.25; }
+h2 { margin-top: 2em; border-top: 1px solid var(--line); padding-top: 1em; }
+code { background: var(--code); padding: 0 4px; border-radius: 4px; font-size: .9em; }
+pre { background: var(--code); padding: 12px; overflow-x: auto; border-radius: 6px; }
+table { border-collapse: collapse; width: 100%; display: block; overflow-x: auto; font-size: 15px; }
+th, td { border: 1px solid var(--line); padding: 6px 8px; text-align: left; vertical-align: top; }
+footer { color: var(--soft); font-size: 14px; margin-top: 48px; }
+</style>
+</head>
+<body>
+<main>
+<nav><a href="index.html">Guías de La Chinata Core</a></nav>
+<h1>Bloques editoriales</h1>
+<p>Añade al editor de páginas de WordPress seis bloques con el diseño de la tienda (hero, tiles de categoría, banner de campaña, ventajas, historia y cita) y dos patrones listos para montar la página de inicio y la de «Acerca de». Tú eliges y rellenas textos; el diseño ya está hecho.</p>
+<h2>Antes de empezar</h2>
+<ul>
+<li>Activa el módulo en <strong>WooCommerce → La Chinata → Módulos</strong>: marca <strong>Bloques editoriales</strong> y pulsa «Guardar cambios».</li>
+<li>No tiene ajustes propios: todo se hace dentro de cada página.</li>
+<li>Para los <strong>tiles de categoría</strong>, ten creadas las categorías de producto (Productos → Categorías). Cada tile usa el nombre, la descripción y, si la tiene, la imagen de la categoría.</li>
+<li>Para el <strong>hero</strong>, sube antes la foto a la biblioteca de medios o súbela desde el propio bloque.</li>
+<li>Ten a mano las direcciones (enlaces) a las que llevarán los botones.</li>
+</ul>
+<h2>Dónde se usan</h2>
+<p>En el editor de páginas de WordPress (Páginas → Editar):</p>
+<ol>
+<li>Pulsa el botón <strong>+</strong> para añadir un bloque.</li>
+<li>Busca la categoría <strong>La Chinata</strong>, o escribe el nombre del bloque («Hero», «Ventajas»…).</li>
+<li>Al seleccionar un bloque, su contenido se edita en la <strong>barra lateral derecha</strong>, en el panel <strong>Contenido</strong>. En el centro ves una vista previa tal como saldrá en la tienda.</li>
+</ol>
+<p>Los textos no se escriben sobre el bloque: se escriben en la barra lateral y la vista previa se actualiza.</p>
+<p>Estos bloques no dejan elegir colores, tamaños de letra ni márgenes libres: solo las opciones del diseño de la tienda.</p>
+<h3>Patrones</h3>
+<p>En el insertador, pestaña <strong>Patrones</strong>, categoría <strong>La Chinata</strong>:</p>
+<ul>
+<li><strong>Home</strong>: para la página de inicio. Trae un hero y un banner de campaña arriba, un bloque «Más» y una historia al final. En la página de inicio, lo que pongas <strong>antes del bloque «Más»</strong> sale arriba y lo que pongas <strong>después</strong> sale al final. Entre medias, la tienda pinta sola las categorías, las ventajas, los más vendidos y una sección por categoría: no tienes que añadirlos.</li>
+<li><strong>Acerca de</strong>: para una página con la plantilla Editorial. El título y el extracto de la página hacen de cabecera. Trae texto, una cita, un subtítulo y tiles de categoría en lista.</li>
+</ul>
+<p>Los patrones vienen con textos y enlaces de ejemplo (los enlaces apuntan a <code>#</code>): cámbialos todos por los tuyos antes de publicar.</p>
+<h2>Ajustes</h2>
+<p>Ningún campo es obligatorio, pero lo que dejes vacío no sale. Un botón o un enlace solo aparece si tiene <strong>texto y enlace</strong> a la vez.</p>
+<h3>Hero</h3>
+<p>La portada de una página: antetítulo, titular grande, entradilla, botón y foto sobre un color de fondo.</p>
+<ul>
+<li><strong>Antetítulo</strong>: línea corta sobre el titular.</li>
+<li><strong>Titular</strong>: el título principal.</li>
+<li><strong>Entradilla</strong>: una o dos frases bajo el titular.</li>
+<li><strong>Texto del botón</strong> y <strong>Enlace del botón</strong>: el botón con flecha.</li>
+<li><strong>Tinta</strong>: el color de fondo. Opciones: Crema (de serie), Cosmética, Aceites, Gourmet, Regalos, Hogar.</li>
+<li><strong>Tamaño del titular</strong>: «Portada (display)», el más grande, para la página de inicio; «Página (h1)», para el resto de páginas.</li>
+<li><strong>Titular como cifra de campaña (SantElia)</strong>: actívalo cuando el titular sea una cifra de campaña (un descuento, por ejemplo); cambia la letra del titular.</li>
+<li><strong>Foto</strong>: «Elegir una foto» abre la biblioteca de medios; «Cambiar la foto» y «Quitar» aparecen cuando ya hay una.</li>
+</ul>
+<p>Usa un solo hero por página, arriba: su foto se carga con prioridad.</p>
+<h3>Tiles de categoría</h3>
+<p>Las categorías de la tienda como tarjetas, cada una en su color o con su imagen; la primera, más grande.</p>
+<ul>
+<li><strong>Categorías</strong>: los slugs de las categorías separados por comas, en el orden en que quieres que salgan (por ejemplo, <code>aceites,conservas,regalos</code>). El slug es el nombre corto de la categoría que ves en Productos → Categorías. Vacío: salen las categorías principales en el orden que tengan en la tienda.</li>
+<li><strong>Texto del enlace</strong>: lo que dice cada tarjeta junto a la flecha. Vacío: «Ver todo».</li>
+<li><strong>Disposición</strong>: «Rejilla» o «Una bajo otra».</li>
+</ul>
+<p>Cada tarjeta enseña el nombre de la categoría y su descripción, si la tiene. Si la categoría tiene imagen, la tarjeta usa la foto; si no, su color.</p>
+<h3>Banner de campaña</h3>
+<p>Una franja para una oferta o campaña: una cifra grande, una o dos palabras, la explicación y un enlace.</p>
+<ul>
+<li><strong>Cifra (SantElia)</strong>: por ejemplo «-30%» o «2x1».</li>
+<li><strong>Una o dos palabras</strong>: el nombre corto de la campaña.</li>
+<li><strong>Explicación</strong>: una frase sobre la oferta.</li>
+<li><strong>Texto del enlace</strong> y <strong>Enlace</strong>.</li>
+<li><strong>Fondo</strong>: «Acento» (de serie), «Tinta» o «Coral (solo Black Friday)». El coral está reservado a esa campaña.</li>
+</ul>
+<h3>Ventajas</h3>
+<p>Una fila o rejilla de ventajas de la tienda (envío, atención, regalo…), cada una con icono, título y texto.</p>
+<ul>
+<li><strong>Ventajas</strong>: una por línea, con este formato:
+<code>icono | título | texto</code>
+Por ejemplo:
+<code>truck | Envío en 24/48 h | A toda la península</code>
+<code>gift | Envolvemos para regalo | Con tarjeta escrita a mano</code>
+Iconos disponibles, entre otros: <code>truck</code>, <code>leaf</code>, <code>phone</code>, <code>gift</code>. Sin icono, sale una marca de verificación. Una línea sin título no se muestra.</li>
+<li><strong>Disposición</strong>: «Rejilla 2 × 2» o «Fila».</li>
+</ul>
+<h3>Historia</h3>
+<p>Un bloque sobre fondo crema para contar la historia de la marca, con un botón secundario.</p>
+<ul>
+<li><strong>Antetítulo</strong>, <strong>Titular</strong>, <strong>Entradilla</strong>.</li>
+<li><strong>Texto del botón</strong> y <strong>Enlace del botón</strong>.</li>
+</ul>
+<h3>Cita</h3>
+<p>Una frase destacada con su autor.</p>
+<ul>
+<li><strong>Cita</strong>: el texto. Sin texto, el bloque no sale.</li>
+<li><strong>Autor</strong>: opcional.</li>
+</ul>
+<h2>Comprobar que funciona</h2>
+<ol>
+<li>Abre una página de prueba, añade cada bloque desde la categoría <strong>La Chinata</strong> y rellena sus campos: la vista previa del centro tiene que cambiar al escribir.</li>
+<li>Publica o previsualiza la página y mírala en el móvil y en un ordenador.</li>
+<li>En la página de inicio, comprueba que lo que está antes del bloque «Más» sale arriba y lo de después, al final.</li>
+<li>Pulsa los botones y enlaces: llevan a donde escribiste.</li>
+<li>En los tiles, comprueba que salen las categorías que pediste y en ese orden.</li>
+</ol>
+<h2>Si algo falla</h2>
+<p><strong>Un bloque no se ve en la tienda o sale vacío.</strong> Revisa que tiene contenido: sin titular, texto o ventajas, el bloque no imprime nada. En la Cita hace falta el texto; en Ventajas, al menos una línea con título.</p>
+<p><strong>No sale un botón o un enlace.</strong> Necesita las dos cosas: texto y enlace.</p>
+<p><strong>Faltan categorías en los tiles o salen otras.</strong> Revisa los slugs: tienen que ser exactamente los de Productos → Categorías, separados por comas. Un slug mal escrito se ignora; si ninguno existe, el bloque no sale.</p>
+<p><strong>Una tarjeta de categoría no tiene color.</strong> El color de cada categoría lo pone el módulo <a href="catalog.html">Catálogo</a>; si no tiene, usa una imagen para esa categoría.</p>
+<p><strong>Un icono de ventaja no se ve.</strong> Revisa el nombre del icono en esa línea.</p>
+<p><strong>En el editor sale el aviso de WordPress de que el bloque no está disponible.</strong> El módulo está apagado: enciéndelo en Módulos.</p>
+<h2>Al apagarlo</h2>
+<p>Desmarca <strong>Bloques editoriales</strong> en WooCommerce → La Chinata → Módulos y guarda.</p>
+<ul>
+<li>En la tienda, los bloques dejan de mostrarse en las páginas que los usan.</li>
+<li>En el editor, cada uno sale con el aviso de WordPress de bloque no disponible.</li>
+<li><strong>No se pierde nada</strong>: el contenido de cada bloque se queda guardado en su página y vuelve tal cual al encender el módulo.</li>
+<li>El módulo no guarda ajustes ni datos aparte, así que no hay nada que borrar.</li>
+<li>Mientras está apagado, el insertador vuelve a ofrecer los patrones propios del tema como alternativa.</li>
+</ul>
+
+<footer>La Chinata Core 0.10.0</footer>
+</main>
+</body>
+</html>

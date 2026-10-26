@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Avisos · Guías de La Chinata Core</title>
+<style>
+:root { color-scheme: light dark; --ink: #231f20; --soft: #5b5657; --line: #e8ebed; --bg: #fff; --code: #f3eee6; }
+@media (prefers-color-scheme: dark) { :root { --ink: #f3eee6; --soft: #c9c3bd; --line: #3a3637; --bg: #1b1a18; --code: #2b2926; } }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 17px/1.6 system-ui, -apple-system, "Segoe UI", sans-serif; }
+main { max-width: 760px; margin: 0 auto; padding: 24px 16px 64px; }
+nav { font-size: 15px; margin-bottom: 24px; }
+a { color: inherit; }
+h1, h2, h3 { line-height: 1.25; }
+h2 { margin-top: 2em; border-top: 1px solid var(--line); padding-top: 1em; }
+code { background: var(--code); padding: 0 4px; border-radius: 4px; font-size: .9em; }
+pre { background: var(--code); padding: 12px; overflow-x: auto; border-radius: 6px; }
+table { border-collapse: collapse; width: 100%; display: block; overflow-x: auto; font-size: 15px; }
+th, td { border: 1px solid var(--line); padding: 6px 8px; text-align: left; vertical-align: top; }
+footer { color: var(--soft); font-size: 14px; margin-top: 48px; }
+</style>
+</head>
+<body>
+<main>
+<nav><a href="index.html">Guías de La Chinata Core</a></nav>
+<h1>Avisos</h1>
+<p>Envía avisos cortos por WhatsApp y por SMS a tus clientes: a quien recibe un regalo cuando sale el paquete (<a href="gift.html">Regalo</a>) y al comprador que pide que le avises cuando su pedido esté en camino (<a href="shipment.html">Seguimiento del envío</a>). Cada canal se enciende y se configura por separado, y el checkout solo ofrece los que están activos y listos.</p>
+<h2>Antes de empezar</h2>
+<p>Este módulo no necesita otros módulos, pero sí cuentas externas para cada canal que quieras usar:</p>
+<ul>
+<li><strong>Correo</strong>: no necesita nada más. Usa la salida de correo de tu WordPress.</li>
+<li><strong>WhatsApp</strong>: una cuenta de WhatsApp Business en Meta con la API de WhatsApp (Cloud API). Necesitas:<ul>
+<li>el número de teléfono de la tienda dado de alta en WhatsApp Manager;</li>
+<li>una app de Meta y un usuario del sistema en Business Manager con permiso <code>whatsapp_business_messaging</code>, para sacar un token permanente;</li>
+<li>las cuatro plantillas de mensaje aprobadas por Meta (más abajo, en «Plantillas de WhatsApp»).</li>
+</ul>
+</li>
+<li><strong>SMS</strong>: una cuenta SMS en OVH con sus claves de API (Application key, Application secret y Consumer key) y un remitente dado de alta y validado.</li>
+</ul>
+<p>Si un canal está activo pero le faltan datos, no se ofrece en el checkout ni se envía nada por él. Si no tienes ninguna cuenta todavía, puedes dejar WhatsApp y SMS en modo «Registro» para probar sin enviar nada.</p>
+<p>Otros módulos dependen de este: <a href="gift.html">Regalo</a> no funciona sin Avisos, y <a href="shipment.html">Seguimiento del envío</a> solo manda WhatsApp si Avisos está encendido.</p>
+<h2>Dónde se configura</h2>
+<p><strong>WooCommerce → La Chinata → Avisos.</strong> La pantalla tiene dos apartados:</p>
+<ul>
+<li><strong>Canales</strong>: un bloque por canal (Correo, WhatsApp, SMS), el botón para guardar y, debajo, «Probar un canal».</li>
+<li><strong>Huecos de configuración</strong>: la lista de avisos que no salieron.</li>
+</ul>
+<p>Bajo el título de cada canal verás su estado: «Activo y listo: se ofrece en el checkout», «Activo pero sin todos sus datos: no se ofrece» o «Apagado: no se ofrece».</p>
+<h2>Ajustes</h2>
+<h3>Correo</h3>
+<ul>
+<li><strong>Activo</strong> — «Ofrecer el aviso por correo a quien recibe un regalo». De serie: <strong>encendido</strong>. Sale por la salida de correo del sitio, con la plantilla del tema. Apágalo si no quieres que el checkout ofrezca avisar por correo al destinatario de un regalo. Los correos normales de WooCommerce al comprador salen siempre, esté como esté esta casilla.</li>
+</ul>
+<h3>WhatsApp (API de Meta)</h3>
+<ul>
+<li><strong>Activo</strong> — «Ofrecer este canal y enviar por él». De serie: <strong>apagado</strong>. Enciéndelo cuando tengas los datos de abajo y las plantillas aprobadas (o para probar en modo «Registro»).</li>
+<li><strong>Modo</strong> — De serie: <strong>Envío real</strong>.<ul>
+<li><em>Envío real</em>: los mensajes salen de verdad por Meta.</li>
+<li><em>Registro</em>: no se envía nada; cada aviso queda anotado en WooCommerce → Estado → Registros (archivo <code>lachinata-notify</code>), con el móvil enmascarado. Úsalo para pruebas o en una copia de la tienda. En este modo el canal se ofrece aunque no tenga credenciales.</li>
+</ul>
+</li>
+<li><strong>ID de número</strong> — El <em>Phone number ID</em> del número de la tienda, en WhatsApp Manager → Números de teléfono. No es el número de teléfono en sí. Sin valor de serie.</li>
+<li><strong>ID de la cuenta de WhatsApp Business</strong> — El <em>WhatsApp Business Account ID</em>, la cuenta donde están las plantillas aprobadas. Sin valor de serie.</li>
+<li><strong>Token permanente</strong> — De un usuario del sistema con permiso <code>whatsapp_business_messaging</code> (Business Manager → Usuarios del sistema). Sin valor de serie.</li>
+<li><strong>Clave secreta de la app</strong> — El <em>App secret</em> de la app de Meta. Sirve para comprobar que los avisos de entrega que llegan al webhook vienen de verdad de Meta. Sin valor de serie.</li>
+<li><strong>Token de verificación del webhook</strong> — Una cadena que inventas tú, la escribes aquí y la escribes igual en Meta al dar de alta el webhook. Sin valor de serie.</li>
+<li><strong>Versión de la API</strong> — La versión de Graph API que tenga tu app. De serie: <code>v23.0</code>. Cámbiala solo si tu app de Meta usa otra.</li>
+<li><strong>Idioma de las plantillas</strong> — El código de idioma con el que Meta aprobó las plantillas. De serie: <code>es</code>. Si las aprobaste como <code>es_ES</code>, por ejemplo, escribe eso.</li>
+<li><strong>Plantilla del regalo</strong>, <strong>Plantilla del regalo sin seguimiento</strong>, <strong>Plantilla del envío</strong>, <strong>Plantilla del envío sin seguimiento</strong> — Los nombres de las cuatro plantillas en Meta. De serie: <code>lc_regalo_aviso</code>, <code>lc_regalo_aviso_sin_enlace</code>, <code>lc_pedido_enviado</code> y <code>lc_pedido_enviado_sin_enlace</code>. Cámbialos solo si en Meta las creaste con otro nombre.</li>
+<li><strong>URL del webhook</strong> — No se edita: es la dirección que muestra el panel. Pégala en la app de Meta → WhatsApp → Configuración → Webhook, con el token de verificación de arriba, y suscríbete al campo «messages». Sin el webhook no hay caída a SMS cuando un WhatsApp no se puede entregar.</li>
+</ul>
+<p>Debajo del bloque, el panel te recuerda el número de WhatsApp de la tienda, que se escribe en <strong>WooCommerce → La Chinata → Atención al cliente</strong>. Tiene que ser el mismo número que el del «ID de número»: así las respuestas de los clientes llegan a la misma conversación (se contestan desde la app de WhatsApp de la tienda, no desde WordPress).</p>
+<h3>SMS (OVH)</h3>
+<ul>
+<li><strong>Activo</strong> y <strong>Modo</strong> — Igual que en WhatsApp. De serie: <strong>apagado</strong> y <strong>Envío real</strong>.</li>
+<li><strong>Respaldo de WhatsApp</strong> — «Si WhatsApp no puede entregar un aviso (el número no tiene WhatsApp), mandarlo por SMS, una sola vez». De serie: <strong>encendido</strong>. Solo funciona si el canal SMS está activo y listo. Meta a veces avisa de que no pudo entregar un WhatsApp un rato después, a través del webhook: para cubrir esos casos, el webhook tiene que estar dado de alta.</li>
+<li><strong>API</strong> — El punto de acceso de OVH: <code>ovh-eu</code> (Europa, de serie) u <code>ovh-ca</code> (Canadá). Elige el de tu cuenta de OVH.</li>
+<li><strong>Application key</strong>, <strong>Application secret</strong>, <strong>Consumer key</strong> — Las claves de API de tu cuenta de OVH. Sin valor de serie.</li>
+<li><strong>Servicio SMS</strong> — El nombre de la cuenta SMS en OVH, con la forma <code>sms-xx00000-1</code>. Sin valor de serie.</li>
+<li><strong>Remitente</strong> — Un remitente dado de alta y validado en esa cuenta (hasta 11 letras y números). Sin valor de serie.</li>
+</ul>
+<h3>Sobre las claves</h3>
+<p>Los campos secretos (token, clave secreta, token de verificación y las claves de OVH) no vuelven a mostrarse después de guardarlos: verás «Guardado (escribe otro para cambiarlo)». Si dejas uno vacío al guardar, se conserva el que había. Las credenciales se guardan solo en este sitio y no salen en la exportación de configuración (La Chinata → Exportar e importar): en cada tienda hay que escribirlas a mano.</p>
+<h2>Plantillas de WhatsApp</h2>
+<p>Cuando es la tienda la que escribe primero, WhatsApp solo admite <strong>plantillas aprobadas por Meta</strong>: un texto fijo con huecos (variables). Créalas en <strong>WhatsApp Manager → Plantillas de mensajes</strong> de la cuenta de WhatsApp Business de la tienda, con los nombres de arriba.</p>
+<p>Reglas que conviene respetar al escribirlas:</p>
+<ul>
+<li>Categoría <strong>Utilidad</strong> (avisos sobre un pedido): sin publicidad, sin emojis y sin ofertas. Si Meta la pasa a «Marketing», cuesta más y puede no entregarse: corrige el texto y vuelve a enviarla.</li>
+<li>Las variables (<code>{{1}}</code>, <code>{{2}}</code>…) no pueden quedar vacías ni ir al principio o al final del texto. Por eso el texto acaba en una frase normal y el enlace va en un botón.</li>
+<li>Idioma: Español. Si lo apruebas con otro código, cámbialo en «Idioma de las plantillas».</li>
+<li>Meta te pide un ejemplo para cada variable al crearlas; usa algo parecido a los de la tabla.</li>
+<li>El botón de las plantillas <em>con</em> seguimiento es de tipo <strong>Visitar sitio web → Dinámico</strong>, con la dirección de tu tienda seguida de <code>/s/</code> y la variable: <code>https://tu-tienda.example/s/{{1}}</code>. El plugin rellena la variable con el código de un enlace corto que lleva a la página de seguimiento del transportista.</li>
+</ul>
+<p>El texto lo decides tú al crearlas; el plugin solo envía las variables en este orden:</p>
+<table>
+<thead>
+<tr>
+<th>Plantilla</th>
+<th><code>{{1}}</code></th>
+<th><code>{{2}}</code></th>
+<th><code>{{3}}</code></th>
+<th><code>{{4}}</code></th>
+<th>Botón</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Regalo (con y sin seguimiento)</td>
+<td>nombre de pila de quien lo recibe (Lucía)</td>
+<td>«De parte de» (Pablo)</td>
+<td>fechas de entrega (jue 5 – vie 6 nov)</td>
+<td>transportista (Transportes Ejemplo)</td>
+<td>código del enlace corto (AbC123)</td>
+</tr>
+<tr>
+<td>Envío (con y sin seguimiento)</td>
+<td>nombre de pila del comprador (Pablo)</td>
+<td>número de pedido (1234)</td>
+<td>fechas de entrega (jue 5 – vie 6 nov)</td>
+<td>transportista (Transportes Ejemplo)</td>
+<td>código del enlace corto (AbC123)</td>
+</tr>
+</tbody></table>
+<p>Las plantillas <em>sin seguimiento</em> no llevan botón. Un ejemplo de texto para la del envío:</p>
+<blockquote>
+<p>Hola, {{1}}. Tu pedido {{2}} de {nombre de tu tienda} ya está en camino: llega {{3}} con {{4}}.</p>
+</blockquote>
+<p>Y para la del regalo:</p>
+<blockquote>
+<p>Hola, {{1}}. {{2}} te envía un regalo de {nombre de tu tienda}: llega {{3}} con {{4}}. No tienes que pagar nada ni hacer nada, solo recogerlo.</p>
+</blockquote>
+<p>Si aún no se sabe la fecha, <code>{{3}}</code> es «en los próximos días»; si no se conoce el transportista, <code>{{4}}</code> es «nuestro transportista». Una vez aprobada, el texto no se puede cambiar sin volver a pasar la revisión de Meta. Mientras esperas la aprobación, puedes dejar WhatsApp en modo «Registro».</p>
+<h2>Comprobar que funciona</h2>
+<ol>
+<li>Guarda los ajustes y mira el estado bajo cada canal: debe decir «Activo y listo: se ofrece en el checkout».</li>
+<li>En <strong>Probar un canal</strong>, escribe un móvil (con el prefijo internacional si no es de España) y pulsa <strong>Probar WhatsApp</strong> o <strong>Probar SMS</strong>.<ul>
+<li>WhatsApp envía la plantilla del envío sin seguimiento con datos de ejemplo, así que esa plantilla tiene que estar aprobada.</li>
+<li>El SMS envía un texto corto de prueba con el nombre de la tienda.</li>
+<li>La prueba se envía aunque el canal esté apagado, siempre que tenga sus datos. En modo «Registro» no sale nada: queda anotada en WooCommerce → Estado → Registros (<code>lachinata-notify</code>).</li>
+</ul>
+</li>
+<li>Arriba aparece «Prueba por WhatsApp enviada…» o «No se pudo enviar la prueba:» con el motivo.</li>
+<li>Para probar el circuito entero sin molestar a nadie, pon WhatsApp y SMS en «Registro», haz un pedido de prueba como regalo con aviso por WhatsApp o SMS (o marca «Avísame por WhatsApp cuando salga mi pedido») y pásalo a «Completado». Revisa el registro <code>lachinata-notify</code> y las notas del pedido.</li>
+</ol>
+<h2>Si algo falla</h2>
+<p>Un aviso que falla nunca bloquea el pedido: queda en la nota del pedido, en <strong>Avisos → Huecos de configuración</strong> y en WooCommerce → Estado → Registros (<code>lachinata-notify</code>). Cuando lo hayas resuelto, puedes usar «Vaciar la lista».</p>
+<ul>
+<li><strong>El checkout no ofrece WhatsApp o SMS</strong> → mira el estado del canal. «Activo pero sin todos sus datos» quiere decir que en envío real falta el ID de número o el token (WhatsApp) o alguna clave, el servicio o el remitente (SMS).</li>
+<li><strong>«el canal … no está activo o le faltan datos en Avisos»</strong> → lo mismo: enciende el canal o completa sus datos.</li>
+<li><strong>«falta la plantilla de WhatsApp o alguna de sus variables»</strong> → revisa que los cuatro nombres de plantilla estén escritos.</li>
+<li><strong>La prueba de WhatsApp falla</strong> → comprueba que la plantilla del envío sin seguimiento esté aprobada en Meta con ese nombre exacto, que el idioma coincida y que el token siga siendo válido.</li>
+<li><strong>Un WhatsApp no llegó y tampoco salió por SMS</strong> → la caída a SMS necesita el SMS activo y listo y «Respaldo de WhatsApp» marcado; y, para los avisos que Meta da por fallidos después del envío, el webhook dado de alta en Meta con el token de verificación y la clave secreta de la app correctos. Solo cae a SMS cuando Meta dice que el número no puede recibir WhatsApp; otros errores se anotan en Huecos de configuración.</li>
+<li><strong>El SMS de prueba falla</strong> → revisa la API elegida (<code>ovh-eu</code> u <code>ovh-ca</code>), las tres claves, el nombre del servicio y que el remitente esté validado en OVH.</li>
+<li><strong>Los clientes responden y no ves las respuestas</strong> → las respuestas llegan a la app de WhatsApp del número de la tienda, no a WordPress.</li>
+</ul>
+<h2>Al apagarlo</h2>
+<p>En <strong>WooCommerce → La Chinata → Módulos</strong>, desmarca «Avisos» y guarda.</p>
+<ul>
+<li>No sale ningún WhatsApp ni SMS.</li>
+<li><a href="gift.html">Regalo</a> necesita este módulo: queda «Activado, pero no se ejecuta» hasta que vuelvas a encender Avisos, así que el checkout deja de mostrar «¿Es un regalo?».</li>
+<li><a href="shipment.html">Seguimiento del envío</a> deja de ofrecer y enviar el WhatsApp; su correo sigue saliendo.</li>
+<li>Los enlaces cortos de seguimiento que ya se enviaron dejan de funcionar.</li>
+<li>Los correos normales de WooCommerce salen igual.</li>
+</ul>
+<p>Se conservan las credenciales, los nombres de plantilla y el registro de avisos de cada pedido: al encenderlo vuelve como estaba. «Borrar datos…» (con el módulo apagado) quita solo los ajustes, nunca lo guardado en los pedidos.</p>
+
+<footer>La Chinata Core 0.10.0</footer>
+</main>
+</body>
+</html>

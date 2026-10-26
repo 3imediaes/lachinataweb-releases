@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Entrega estimada · Guías de La Chinata Core</title>
+<style>
+:root { color-scheme: light dark; --ink: #231f20; --soft: #5b5657; --line: #e8ebed; --bg: #fff; --code: #f3eee6; }
+@media (prefers-color-scheme: dark) { :root { --ink: #f3eee6; --soft: #c9c3bd; --line: #3a3637; --bg: #1b1a18; --code: #2b2926; } }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 17px/1.6 system-ui, -apple-system, "Segoe UI", sans-serif; }
+main { max-width: 760px; margin: 0 auto; padding: 24px 16px 64px; }
+nav { font-size: 15px; margin-bottom: 24px; }
+a { color: inherit; }
+h1, h2, h3 { line-height: 1.25; }
+h2 { margin-top: 2em; border-top: 1px solid var(--line); padding-top: 1em; }
+code { background: var(--code); padding: 0 4px; border-radius: 4px; font-size: .9em; }
+pre { background: var(--code); padding: 12px; overflow-x: auto; border-radius: 6px; }
+table { border-collapse: collapse; width: 100%; display: block; overflow-x: auto; font-size: 15px; }
+th, td { border: 1px solid var(--line); padding: 6px 8px; text-align: left; vertical-align: top; }
+footer { color: var(--soft); font-size: 14px; margin-top: 48px; }
+</style>
+</head>
+<body>
+<main>
+<nav><a href="index.html">Guías de La Chinata Core</a></nav>
+<h1>Entrega estimada</h1>
+<p>Calcula cuándo llega cada pedido y lo muestra en las opciones de envío, la ficha de producto («Pídelo antes de las 14:00 y lo recibes el jueves 24»), la bolsa, la página de confirmación y los correos. Tiene en cuenta la hora de corte, los días de preparación, los días de tránsito de cada método, los días sin reparto y los festivos. Si le falta un dato, no muestra fecha: nunca se la inventa.</p>
+<h2>Antes de empezar</h2>
+<ul>
+<li>Necesita el módulo <a href="shipping.html">Envíos</a> encendido. Sin él, no arranca (en WooCommerce → La Chinata → Módulos verás que le falta ese requisito).</li>
+<li>Necesita WooCommerce 10 o posterior y las zonas y métodos creados en WooCommerce → Ajustes → Envío.</li>
+<li>Revisa la <strong>zona horaria</strong> del sitio en Ajustes → Generales: las horas de corte se comparan con la hora de la tienda.</li>
+<li>Desactiva otros plugins de fecha de entrega: si siguen activos, el panel muestra un aviso.</li>
+</ul>
+<h2>Dónde se configura</h2>
+<table>
+<thead>
+<tr>
+<th>Qué</th>
+<th>Dónde</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Horas de corte, preparación, transportistas, condiciones por clase de envío y método de referencia de cada zona</td>
+<td>WooCommerce → La Chinata → <strong>Entrega estimada</strong> → Cortes y plazos</td>
+</tr>
+<tr>
+<td>Festivos del almacén y de cada país de destino</td>
+<td>WooCommerce → La Chinata → Entrega estimada → Festivos</td>
+</tr>
+<tr>
+<td>Revisión de la configuración y avisos</td>
+<td>WooCommerce → La Chinata → Entrega estimada → Huecos de configuración</td>
+</tr>
+<tr>
+<td>Días de tránsito y transportista de cada método</td>
+<td>WooCommerce → Ajustes → Envío → editar la zona → <strong>Editar</strong> en cada método, apartado «Plazo de entrega (La Chinata)»</td>
+</tr>
+</tbody></table>
+<p>Orden recomendado: primero transportistas y cortes, después los días de tránsito de cada método, después el método de referencia y, por último, los festivos.</p>
+<h2>Ajustes</h2>
+<h3>Salida del almacén (Cortes y plazos)</h3>
+<table>
+<thead>
+<tr>
+<th>Campo</th>
+<th>Qué es</th>
+<th>De serie</th>
+<th>Cuándo cambiarlo</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Hora de corte</strong> (una por día de la semana)</td>
+<td>Un pedido que entra antes del corte se prepara ese día; después, el siguiente día con corte. <strong>Los días sin hora no hay salida.</strong></td>
+<td>Vacía en todos los días</td>
+<td>Pon la hora de cada día laborable del almacén (por ejemplo, 14:00 de lunes a viernes) y deja vacíos los días sin salida.</td>
+</tr>
+<tr>
+<td><strong>Días de preparación</strong></td>
+<td>Días con salida entre que se acepta el pedido y sale. 0: sale el mismo día del corte.</td>
+<td>0</td>
+<td>Si el almacén necesita uno o más días para preparar los pedidos.</td>
+</tr>
+</tbody></table>
+<p>Sin ninguna hora de corte no hay salidas y no se calcula ninguna fecha.</p>
+<h3>Transportistas</h3>
+<p>Lista de los transportistas con los que trabajas y los <strong>Días sin entrega</strong> de cada uno. Para añadir uno, escribe su nombre en la última fila («Añadir un transportista…»); de serie trae marcados sábado y domingo como días sin entrega. Cada método de envío elige luego su transportista y hereda esos días. Para borrar uno, marca <strong>Quitar</strong>.</p>
+<h3>Condiciones por clase de envío</h3>
+<p>Para productos que necesitan un trato especial (por ejemplo, la clase «Refrigerado»). La clase nunca cambia el método: solo cambia el plazo.</p>
+<table>
+<thead>
+<tr>
+<th>Columna</th>
+<th>Qué es</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Clase</strong></td>
+<td>La clase de envío de WooCommerce.</td>
+</tr>
+<tr>
+<td><strong>Días extra</strong></td>
+<td>Días de preparación que se suman.</td>
+</tr>
+<tr>
+<td><strong>Corte propio</strong></td>
+<td>Hora de corte distinta para estos productos.</td>
+</tr>
+<tr>
+<td><strong>Sale solo</strong></td>
+<td>Días de la semana en que pueden salir. Sin días marcados: todos.</td>
+</tr>
+<tr>
+<td><strong>Se entrega solo</strong></td>
+<td>Días de la semana en que se pueden entregar. Sin días marcados: todos.</td>
+</tr>
+</tbody></table>
+<p>Con varias clases en el mismo pedido se suman las restricciones: más días extra, el corte más temprano y solo los días que permiten todas.</p>
+<h3>Método de referencia por zona</h3>
+<p>Para cada zona con métodos, el método que da la fecha de la <strong>ficha de producto</strong>. Normalmente, el envío estándar de la zona. De serie: «Sin fecha en la ficha».</p>
+<p>La ficha no conoce todavía la dirección del visitante, así que usa la <strong>zona por defecto</strong> que elijas en WooCommerce → La Chinata → Envíos → Zonas (ver <a href="shipping.html">Envíos</a>). Pon el método de referencia al menos en esa zona.</p>
+<p>Pulsa <strong>Guardar cortes y plazos</strong> al terminar.</p>
+<h3>Plazo de cada método</h3>
+<p>Al editar un método en WooCommerce → Ajustes → Envío aparece el apartado <strong>Plazo de entrega (La Chinata)</strong>. El plazo es de ese método en esa zona.</p>
+<table>
+<thead>
+<tr>
+<th>Campo</th>
+<th>Qué es</th>
+<th>De serie</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Días de tránsito, mínimo</strong></td>
+<td>Días desde que sale del almacén. 1 = llega al día siguiente de salir. <strong>Sin este dato, el método no muestra fecha.</strong></td>
+<td>Vacío</td>
+</tr>
+<tr>
+<td><strong>Días de tránsito, máximo</strong></td>
+<td>Para mostrar un rango («Llega jue 24 – vie 25 oct»). Vacío: igual que el mínimo.</td>
+<td>Vacío</td>
+</tr>
+<tr>
+<td><strong>Transportista</strong></td>
+<td>Uno de la lista de Cortes y plazos. Sus días sin entrega se aplican a este método.</td>
+<td>Sin transportista</td>
+</tr>
+<tr>
+<td><strong>Días sin entrega</strong></td>
+<td>Días de la semana sin reparto, además de los del transportista.</td>
+<td>Ninguno</td>
+</tr>
+</tbody></table>
+<p>En un método de <strong>Tarifa en vivo</strong> (ver <a href="shipping.html">Envíos</a>), si el transportista devuelve su propio plazo, ese plazo manda sobre los días de tránsito del método.</p>
+<h3>Festivos</h3>
+<ul>
+<li><strong>Festivos del almacén</strong> (enlace «Almacén»): esos días no se prepara ni sale nada.</li>
+<li><strong>Festivos de entrega en un país</strong>: elige el país en «Festivos de entrega en» y pulsa <strong>Abrir</strong>. Esos días no se entrega allí.</li>
+</ul>
+<p>En cada calendario puedes:</p>
+<table>
+<thead>
+<tr>
+<th>Acción</th>
+<th>Cómo</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Añadir uno a mano</td>
+<td>Última fila: fecha y nombre («Añadir un festivo…»), y <strong>Guardar festivos</strong>.</td>
+</tr>
+<tr>
+<td>Cambiar el nombre o quitar uno</td>
+<td>Edita el nombre o marca <strong>Quitar</strong>, y <strong>Guardar festivos</strong>.</td>
+</tr>
+<tr>
+<td>Importar los festivos nacionales</td>
+<td>«Importar festivos nacionales de…»: elige el <strong>Año</strong> y pulsa <strong>Ver festivos</strong>. Se consultan en el servicio público Nager.Date (date.nager.at) y se muestran antes de guardar: los nacionales salen marcados y los regionales sin marcar. Revisa y pulsa <strong>Guardar los marcados</strong> (o <strong>Descartar</strong>).</td>
+</tr>
+<tr>
+<td>Importar festivos locales</td>
+<td>«Importar festivos locales (CSV)»: una línea por festivo con <code>fecha;nombre</code>. Fechas como <code>2026-09-08</code> o <code>08/09/2026</code>. Pulsa <strong>Importar</strong>; si alguna línea no se entiende, te dice cuál.</td>
+</tr>
+</tbody></table>
+<p>Los festivos importados son festivos normales: se editan y se borran como los demás. La consulta a Nager.Date solo se hace cuando la pides tú. Recuerda repetir la importación cada año.</p>
+<h2>Comprobar que funciona</h2>
+<ol>
+<li>Ve a Entrega estimada → <strong>Huecos de configuración</strong>. En «Revisión de la configuración» debe decir «Todos los métodos activos tienen plazo y cada zona su método de referencia». Si no, la lista te dice qué falta.</li>
+<li>Abre WooCommerce → La Chinata → Envíos → <strong>Probador</strong>, prueba un destino de cada zona y mira la columna «Entrega estimada»: cada método debe tener su fecha («Sin plazo configurado» si le faltan los días de tránsito).</li>
+<li>Abre la ficha de un producto en stock: junto a la disponibilidad debe salir «Pídelo antes de las… y lo recibes el…». Vuelve a mirarla pasada la hora de corte: la fecha se recalcula con la siguiente salida.</li>
+<li>Añade el producto a la bolsa con una dirección y comprueba la fecha en el método elegido y en el checkout, junto al precio de cada opción.</li>
+<li>Haz un pedido de prueba: la página de confirmación y el correo deben mostrar la entrega estimada. En el panel, la fecha queda guardada en la línea de envío del pedido.</li>
+<li>Marca un festivo del almacén para mañana y comprueba que la fecha se desplaza (bórralo después).</li>
+</ol>
+<h2>Si algo falla</h2>
+<table>
+<thead>
+<tr>
+<th>Síntoma</th>
+<th>Qué revisar</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>No sale ninguna fecha</td>
+<td>Que haya al menos una <strong>Hora de corte</strong>. Huecos de configuración lo avisa.</td>
+</tr>
+<tr>
+<td>Un método no muestra fecha</td>
+<td>Que tenga <strong>Días de tránsito, mínimo</strong> en su zona. Huecos de configuración lista los métodos sin plazo.</td>
+</tr>
+<tr>
+<td>La ficha no muestra fecha</td>
+<td>Que la zona por defecto (Envíos → Zonas) tenga <strong>método de referencia</strong>, que el producto esté en stock, se pueda comprar, necesite envío y pueda enviarse a ese destino.</td>
+</tr>
+<tr>
+<td>«usa un transportista que ya no existe»</td>
+<td>Borraste el transportista de la lista: elige otro en el método.</td>
+</tr>
+<tr>
+<td>La fecha cae en un día sin reparto</td>
+<td>Revisa los <strong>Días sin entrega</strong> del transportista y del método, y los festivos del país de destino.</td>
+</tr>
+<tr>
+<td>La fecha se pasa o se queda corta en una hora</td>
+<td>La zona horaria de Ajustes → Generales.</td>
+</tr>
+<tr>
+<td>Fallan las fechas de algunos pedidos</td>
+<td>Huecos de configuración → «Fechas que no se pudieron calcular»: cada caso queda anotado (también en WooCommerce → Estado → Registros, <code>lachinata-eta</code>).</td>
+</tr>
+<tr>
+<td>«Ver festivos» da error</td>
+<td>El servicio Nager.Date no respondió o no tiene ese país o año. Usa el CSV o añádelos a mano.</td>
+</tr>
+<tr>
+<td>El módulo no arranca</td>
+<td>WooCommerce → La Chinata → Módulos: <a href="shipping.html">Envíos</a> debe estar encendido. En WooCommerce → Estado, tabla «La Chinata · módulos», Entrega estimada aparece como configurado cuando alguna zona tiene método de referencia.</td>
+</tr>
+</tbody></table>
+<h2>Al apagarlo</h2>
+<p>Desaparecen las fechas de las opciones de envío, la ficha, la bolsa, la confirmación y los correos: la ficha muestra solo la disponibilidad y las opciones de envío, solo su nombre y precio. Los avisos de otros módulos que usan la fecha (como el de regalo o el de envío) usan la fecha guardada en el pedido o un texto general («en los próximos días»).</p>
+<p><strong>Los datos se conservan</strong>: cortes, transportistas, festivos, el plazo de cada método y las fechas de los pedidos ya hechos. Al encenderlo de nuevo todo vuelve como estaba. «Borrar datos…» (WooCommerce → La Chinata → Módulos, con el módulo apagado) borra la configuración de esta pantalla tras descargar una copia; el plazo guardado en cada método y las fechas de los pedidos no se tocan.</p>
+
+<footer>La Chinata Core 0.10.0</footer>
+</main>
+</body>
+</html>

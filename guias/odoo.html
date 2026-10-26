@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Odoo · Guías de La Chinata Core</title>
+<style>
+:root { color-scheme: light dark; --ink: #231f20; --soft: #5b5657; --line: #e8ebed; --bg: #fff; --code: #f3eee6; }
+@media (prefers-color-scheme: dark) { :root { --ink: #f3eee6; --soft: #c9c3bd; --line: #3a3637; --bg: #1b1a18; --code: #2b2926; } }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 17px/1.6 system-ui, -apple-system, "Segoe UI", sans-serif; }
+main { max-width: 760px; margin: 0 auto; padding: 24px 16px 64px; }
+nav { font-size: 15px; margin-bottom: 24px; }
+a { color: inherit; }
+h1, h2, h3 { line-height: 1.25; }
+h2 { margin-top: 2em; border-top: 1px solid var(--line); padding-top: 1em; }
+code { background: var(--code); padding: 0 4px; border-radius: 4px; font-size: .9em; }
+pre { background: var(--code); padding: 12px; overflow-x: auto; border-radius: 6px; }
+table { border-collapse: collapse; width: 100%; display: block; overflow-x: auto; font-size: 15px; }
+th, td { border: 1px solid var(--line); padding: 6px 8px; text-align: left; vertical-align: top; }
+footer { color: var(--soft); font-size: 14px; margin-top: 48px; }
+</style>
+</head>
+<body>
+<main>
+<nav><a href="index.html">Guías de La Chinata Core</a></nav>
+<h1>Odoo</h1>
+<p>Ayuda a que la tienda y Odoo hablen el mismo idioma sobre los pedidos: guarda qué transportista corresponde a cada método de envío, avisa si un método que Odoo ya no reconoce sigue activo y te deja ver, pedido a pedido, la información extra que Odoo recibe de la tienda.</p>
+<h2>Antes de empezar</h2>
+<p>Conviene entender qué hace Odoo y qué hace este módulo, porque no son lo mismo:</p>
+<ul>
+<li><strong>Odoo lee los pedidos por su cuenta</strong>, con la API de WooCommerce y su propia clave (WooCommerce → Ajustes → Avanzado → API REST). Esa conexión la monta quien integra Odoo y <strong>no depende de este módulo</strong>: funciona igual con él encendido o apagado.</li>
+<li><strong>Odoo decide el transportista por el ID del método de envío.</strong> Cada método de envío de cada zona de WooCommerce tiene un número propio (el «ID de instancia»). Odoo tiene su propia tabla que dice «el ID tal se envía con el transportista cual».</li>
+<li><strong>Este módulo guarda una copia de esa tabla en la tienda</strong>, con el nombre del transportista. La tienda la usa para:<ul>
+<li>mostrar el nombre del transportista en los avisos al cliente («Tu pedido ya está en camino», por correo y WhatsApp; ver <a href="shipment.html">Seguimiento del envío</a>) y en el aviso de un regalo a quien lo recibe (ver <a href="gift.html">Regalo</a>);</li>
+<li>incluirlo, a título informativo, en lo que Odoo recibe de cada pedido.
+Odoo no lee esta copia para decidir nada.</li>
+</ul>
+</li>
+<li>Además de los datos normales de WooCommerce, Odoo recibe en cada pedido un bloque de información de la tienda: si hay factura de empresa, si el cliente aceptó la newsletter, la entrega estimada, el envío, si es un regalo… Ninguno de los datos que Odoo ya leía cambia.</li>
+</ul>
+<p>Antes de configurar, pide a quien lleva Odoo:</p>
+<ol>
+<li><strong>Su tabla de IDs de instancia y transportistas</strong>, para copiar los nombres.</li>
+<li><strong>La lista de IDs que Odoo ya no reconoce</strong> («IDs retirados»), si hay alguno.</li>
+</ol>
+<p>Y acordad una regla: <strong>los IDs de instancia no se cambian.</strong> Si borras un método de envío y lo vuelves a crear, WooCommerce le da un ID nuevo y Odoo no lo reconocerá. Si un ID tiene que cambiar, avisa antes a quien lleva Odoo.</p>
+<h2>Dónde se configura</h2>
+<ol>
+<li><strong>WooCommerce → La Chinata → Módulos</strong>: marca <strong>Odoo</strong> y pulsa «Guardar cambios».</li>
+<li><strong>WooCommerce → La Chinata → Odoo</strong>. La pestaña tiene dos secciones, con enlaces arriba:<ul>
+<li><strong>Transportistas</strong>: la tabla de métodos de envío, los IDs retirados, los avisos y las regiones con zona propia.</li>
+<li><strong>Objeto de un pedido</strong>: para ver lo que recibe Odoo de un pedido concreto.</li>
+</ul>
+</li>
+</ol>
+<h2>Ajustes</h2>
+<h3>Transportistas</h3>
+<p>La tabla lista <strong>todos los métodos de envío de todas las zonas</strong>, también los de la zona de lugares no cubiertos por tus otras zonas y los que están desactivados. Columnas:</p>
+<ul>
+<li><strong>ID</strong>: el ID de instancia del método. Es el número que Odoo usa. Si está en la lista de retirados, lleva «(retirado)».</li>
+<li><strong>Zona</strong>: la zona de envío de WooCommerce.</li>
+<li><strong>Método</strong>: el nombre del método tal como lo ve el cliente; si está apagado, «(desactivado)».</li>
+<li><strong>Transportista</strong>: escribe aquí el nombre del transportista que Odoo usa para ese ID, tal como quieres que lo lea el cliente (por ejemplo, «Transportes Ejemplo»). El texto gris que aparece en el campo vacío es solo un ejemplo y no se guarda.</li>
+</ul>
+<p>Deja vacía la fila de un método sin transportista: no se guarda. Si un método activo no tiene transportista, los avisos al cliente dirán «nuestro transportista» en lugar del nombre.</p>
+<p><strong>IDs retirados en Odoo</strong> — Los IDs de instancia que Odoo ya no asocia a ningún transportista, separados por comas (por ejemplo, <code>12, 15, 20</code>). Sirve para que el panel te avise si alguno sigue activo en WooCommerce.</p>
+<p>Pulsa «Guardar cambios». Verás «Mapa guardado.»</p>
+<h3>Avisos</h3>
+<p>Encima de la tabla, en un recuadro amarillo, el panel te avisa de:</p>
+<ul>
+<li>Un ID <strong>retirado en Odoo que sigue activo</strong> en WooCommerce: Odoo no sabrá con qué transportista enviarlo. Desactiva ese método en WooCommerce o habla con quien lleva Odoo.</li>
+<li>Un ID <strong>retirado que sigue en el mapa</strong>: borra su transportista.</li>
+<li>Un ID <strong>del mapa que ya no existe</strong> en WooCommerce: si se ha cambiado por otro, avisa a quien lleva Odoo.</li>
+<li>Un método <strong>activo sin transportista</strong>: los avisos dirán «nuestro transportista».</li>
+<li>Un aviso al cliente que <strong>ya salió con «nuestro transportista»</strong>, con la fecha del último: falta ese ID en el mapa.</li>
+</ul>
+<h3>Regiones de España con zona propia</h3>
+<p>Si tienes zonas de envío para Baleares, Canarias, Ceuta o Melilla, el panel las lista con sus códigos y sus IDs de instancia. En los pedidos, estas regiones son país España más la provincia (Baleares, por ejemplo, es provincia <code>PM</code>); no existen como países aparte. Odoo las distingue por la provincia o por el ID de instancia. Es solo informativo: compártelo con quien lleva Odoo si lo necesita.</p>
+<h3>Objeto de un pedido</h3>
+<p>Escribe el número de un pedido y pulsa «Ver». Sale la información extra que la tienda añade a ese pedido, exactamente como la recibe Odoo. Es útil para comprobar un pedido concreto con quien integra Odoo sin entrar en la API.</p>
+<h3>Exportar e importar</h3>
+<p>El mapa de transportistas y los IDs retirados viajan en la exportación de configuración (WooCommerce → La Chinata → Exportar/importar; ver <a href="core.html">Núcleo</a>). Los IDs de instancia son los mismos en las copias de un mismo sitio (por ejemplo, de la copia de pruebas a la tienda real). <strong>En otra tienda distinta los IDs serán otros</strong>: revisa el mapa después de importarlo.</p>
+<h2>Comprobar que funciona</h2>
+<ol>
+<li>En la sección Transportistas, revisa que <strong>no queda ningún aviso</strong> o que los que quedan son esperados.</li>
+<li>Compara la columna <strong>ID</strong> con la tabla de quien lleva Odoo: cada ID activo tiene que existir allí con el mismo transportista.</li>
+<li>Haz un pedido de prueba con un método de envío del mapa. En <strong>Objeto de un pedido</strong>, búscalo: en la parte del envío tiene que aparecer el nombre del transportista que escribiste.</li>
+<li>Pide a quien lleva Odoo que confirme que el pedido entra como siempre.</li>
+<li>Cuando Odoo marque el pedido como «Completado», el aviso «Tu pedido ya está en camino» debe nombrar al transportista.</li>
+</ol>
+<h3>Para coordinar con quien integra Odoo</h3>
+<ul>
+<li><strong>El seguimiento lo escribe Odoo</strong> en el pedido con la extensión WooCommerce Shipment Tracking, y después marca el pedido como «Completado». <strong>El orden importa</strong>: los avisos al cliente (y el de regalo) salen una sola vez, al pasar a «Completado», con el seguimiento que haya en ese momento. Si Odoo escribe el seguimiento después, el aviso sale sin el enlace para seguir el paquete.</li>
+<li>Todo lo que la tienda añade a un pedido va en un solo bloque de datos con forma fija: si una información no aplica (por ejemplo, el pedido no es un regalo) o su módulo está apagado, llega vacía, pero el bloque no cambia de forma.</li>
+<li>Si un pedido es un regalo, Odoo puede saberlo por ese bloque, pero no tiene que hacer nada: el aviso a quien lo recibe lo envía la tienda.</li>
+</ul>
+<h2>Si algo falla</h2>
+<p><strong>Un aviso al cliente dice «nuestro transportista».</strong> Falta el transportista de ese ID en el mapa. El panel lo señala en los avisos; escríbelo y guarda.</p>
+<p><strong>Odoo no reconoce el transportista de un pedido.</strong> Mira el ID de instancia del pedido en <strong>Objeto de un pedido</strong> y compáralo con la tabla de Odoo. Lo habitual es que se haya borrado y vuelto a crear un método de envío (ID nuevo) o que se haya activado uno retirado. El mapa de este módulo no arregla esto: lo tiene que corregir quien lleva Odoo o hay que volver a activar el método original.</p>
+<p><strong>«No hay ningún pedido con ese número.»</strong> Revisa el número: es el número del pedido en WooCommerce.</p>
+<p><strong>Los avisos al cliente salen sin enlace de seguimiento.</strong> Odoo marcó el pedido como «Completado» antes de escribir el seguimiento. Coméntalo con quien integra Odoo.</p>
+<p><strong>Tras importar la configuración desde otra tienda, el mapa no cuadra.</strong> Los IDs son de cada sitio: rellena el mapa de nuevo con los IDs de esta tienda.</p>
+<h2>Al apagarlo</h2>
+<p>Desmarca <strong>Odoo</strong> en WooCommerce → La Chinata → Módulos y guarda.</p>
+<ul>
+<li><strong>Odoo sigue funcionando igual</strong>: lee los pedidos como siempre y decide el transportista por el ID de instancia.</li>
+<li>Lo único que cambia es que el nombre del transportista deja de ir en la información extra de los pedidos (se calcula al leerlos, también en los antiguos), y los avisos al cliente y al destinatario de un regalo dicen «nuestro transportista».</li>
+<li>El mapa y los IDs retirados se conservan: al encenderlo, vuelve como estaba. Si quieres borrarlos, con el módulo apagado usa «Borrar datos…» en la pantalla de Módulos; los pedidos no se tocan.</li>
+</ul>
+
+<footer>La Chinata Core 0.10.0</footer>
+</main>
+</body>
+</html>

@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Seguimiento del envío · Guías de La Chinata Core</title>
+<style>
+:root { color-scheme: light dark; --ink: #231f20; --soft: #5b5657; --line: #e8ebed; --bg: #fff; --code: #f3eee6; }
+@media (prefers-color-scheme: dark) { :root { --ink: #f3eee6; --soft: #c9c3bd; --line: #3a3637; --bg: #1b1a18; --code: #2b2926; } }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 17px/1.6 system-ui, -apple-system, "Segoe UI", sans-serif; }
+main { max-width: 760px; margin: 0 auto; padding: 24px 16px 64px; }
+nav { font-size: 15px; margin-bottom: 24px; }
+a { color: inherit; }
+h1, h2, h3 { line-height: 1.25; }
+h2 { margin-top: 2em; border-top: 1px solid var(--line); padding-top: 1em; }
+code { background: var(--code); padding: 0 4px; border-radius: 4px; font-size: .9em; }
+pre { background: var(--code); padding: 12px; overflow-x: auto; border-radius: 6px; }
+table { border-collapse: collapse; width: 100%; display: block; overflow-x: auto; font-size: 15px; }
+th, td { border: 1px solid var(--line); padding: 6px 8px; text-align: left; vertical-align: top; }
+footer { color: var(--soft); font-size: 14px; margin-top: 48px; }
+</style>
+</head>
+<body>
+<main>
+<nav><a href="index.html">Guías de La Chinata Core</a></nav>
+<h1>Seguimiento del envío</h1>
+<p>Cuando el pedido sale, el comprador recibe una sola vez el correo «Tu pedido ya está en camino» con la fecha de llegada calculada desde el día real de salida, el transportista y el botón «Seguir el paquete»; y, si lo pidió en el checkout, también un WhatsApp. La página de gracias y Mi cuenta muestran «En camino» y el enlace para seguir el paquete.</p>
+<h2>Antes de empezar</h2>
+<p>Este módulo funciona solo, pero saca más partido con otros:</p>
+<ul>
+<li><strong>Avisos</strong> (<a href="notify.html">guía</a>): sin él, no hay WhatsApp, solo el correo. El WhatsApp necesita el canal WhatsApp activo y listo en Avisos y la plantilla del envío aprobada en Meta.</li>
+<li><strong>Entrega estimada</strong>: recalcula las fechas desde el día real de salida. Sin él, las fechas no se recalculan y el WhatsApp dice «en los próximos días».</li>
+<li><strong>Odoo</strong> (o el módulo que conecte tu sistema de gestión): da el nombre del transportista. Sin él, se usa el nombre del proveedor que tenga el seguimiento, si es un proveedor propio con nombre; si no, «nuestro transportista».</li>
+<li>La extensión <strong>WooCommerce Shipment Tracking</strong>: es de donde sale el número de seguimiento y el enlace a la página del transportista. Sin seguimiento, el correo y el WhatsApp salen sin enlace.</li>
+</ul>
+<p>Cómo debe llegar la información al pedido: primero se añade el seguimiento y después se cambia el estado (de serie, a «Completado»). El aviso sale con lo que haya en ese momento.</p>
+<h2>Dónde se configura</h2>
+<p><strong>WooCommerce → La Chinata → Seguimiento.</strong> En la misma pantalla están los ajustes y, debajo, la lista «Avisos que no salieron».</p>
+<h2>Ajustes</h2>
+<ul>
+<li><strong>«Tu pedido ya está en camino» sale cuando el pedido pasa a</strong> — Los estados de pedido que disparan el aviso. De serie: <strong>Completado</strong> (el que se marca cuando sale el paquete). Cámbialo solo si en tu tienda el paquete sale en otro estado. Si no marcas ninguno, se guarda «Completado». Solo hay un aviso por pedido, con el seguimiento que tenga en ese momento: si el pedido vuelve a ese estado, ni el correo ni el WhatsApp se repiten.</li>
+<li><strong>Aviso por WhatsApp</strong> — «Ofrecer «Avísame por WhatsApp cuando salga mi pedido» en el checkout». De serie: <strong>marcado</strong>. Aun marcado, la casilla solo aparece en el checkout si WhatsApp está activo y listo en Avisos; si no lo está, el panel lo dice en negrita: «Ahora no se ofrece: WhatsApp no está activo en Avisos.». Desmárcalo si no quieres ofrecer el WhatsApp aunque el canal esté activo (por ejemplo, si solo lo usas para los regalos).</li>
+</ul>
+<p>Sobre la casilla del checkout:</p>
+<ul>
+<li>Aparece en el bloque de contacto, debajo de la de suscripción a novedades, y está <strong>desmarcada</strong> por defecto: el comprador tiene que marcarla.</li>
+<li>No se ofrece nunca por SMS.</li>
+<li>Se oculta (y se desmarca) si el comprador marca «Es un regalo»: el teléfono de entrega es entonces el de quien recibe el regalo, y a esa persona ya la avisa el módulo <a href="gift.html">Regalo</a>.</li>
+<li>El WhatsApp va al teléfono de la dirección de entrega con la plantilla del envío (<code>lc_pedido_enviado</code>, o su versión sin seguimiento). Si WhatsApp no puede entregarlo y en Avisos está activo el SMS con «Respaldo de WhatsApp», sale una vez por SMS.</li>
+</ul>
+<h2>Comprobar que funciona</h2>
+<ol>
+<li>En <strong>Avisos</strong>, pon WhatsApp en modo «Registro» para no enviar nada de verdad.</li>
+<li>Comprueba que en <strong>Seguimiento</strong> no aparece el aviso «Ahora no se ofrece».</li>
+<li>Haz un pedido de prueba con tu propio correo. En el checkout, verás «Avísame por WhatsApp cuando salga mi pedido» desmarcada: márcala. Comprueba también que desaparece si marcas «Es un regalo».</li>
+<li>En el pedido, añade un número de seguimiento con WooCommerce Shipment Tracking y, después, pásalo a <strong>Completado</strong>.</li>
+<li>Te debe llegar «Tu pedido … ya está en camino» con la fecha, el transportista y el botón «Seguir el paquete». En las notas del pedido aparece «Envío: aviso al comprador por WhatsApp, con el enlace de seguimiento». El WhatsApp, en modo «Registro», está en WooCommerce → Estado → Registros (<code>lachinata-notify</code>).</li>
+<li>Abre el pedido en Mi cuenta → Pedidos: debe mostrar «En camino», el transportista con el número y «Seguir el paquete».</li>
+<li>Vuelve a poner el pedido en Completado: no debe salir otro correo ni otro WhatsApp.</li>
+</ol>
+<h2>Si algo falla</h2>
+<p>Un WhatsApp que no sale no bloquea nada: el correo sale igual, queda una nota en el pedido y una línea en <strong>Seguimiento → Avisos que no salieron</strong> (con cuántas veces y cuándo fue la última). Cuando lo hayas resuelto, puedes usar «Vaciar la lista».</p>
+<ul>
+<li><strong>La casilla de WhatsApp no aparece en el checkout</strong> → mira si el panel dice «Ahora no se ofrece: WhatsApp no está activo en Avisos»; si es así, activa y completa WhatsApp en <a href="notify.html">Avisos</a>. Si no, comprueba que «Aviso por WhatsApp» esté marcado y que el comprador no haya marcado «Es un regalo».</li>
+<li><strong>«el módulo Avisos está apagado»</strong> → enciéndelo en Módulos.</li>
+<li><strong>«el teléfono de entrega no es un móvil»</strong> → el comprador escribió un fijo o un número no válido en la dirección de entrega; ese pedido solo recibe el correo.</li>
+<li><strong>«Envío: el WhatsApp al comprador no se pudo entregar y el SMS tampoco salió»</strong> → el número no tiene WhatsApp y el SMS de respaldo falló o no está activo; revísalo en <a href="notify.html">Avisos</a>.</li>
+<li><strong>Otros motivos («el canal … no está activo o le faltan datos en Avisos», «falta la plantilla de WhatsApp…»)</strong> → se resuelven en <a href="notify.html">Avisos</a>.</li>
+<li><strong>El correo o el WhatsApp salen sin enlace («sin seguimiento: solo con la fecha»)</strong> → el seguimiento se añadió después de cambiar el estado. Tiene que estar antes.</li>
+<li><strong>Dice «nuestro transportista»</strong> → no se conoce el nombre del transportista; revisa la correspondencia de transportistas en el módulo que conecta tu sistema de gestión.</li>
+<li><strong>El WhatsApp dice «en los próximos días»</strong> → el módulo Entrega estimada está apagado o no hay fecha para ese pedido.</li>
+<li><strong>No llega el correo</strong> → revisa que el correo «Pedido completado» esté activo en WooCommerce → Ajustes → Correos y la salida de correo del sitio.</li>
+</ul>
+<h2>Al apagarlo</h2>
+<p>En <strong>WooCommerce → La Chinata → Módulos</strong>, desmarca «Seguimiento del envío» y guarda.</p>
+<ul>
+<li>El correo de «Completado» vuelve a ser el normal de WooCommerce, sin «Tu pedido ya está en camino» ni la fecha real.</li>
+<li>Desaparece la casilla de WhatsApp del checkout y no sale ningún WhatsApp de envío.</li>
+<li>La página de gracias y Mi cuenta dejan de mostrar «En camino» y «Seguir el paquete».</li>
+</ul>
+<p>Los consentimientos de WhatsApp y la marca de «aviso enviado» se quedan en cada pedido: si lo vuelves a encender, un pedido ya avisado no recibe otro aviso. «Borrar datos…» (con el módulo apagado) quita solo los ajustes, nunca los datos de los pedidos.</p>
+
+<footer>La Chinata Core 0.10.0</footer>
+</main>
+</body>
+</html>

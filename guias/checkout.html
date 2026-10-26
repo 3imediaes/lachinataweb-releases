@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Checkout · Guías de La Chinata Core</title>
+<style>
+:root { color-scheme: light dark; --ink: #231f20; --soft: #5b5657; --line: #e8ebed; --bg: #fff; --code: #f3eee6; }
+@media (prefers-color-scheme: dark) { :root { --ink: #f3eee6; --soft: #c9c3bd; --line: #3a3637; --bg: #1b1a18; --code: #2b2926; } }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 17px/1.6 system-ui, -apple-system, "Segoe UI", sans-serif; }
+main { max-width: 760px; margin: 0 auto; padding: 24px 16px 64px; }
+nav { font-size: 15px; margin-bottom: 24px; }
+a { color: inherit; }
+h1, h2, h3 { line-height: 1.25; }
+h2 { margin-top: 2em; border-top: 1px solid var(--line); padding-top: 1em; }
+code { background: var(--code); padding: 0 4px; border-radius: 4px; font-size: .9em; }
+pre { background: var(--code); padding: 12px; overflow-x: auto; border-radius: 6px; }
+table { border-collapse: collapse; width: 100%; display: block; overflow-x: auto; font-size: 15px; }
+th, td { border: 1px solid var(--line); padding: 6px 8px; text-align: left; vertical-align: top; }
+footer { color: var(--soft); font-size: 14px; margin-top: 48px; }
+</style>
+</head>
+<body>
+<main>
+<nav><a href="index.html">Guías de La Chinata Core</a></nav>
+<h1>Checkout</h1>
+<p>Ordena la página de pago de WooCommerce en tarjetas (Contacto · Envío · ¿Es un regalo? · Facturación · Pago), explica al cliente por qué no hay envío y qué puede hacer, permite pedir factura a nombre de una empresa con NIF y ofrece crear la cuenta después de pagar. El cálculo de impuestos, envíos, cupones, pasarelas y pedidos sigue siendo el de WooCommerce.</p>
+<h2>Antes de empezar</h2>
+<ul>
+<li>No necesita ningún otro módulo. Necesita WooCommerce 10 o posterior con el <strong>checkout de bloques</strong> en la página de pago (la que WooCommerce crea de serie). Si la página de pago no tiene el bloque de checkout, el módulo aparece como no configurado (ver «Comprobar que funciona»).</li>
+<li>Para que el checkout explique por qué no hay envío y ofrezca salidas, necesita <a href="shipping.html">Envíos</a>. Sin él, esa parte no aparece.</li>
+<li><a href="gift.html">Regalo</a> necesita este módulo: si apagas Checkout, se apaga también.</li>
+<li>La casilla de novedades del apartado Contacto es del módulo <a href="newsletter.html">Newsletter</a>, no de este.</li>
+<li>Las pasarelas de pago se configuran en WooCommerce → Ajustes → Pagos, como siempre.</li>
+</ul>
+<h2>Dónde se configura</h2>
+<table>
+<thead>
+<tr>
+<th>Qué</th>
+<th>Dónde</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Encender o apagar</td>
+<td>WooCommerce → La Chinata → Módulos → <strong>Checkout</strong></td>
+</tr>
+<tr>
+<td>Página de contacto e instrucciones para el repartidor</td>
+<td>WooCommerce → La Chinata → <strong>Checkout</strong> → Ajustes</td>
+</tr>
+<tr>
+<td>Avisos</td>
+<td>WooCommerce → La Chinata → Checkout → Huecos de configuración</td>
+</tr>
+<tr>
+<td>«Iniciar sesión» junto a Contacto</td>
+<td>WooCommerce → Ajustes → Cuentas y privacidad → «Permitir a los clientes acceder a una cuenta existente durante el pago»</td>
+</tr>
+</tbody></table>
+<h3>Componer la página de pago</h3>
+<p>Al encender el módulo por primera vez, la página de pago tiene que <strong>componerse</strong> una vez: se ordenan sus bloques en tarjetas, el botón principal pasa a decir «Pagar» con el total y los botones de pago exprés se ajustan al diseño. Lo hace quien mantiene el sitio con WP-CLI:</p>
+<pre><code class="language-bash">wp lachinata checkout install-page --dry-run   # enseña el resultado sin guardar
+wp lachinata checkout install-page             # compone la página
+</code></pre>
+<ul>
+<li>Se puede repetir sin riesgo: si la página ya está compuesta, no cambia nada.</li>
+<li>Los bloques de otros plugins se conservan, en su orden, antes de la línea legal.</li>
+<li><strong>Vuelve a ejecutarlo al actualizar desde una versión 0.5.x</strong> del plugin.</li>
+<li>No edites la página de pago a mano en el editor de bloques. Si un bloque del módulo se borra por error, WooCommerce lo vuelve a añadir al final y este comando lo devuelve a su sitio.</li>
+</ul>
+<h2>Ajustes</h2>
+<p>En WooCommerce → La Chinata → Checkout → <strong>Ajustes</strong>:</p>
+<table>
+<thead>
+<tr>
+<th>Campo</th>
+<th>Qué es</th>
+<th>De serie</th>
+<th>Cuándo cambiarlo</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Página de contacto</strong></td>
+<td>Dirección (URL) a la que lleva el botón «Contactar» cuando no hay envío para el pedido.</td>
+<td>Vacío: el botón no se muestra</td>
+<td>Pon la página de contacto o de atención al cliente de tu tienda, para que quien no puede recibir su pedido tenga a quién escribir.</td>
+</tr>
+<tr>
+<td><strong>Instrucciones para el repartidor</strong></td>
+<td>«Pedir instrucciones para el repartidor en la tarjeta de envío». Se guardan como la nota del pedido de WooCommerce.</td>
+<td>Apagado: el checkout no las pide</td>
+<td>Si tu transportista usa esas indicaciones (portal, horario, a quién dejarlo…).</td>
+</tr>
+</tbody></table>
+<p>Pulsa <strong>Guardar cambios</strong>. La página de contacto es de cada tienda y no viaja en la exportación de WooCommerce → La Chinata → Exportar/importar; las instrucciones para el repartidor sí.</p>
+<h3>Lo que el módulo cambia sin ajustes</h3>
+<ul>
+<li><strong>Teléfono obligatorio</strong> en la dirección de entrega, con la ayuda «Solo para la entrega.». No hace falta tocar el ajuste de WooCommerce.</li>
+<li><strong>Provincia desde el código postal</strong> en España: se rellena sola, se puede cambiar y solo vuelve a cambiar si cambian los dos primeros dígitos del código. En los países donde la provincia no forma parte de la dirección postal (por ejemplo, Alemania) no se pide.</li>
+<li><strong>Teclado numérico</strong> en el código postal de los países con códigos solo de cifras.</li>
+<li><strong>Facturación</strong> en su propia tarjeta, antes de Pago, con dos pestañas: <strong>Particular</strong> y <strong>Empresa / Autónomo</strong>. La segunda pide <strong>Empresa</strong> y <strong>NIF / CIF</strong>, obligatorios. El NIF se comprueba según el país de facturación: en España, NIF, NIE o CIF con su letra o dígito de control; en el resto de la UE, NIF-IVA con el prefijo del país; fuera, cualquier identificador. La empresa y el NIF salen en el pedido (bajo la facturación) y en los correos.</li>
+<li><strong>Dirección de facturación</strong>: «La misma dirección que la de entrega» (de serie) o «Usar otra dirección de facturación».</li>
+<li><strong>Sin envío posible</strong>: el motivo sale una sola vez, con «Qué puedes hacer»: dividir el pedido, cambiar la dirección, contactar (si hay página de contacto) y «Quitar de la bolsa» en los productos que no viajan. Los envíos que el peso deja fuera se ven deshabilitados con su motivo. El cliente no puede pagar hasta resolverlo. Los mensajes se configuran en <a href="shipping.html">Envíos</a>.</li>
+<li><strong>Crear la cuenta después de pagar</strong>: la casilla de WooCommerce «crear una cuenta» desaparece del checkout (sin tocar su ajuste). En la página de confirmación, quien compra sin cuenta ve «Guarda tus datos para la próxima vez» y el botón <strong>Crear mi cuenta</strong>: con un clic se crea la cuenta, WooCommerce le envía el correo para poner la contraseña y sus pedidos anteriores con ese correo pasan a su cuenta.</li>
+<li><strong>Factura con NIF después de pagar</strong>: en la confirmación y en el pedido de su cuenta, el cliente puede añadir los datos de su empresa («¿Necesitas factura con NIF?»), útil en los pagos exprés, que no piden NIF. Queda una nota en el pedido.</li>
+<li><strong>Textos</strong> en el tono de la tienda: «bolsa» en lugar de «carrito», «Pagar» con el total, errores escritos como instrucciones.</li>
+<li><strong>Página más ligera</strong>: deja de cargar en el checkout código que no usa. Si un plugin o una pasarela lo necesita, se carga igualmente y queda anotado en Huecos de configuración.</li>
+</ul>
+<h2>Comprobar que funciona</h2>
+<ol>
+<li>En WooCommerce → Estado, tabla «La Chinata · módulos», Checkout debe estar «Funcionando» y «Configurado: Sí». «Configurado: No» significa que la página de pago no tiene el checkout de bloques.</li>
+<li>Añade un producto a la bolsa y abre el checkout en el móvil y en el ordenador: las tarjetas deben ir en el orden Contacto · Envío · (¿Es un regalo?, si <a href="gift.html">Regalo</a> está encendido) · Facturación · Pago, con un único botón «Pagar» y el total.</li>
+<li>Escribe un código postal español: la provincia se rellena sola.</li>
+<li>En Facturación, elige <strong>Empresa / Autónomo</strong>, escribe un NIF mal a propósito y comprueba que pide corregirlo. Pon uno válido y haz el pedido: la empresa y el NIF deben salir en el pedido del panel y en el correo.</li>
+<li>Haz un pedido sin cuenta: en la confirmación debe salir <strong>Crear mi cuenta</strong>. Púlsalo y comprueba que llega el correo de WooCommerce para poner la contraseña (debe estar activo en WooCommerce → Ajustes → Correos electrónicos → «Nueva cuenta»).</li>
+<li>Prepara un pedido que no se pueda enviar (por ejemplo, por encima del peso máximo de una zona, ver <a href="shipping.html">Envíos</a>): el motivo sale una vez, con las salidas, y no se puede pagar.</li>
+<li>Si activaste las instrucciones para el repartidor, comprueba que el campo aparece en la tarjeta Envío y que lo escrito llega como nota del pedido.</li>
+<li>Haz un pedido de prueba con cada pasarela en modo de pruebas.</li>
+</ol>
+<h2>Si algo falla</h2>
+<table>
+<thead>
+<tr>
+<th>Síntoma</th>
+<th>Qué revisar</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>El checkout no está en tarjetas o el botón no dice «Pagar» con el total</td>
+<td>La página no está compuesta: ejecuta <code>wp lachinata checkout install-page</code>. Comprueba también en WooCommerce → Ajustes → Avanzado que la página de pago es la correcta y tiene el bloque de checkout.</td>
+</tr>
+<tr>
+<td>El comando dice «No hay página de checkout» o «no tiene el bloque de checkout»</td>
+<td>Asigna la página en WooCommerce → Ajustes → Avanzado → Configuración de la página, y que esa página use el bloque de checkout de WooCommerce.</td>
+</tr>
+<tr>
+<td>Sin envío, no aparece «Contactar»</td>
+<td>Rellena <strong>Página de contacto</strong> en Checkout → Ajustes. Huecos de configuración también lo recuerda.</td>
+</tr>
+<tr>
+<td>Sin envío, no aparece ningún motivo ni salida</td>
+<td>Que <a href="shipping.html">Envíos</a> esté encendido.</td>
+</tr>
+<tr>
+<td>Vuelve la casilla «Necesito factura a nombre de una empresa» o la de «usar la misma dirección» en lugar de las pestañas</td>
+<td>Una actualización de WooCommerce cambió algo que el módulo usa. El checkout sigue funcionando con las casillas de WooCommerce; queda anotado en Checkout → Huecos de configuración. Avisa a quien mantiene el sitio.</td>
+</tr>
+<tr>
+<td>Salen dos casillas de novedades</td>
+<td>Otro plugin de correo añade la suya: ocúltala en sus ajustes (ver <a href="newsletter.html">Newsletter</a>).</td>
+</tr>
+<tr>
+<td>No llega el correo para poner la contraseña</td>
+<td>WooCommerce → Ajustes → Correos electrónicos → «Nueva cuenta» debe estar activo.</td>
+</tr>
+<tr>
+<td>El checkout tarda en cargar</td>
+<td>Checkout → Huecos de configuración → «Lo que el checkout no pudo aligerar»: dice qué plugin o pasarela obliga a cargar código extra.</td>
+</tr>
+</tbody></table>
+<p>Los avisos quedan también en WooCommerce → Estado → Registros (<code>lachinata-checkout</code>). Si el módulo falla, el checkout de WooCommerce sigue funcionando sin él y en WooCommerce → Estado, tabla «La Chinata · módulos», verás «Ha fallado en esta petición».</p>
+<h2>Al apagarlo</h2>
+<p>La página de pago vuelve a ser el checkout de bloques de WooCommerce de serie, con una tarjeta por paso: sin el motivo y las salidas cuando no hay envío, sin pestañas de Facturación ni factura de empresa, sin provincia desde el código postal y con la casilla de WooCommerce para crear la cuenta. <a href="gift.html">Regalo</a> se apaga con él. Las pasarelas siguen funcionando. El orden de la página que dejó el comando se queda y no estorba.</p>
+<p><strong>Los datos se conservan</strong>: los ajustes de esta pestaña y, en los pedidos ya hechos, la empresa, el NIF y los últimos dígitos de la tarjeta con que se pagó. Al encenderlo de nuevo todo vuelve como estaba. «Borrar datos…» (WooCommerce → La Chinata → Módulos, con el módulo apagado) borra solo los ajustes del módulo, tras descargar una copia; nunca toca los pedidos.</p>
+
+<footer>La Chinata Core 0.10.0</footer>
+</main>
+</body>
+</html>

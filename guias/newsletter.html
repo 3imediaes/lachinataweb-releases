@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Newsletter · Guías de La Chinata Core</title>
+<style>
+:root { color-scheme: light dark; --ink: #231f20; --soft: #5b5657; --line: #e8ebed; --bg: #fff; --code: #f3eee6; }
+@media (prefers-color-scheme: dark) { :root { --ink: #f3eee6; --soft: #c9c3bd; --line: #3a3637; --bg: #1b1a18; --code: #2b2926; } }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 17px/1.6 system-ui, -apple-system, "Segoe UI", sans-serif; }
+main { max-width: 760px; margin: 0 auto; padding: 24px 16px 64px; }
+nav { font-size: 15px; margin-bottom: 24px; }
+a { color: inherit; }
+h1, h2, h3 { line-height: 1.25; }
+h2 { margin-top: 2em; border-top: 1px solid var(--line); padding-top: 1em; }
+code { background: var(--code); padding: 0 4px; border-radius: 4px; font-size: .9em; }
+pre { background: var(--code); padding: 12px; overflow-x: auto; border-radius: 6px; }
+table { border-collapse: collapse; width: 100%; display: block; overflow-x: auto; font-size: 15px; }
+th, td { border: 1px solid var(--line); padding: 6px 8px; text-align: left; vertical-align: top; }
+footer { color: var(--soft); font-size: 14px; margin-top: 48px; }
+</style>
+</head>
+<body>
+<main>
+<nav><a href="index.html">Guías de La Chinata Core</a></nav>
+<h1>Newsletter</h1>
+<p>Pone en la tienda la casilla «Quiero recibir novedades y ofertas por correo» en el checkout y un formulario de suscripción en el pie de todas las páginas. Las altas van a tu cuenta de Mailchimp y siempre se piden con doble confirmación en el formulario del pie.</p>
+<h2>Antes de empezar</h2>
+<ul>
+<li><strong>Una cuenta de Mailchimp con una audiencia</strong> donde guardar los contactos.</li>
+<li><strong>Mailchimp for WooCommerce (recomendado, no obligatorio).</strong> Si ya tienes este plugin conectado a tu audiencia, el módulo usa su clave y su audiencia y no tienes que escribir nada. Ese plugin sigue sincronizando productos, pedidos y carritos con Mailchimp; este módulo solo se ocupa del consentimiento y del formulario.</li>
+<li><strong>Sin Mailchimp for WooCommerce</strong> necesitas dos datos de tu cuenta de Mailchimp:<ul>
+<li>la <strong>clave de la API</strong>, que termina en un guion y el centro de datos (por ejemplo, <code>…-us21</code>);</li>
+<li>el <strong>ID de la audiencia</strong>.</li>
+</ul>
+</li>
+<li><strong>Una política de privacidad publicada</strong> en Ajustes → Privacidad. El formulario del pie enlaza a ella; si no hay ninguna, el texto legal sale sin enlace.</li>
+<li>El checkout de la tienda debe ser el <strong>checkout de bloques</strong> de WooCommerce: la casilla es un campo de ese checkout. Si usas también el módulo de checkout, consulta <a href="checkout.html">Checkout</a>.</li>
+</ul>
+<h2>Dónde se configura</h2>
+<ol>
+<li><strong>WooCommerce → La Chinata → Módulos</strong>: marca <strong>Newsletter</strong> y pulsa «Guardar cambios».</li>
+<li><strong>WooCommerce → La Chinata → Newsletter</strong>: aquí están los ajustes y la lista de altas que fallaron.</li>
+</ol>
+<p>Al principio de la pestaña Newsletter verás el estado:</p>
+<ul>
+<li>«Proveedor: Mailchimp, listo.» Todo en orden.</li>
+<li>«Proveedor: Mailchimp, sin configurar: el formulario del pie no se muestra.» Faltan la clave o la audiencia.</li>
+</ul>
+<p>Y una segunda frase que te dice con qué estás trabajando:</p>
+<ul>
+<li><strong>Con Mailchimp for WooCommerce activo</strong>: ese plugin aporta la clave y la audiencia, sigue sincronizando la tienda y recibe lo que el cliente marca en la casilla del checkout. Su propia casilla queda oculta, así que en el checkout solo hay una.</li>
+<li><strong>Sin Mailchimp for WooCommerce</strong>: la casilla del checkout da de alta con doble confirmación usando la clave y la audiencia que escribas en esta pestaña.</li>
+</ul>
+<h2>Ajustes</h2>
+<p><strong>Formulario del pie</strong> — «Mostrarlo (siempre con doble confirmación)». Marcado de serie. Si lo desmarcas, el pie de la tienda deja de mostrar el bloque de suscripción. La casilla del checkout no depende de este ajuste.</p>
+<p><strong>Título</strong> — El titular del bloque del pie. Si lo dejas vacío, sale «Suscríbete a la newsletter».</p>
+<p><strong>Texto</strong> — La frase bajo el título. Si lo dejas vacío, sale el texto de serie que ves en gris dentro del campo.</p>
+<p><strong>Clave de la API de Mailchimp</strong> — Solo si no tienes Mailchimp for WooCommerce o quieres usar otra cuenta distinta. Tiene que terminar en el centro de datos (<code>…-us21</code>, <code>…-us6</code>…); si no, el módulo la da por no válida. Una vez guardada no se vuelve a mostrar: el campo dice «Guardada (escribe otra para cambiarla)». Si lo dejas en blanco al guardar, se mantiene la que había.</p>
+<p><strong>ID de la audiencia</strong> — El identificador de la audiencia de Mailchimp donde se guardan los contactos. Mismo caso que la clave: solo si no usas Mailchimp for WooCommerce o quieres otra audiencia.</p>
+<p>Si escribes clave y audiencia aquí, mandan sobre las de Mailchimp for WooCommerce. Si las dejas vacías, se usan las de ese plugin.</p>
+<p>La clave y la audiencia se guardan solo en este sitio: no salen al exportar la configuración (WooCommerce → La Chinata → Exportar/importar; ver <a href="core.html">Núcleo</a>). El formulario del pie, el título y el texto sí viajan en la exportación.</p>
+<h3>Cómo se comporta cada pieza</h3>
+<p><strong>La casilla del checkout.</strong> Aparece en el apartado de contacto, bajo el correo, siempre desmarcada: el cliente tiene que marcarla él. Si la marca, el pedido guarda cuándo dio el consentimiento.</p>
+<ul>
+<li>Con Mailchimp for WooCommerce, ese plugin hace el alta como siempre, con la doble confirmación que tengas configurada en tu audiencia de Mailchimp.</li>
+<li>Sin él, el módulo da de alta al comprador con doble confirmación: le llega un correo de Mailchimp para confirmar.</li>
+<li>Si no la marca, no se suscribe.</li>
+</ul>
+<p><strong>El formulario del pie.</strong> Solo pide el correo. Debajo, el texto «Te pediremos que lo confirmes por correo. Puedes darte de baja cuando quieras.» con el enlace a Privacidad. Siempre pide confirmación por correo, así nadie puede apuntar a otra persona. Funciona aunque el navegador no tenga JavaScript. Tiene una protección contra robots que no se ve.</p>
+<h2>Comprobar que funciona</h2>
+<p>Hazlo primero en una copia de pruebas de la tienda si la tienes.</p>
+<ol>
+<li>En la pestaña Newsletter, comprueba que pone «Proveedor: Mailchimp, listo.»</li>
+<li><strong>Checkout.</strong> Haz un pedido de prueba con un correo tuyo y la casilla marcada. En Mailchimp, el contacto aparece en la audiencia (o pendiente de confirmar, si tu audiencia pide confirmación).</li>
+<li>Haz otro pedido sin marcar la casilla: ese correo no debe suscribirse.</li>
+<li>Revisa el checkout: tiene que haber <strong>una sola</strong> casilla de novedades.</li>
+<li><strong>Pie.</strong> Escribe un correo tuyo en el formulario del pie y envíalo. La página vuelve al pie con «Gracias. Te hemos enviado un correo: confírmalo para empezar a recibir la newsletter.» y te llega el correo de confirmación de Mailchimp.</li>
+<li>Comprueba que el enlace «Privacidad» del pie lleva a tu política de privacidad.</li>
+</ol>
+<h2>Si algo falla</h2>
+<p><strong>No se ve el formulario del pie.</strong></p>
+<ul>
+<li>Mira el estado de la pestaña: si dice «sin configurar», faltan la clave o la audiencia (o Mailchimp for WooCommerce no está conectado).</li>
+<li>Comprueba que «Formulario del pie» está marcado.</li>
+<li>Comprueba que el módulo está activo en Módulos.</li>
+</ul>
+<p><strong>El pie dice «No hemos podido apuntarte. Revisa el correo o inténtalo dentro de un rato.»</strong> Puede ser un correo mal escrito o un error de Mailchimp. Abre la pestaña Newsletter y mira <strong>«Altas que no se hicieron»</strong>: cada fallo aparece con su motivo (por ejemplo, que no se pudo conectar con Mailchimp, o lo que respondió Mailchimp) y cuántas veces ha pasado. Cuando lo hayas resuelto, pulsa «Vaciar la lista».</p>
+<p><strong>Las altas del checkout no llegan a Mailchimp.</strong></p>
+<ul>
+<li>Con Mailchimp for WooCommerce: revisa la conexión de ese plugin con tu audiencia; es él quien hace el alta.</li>
+<li>Sin él: revisa «Altas que no se hicieron» y la clave y la audiencia de la pestaña.</li>
+</ul>
+<p><strong>Una alta falla pero la compra sigue adelante.</strong> Es lo esperado: un fallo de la newsletter nunca bloquea un pedido ni el formulario; solo queda anotado en «Altas que no se hicieron».</p>
+<p><strong>Aparecen dos casillas de novedades en el checkout.</strong> No debería pasar con el módulo encendido. Comprueba que el módulo está activo y avisa a quien mantiene la tienda.</p>
+<h2>Al apagarlo</h2>
+<p>Desmarca <strong>Newsletter</strong> en WooCommerce → La Chinata → Módulos y guarda.</p>
+<ul>
+<li>Desaparecen la casilla del checkout y el formulario del pie (el pie se muestra sin el bloque de suscripción).</li>
+<li>Si tienes Mailchimp for WooCommerce, vuelve a mostrar su propia casilla según su propio ajuste: revísalo para no quedarte sin casilla o con una que no quieres.</li>
+<li>Los contactos siguen en Mailchimp; WordPress no guarda ninguno.</li>
+<li>Los pedidos ya hechos conservan cuándo dio el cliente su consentimiento.</li>
+<li>Tus ajustes se conservan: al encenderlo vuelve como estaba. Si quieres borrarlos, con el módulo apagado usa «Borrar datos…» en la misma pantalla de Módulos; los pedidos no se tocan.</li>
+</ul>
+
+<footer>La Chinata Core 0.10.0</footer>
+</main>
+</body>
+</html>

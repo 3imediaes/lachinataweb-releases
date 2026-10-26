@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Medición del comercio · Guías de La Chinata Core</title>
+<style>
+:root { color-scheme: light dark; --ink: #231f20; --soft: #5b5657; --line: #e8ebed; --bg: #fff; --code: #f3eee6; }
+@media (prefers-color-scheme: dark) { :root { --ink: #f3eee6; --soft: #c9c3bd; --line: #3a3637; --bg: #1b1a18; --code: #2b2926; } }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 17px/1.6 system-ui, -apple-system, "Segoe UI", sans-serif; }
+main { max-width: 760px; margin: 0 auto; padding: 24px 16px 64px; }
+nav { font-size: 15px; margin-bottom: 24px; }
+a { color: inherit; }
+h1, h2, h3 { line-height: 1.25; }
+h2 { margin-top: 2em; border-top: 1px solid var(--line); padding-top: 1em; }
+code { background: var(--code); padding: 0 4px; border-radius: 4px; font-size: .9em; }
+pre { background: var(--code); padding: 12px; overflow-x: auto; border-radius: 6px; }
+table { border-collapse: collapse; width: 100%; display: block; overflow-x: auto; font-size: 15px; }
+th, td { border: 1px solid var(--line); padding: 6px 8px; text-align: left; vertical-align: top; }
+footer { color: var(--soft); font-size: 14px; margin-top: 48px; }
+</style>
+</head>
+<body>
+<main>
+<nav><a href="index.html">Guías de La Chinata Core</a></nav>
+<h1>Medición del comercio</h1>
+<p>Qué mide el módulo «Cookies y medición» (WooCommerce → La Chinata → Cookies y medición), con qué parámetros, y cómo se configuran y se comprueban GA4, Google Ads y Meta. Los ajustes del aviso de cookies y de cada servicio están en la guía <a href="tracking.html">Cookies y medición</a>; los IDs de producto, en <a href="core.html">Núcleo</a>.</p>
+<h2>Cómo funciona</h2>
+<ul>
+<li><strong>Una sola fuente.</strong> Todo evento pasa por <code>window.lachinata.track(evento, datos)</code>, con los nombres y parámetros de GA4. Un adaptador por servicio lo traduce: GA4, Google Ads y el píxel de Meta. No hay Google Tag Manager.</li>
+<li><strong>Nada antes de elegir.</strong> Hasta que la persona elige en el aviso de cookies no se carga ninguna etiqueta ni se pone ninguna cookie de medición. GA4 necesita el consentimiento de analítica; Google Ads y Meta, el de publicidad. Los eventos de la página esperan a la elección: si acepta, salen; si no, nunca.</li>
+<li><strong>Sin frenar la página.</strong> Las etiquetas se cargan de forma asíncrona y después del evento <code>load</code>.</li>
+<li><strong>El checkout no carga etiquetas de terceros.</strong> Sus pasos (<code>begin_checkout</code>, <code>add_shipping_info</code>, <code>add_payment_info</code> y los <code>lc_*</code> del embudo) van a la tienda (<code>POST /lachinata/v1/event</code>). El servidor los envía a GA4 (Measurement Protocol) y a Meta (API de conversiones), solo con consentimiento. Sin el secreto de GA4 ni el token de Meta, el checkout no se mide.</li>
+<li><strong>Desde el servidor</strong>, en cola (en segundo plano) y sin frenar el pedido:<ul>
+<li>la compra y sus reembolsos a GA4 solo con consentimiento de analítica, con el <code>client_id</code> y el <code>session_id</code> de las cookies de GA4 guardados en el pedido al pagar; sin ese consentimiento no sale nada a GA4;</li>
+<li>Purchase, InitiateCheckout, AddPaymentInfo y AddToCart van a Meta solo con consentimiento de publicidad, con el mismo <code>event_id</code> que el píxel para que Meta se quede con uno.</li>
+</ul>
+</li>
+</ul>
+<h2>Qué es <code>value</code></h2>
+<p><strong>Productos con IVA, sin envío</strong>: la suma de <code>price × quantity</code>, donde <code>price</code> es lo que paga el cliente por unidad, IVA incluido, después de descuentos. En la compra, el envío (con su IVA) va en <code>shipping</code> y todo el IVA del pedido en <code>tax</code>. Esta definición no cambia: los informes de un año y del siguiente se comparan.</p>
+<h2>IDs de producto</h2>
+<p>Cada destino usa el ID de su catálogo (WooCommerce → La Chinata → IDs de producto):</p>
+<ul>
+<li>el remarketing de Google Ads usa el del feed de Google;</li>
+<li>el píxel y la API de conversiones de Meta, el del feed de Meta;</li>
+<li>GA4 no tiene catálogo, así que su <code>item_id</code> es el que se elija (SKU de serie).</li>
+</ul>
+<p>Merchant Center y Meta guardan historial y campañas por ID: antes de cambiar el formato de un destino, compara el que muestra tu catálogo para un mismo producto.</p>
+<h2>Eventos</h2>
+<p>Los parámetros de producto (<code>items</code>) son los mismos en todos los eventos: <code>item_id</code>, <code>item_name</code>, <code>item_brand</code>, <code>item_category</code> a <code>item_category3</code> (la ruta desde la categoría principal), <code>item_variant</code>, <code>price</code>, <code>quantity</code>, <code>discount</code> y, donde hay lista, <code>item_list_id</code>, <code>item_list_name</code> e <code>index</code>. <code>currency</code> es la de la tienda.</p>
+<table>
+<thead>
+<tr>
+<th>Evento de GA4</th>
+<th>Meta</th>
+<th>Cuándo</th>
+<th>Parámetros además de <code>items</code></th>
+<th>Desde</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>view_item_list</code></td>
+<td>—</td>
+<td>Una lista con productos: categoría, búsqueda, relacionados, carruseles de la home, «Cargar más»</td>
+<td><code>item_list_id</code>, <code>item_list_name</code></td>
+<td>navegador</td>
+</tr>
+<tr>
+<td><code>select_item</code></td>
+<td>—</td>
+<td>Clic en una tarjeta de producto</td>
+<td><code>item_list_id</code>, <code>item_list_name</code></td>
+<td>navegador</td>
+</tr>
+<tr>
+<td><code>view_item</code></td>
+<td>ViewContent</td>
+<td>Ficha de producto</td>
+<td><code>value</code></td>
+<td>navegador</td>
+</tr>
+<tr>
+<td><code>add_to_cart</code></td>
+<td>AddToCart</td>
+<td>Desde la ficha, la tarjeta, la barra fija o al subir la cantidad en la bolsa</td>
+<td><code>value</code>, <code>source</code> (<code>product</code>, <code>card</code>, <code>sticky</code>, <code>bag</code>)</td>
+<td>navegador; Meta también desde el servidor</td>
+</tr>
+<tr>
+<td><code>remove_from_cart</code></td>
+<td>—</td>
+<td>«Quitar» o bajar la cantidad en la bolsa</td>
+<td><code>value</code></td>
+<td>navegador</td>
+</tr>
+<tr>
+<td><code>view_cart</code></td>
+<td>—</td>
+<td>Abrir la bolsa (hoja o página <code>/bolsa/</code>)</td>
+<td><code>value</code></td>
+<td>navegador</td>
+</tr>
+<tr>
+<td><code>begin_checkout</code></td>
+<td>InitiateCheckout</td>
+<td>Abrir el checkout</td>
+<td><code>value</code></td>
+<td>servidor</td>
+</tr>
+<tr>
+<td><code>add_shipping_info</code></td>
+<td>—</td>
+<td>Elegir método de envío</td>
+<td><code>value</code>, <code>shipping_tier</code></td>
+<td>servidor</td>
+</tr>
+<tr>
+<td><code>add_payment_info</code></td>
+<td>AddPaymentInfo</td>
+<td>Elegir método de pago</td>
+<td><code>value</code>, <code>payment_type</code></td>
+<td>servidor</td>
+</tr>
+<tr>
+<td><code>purchase</code></td>
+<td>Purchase</td>
+<td>Pedido pagado o en espera de un pago sin conexión (una vez por pedido; recargar «gracias» no lo repite)</td>
+<td><code>transaction_id</code>, <code>value</code>, <code>tax</code>, <code>shipping</code>, <code>coupon</code></td>
+<td>GA4 desde el servidor (con el secreto; si no, desde «gracias»); Meta desde «gracias» y desde el servidor</td>
+</tr>
+<tr>
+<td><code>refund</code></td>
+<td>—</td>
+<td>Un reembolso en WooCommerce</td>
+<td><code>transaction_id</code>, <code>value</code> (lo reembolsado); <code>items</code> si es parcial</td>
+<td>servidor</td>
+</tr>
+<tr>
+<td><code>view_promotion</code></td>
+<td>—</td>
+<td>Bloques hero y campaña en la página</td>
+<td><code>items</code> (<code>promotion_id</code>, <code>promotion_name</code>, <code>creative_name</code>, <code>creative_slot</code>)</td>
+<td>navegador</td>
+</tr>
+<tr>
+<td><code>select_promotion</code></td>
+<td>—</td>
+<td>Clic en un hero o una campaña</td>
+<td>ídem</td>
+<td>navegador</td>
+</tr>
+<tr>
+<td><code>search</code></td>
+<td>Search</td>
+<td>Resultados de búsqueda</td>
+<td><code>search_term</code>, <code>results</code></td>
+<td>navegador</td>
+</tr>
+<tr>
+<td><code>sign_up</code></td>
+<td>CompleteRegistration</td>
+<td>Alta de cuenta</td>
+<td><code>method: account</code></td>
+<td>navegador (la página siguiente)</td>
+</tr>
+<tr>
+<td><code>sign_up</code></td>
+<td>Subscribe</td>
+<td>Alta en la newsletter del pie</td>
+<td><code>method: newsletter</code></td>
+<td>navegador (la página siguiente)</td>
+</tr>
+<tr>
+<td><code>login</code></td>
+<td>—</td>
+<td>Inicio de sesión</td>
+<td><code>method</code></td>
+<td>navegador (la página siguiente)</td>
+</tr>
+<tr>
+<td><code>generate_lead</code></td>
+<td>Lead</td>
+<td>Un formulario que lo envíe (<code>do_action( &#39;lachinata/tracking/event&#39;, &#39;generate_lead&#39;, … )</code>), como el de franquicias</td>
+<td>los del formulario</td>
+<td>navegador (la página siguiente)</td>
+</tr>
+<tr>
+<td><code>lc_express_pay</code></td>
+<td>—</td>
+<td>Elegir un pago exprés (cartera)</td>
+<td><code>wallet</code></td>
+<td>servidor</td>
+</tr>
+<tr>
+<td><code>lc_gift</code></td>
+<td>—</td>
+<td>Activar «¿Es un regalo?» o cambiar el canal del aviso</td>
+<td><code>channel</code> (<code>email</code>, <code>whatsapp</code>, <code>sms</code>, <code>none</code>)</td>
+<td>servidor</td>
+</tr>
+<tr>
+<td><code>lc_shipping_unavailable</code></td>
+<td>—</td>
+<td>El checkout no encuentra envío</td>
+<td><code>reason</code> (<code>zona_no_cubierta</code>, <code>producto_restringido</code>, <code>peso_max</code>, <code>importe</code>, <code>sin_metodo</code>), <code>country</code></td>
+<td>servidor</td>
+</tr>
+<tr>
+<td><code>lc_coupon</code></td>
+<td>—</td>
+<td>Aplicar un cupón, en la bolsa o el checkout</td>
+<td><code>status</code> (<code>applied</code>, <code>error</code>), <code>coupon</code>, <code>error_code</code></td>
+<td>servidor</td>
+</tr>
+<tr>
+<td><code>lc_checkout_error</code></td>
+<td>—</td>
+<td>El checkout rechaza el formulario</td>
+<td><code>field</code>, <code>error_type</code> (nunca el valor)</td>
+<td>servidor</td>
+</tr>
+</tbody></table>
+<p>Google Ads recibe, con su etiqueta, la conversión de compra (obligatoria) y, si se configuran, las de añadir a la bolsa, inicio del checkout (al pulsar «Tramitar pedido» en la bolsa, porque el checkout no carga etiquetas) y lead. Con el remarketing dinámico activado recibe además <code>view_item</code>, <code>view_item_list</code>, <code>add_to_cart</code> y <code>purchase</code> con los IDs del feed de Google.</p>
+<h2>GA4</h2>
+<ol>
+<li><strong>Administrar → Flujos de datos → la web</strong>: copia el <strong>ID de medición</strong> (<code>G-…</code>) en el ajuste «ID de medición».</li>
+<li>En el mismo flujo, <strong>Secretos de la API de Measurement Protocol → Crear</strong>. Copia el valor en «Secreto de la API». Sin él no hay eventos del checkout, la compra sale desde «gracias» y los reembolsos no llegan.</li>
+<li><strong>Medición mejorada</strong>: desactiva «Interacciones con formularios» y «Búsquedas en el sitio», porque los manda el módulo con mejores datos. Deja las visitas a páginas.</li>
+<li><strong>Eventos clave</strong> (Administrar → Eventos): marca <code>purchase</code>, <code>generate_lead</code> y <code>sign_up</code>.</li>
+<li><strong>Definiciones personalizadas</strong> (dimensiones de evento) para los diagnósticos: <code>source</code>, <code>shipping_tier</code>, <code>payment_type</code>, <code>wallet</code>, <code>channel</code>, <code>reason</code>, <code>country</code>, <code>status</code>, <code>coupon</code>, <code>error_code</code>, <code>field</code> y <code>error_type</code>.</li>
+<li><strong>Exploración de embudo</strong> (Explorar → Exploración del embudo), embudo abierto con estos pasos: <code>view_item</code> → <code>add_to_cart</code> → <code>begin_checkout</code> → <code>add_shipping_info</code> → <code>add_payment_info</code> → <code>purchase</code>. Para ver dónde se atasca la compra, añade una tabla libre con <code>lc_shipping_unavailable</code> por <code>reason</code> y <code>country</code>, y <code>lc_checkout_error</code> por <code>field</code>.</li>
+<li><strong>Probar conexión</strong> en el panel del módulo valida un evento contra el endpoint de validación de GA4. Google no comprueba el secreto en esa validación: la llegada real se ve en <strong>Administrar → DebugView</strong> con una compra de prueba.</li>
+</ol>
+<h2>Google Ads</h2>
+<ol>
+<li><strong>Objetivos → Conversiones → Nueva acción de conversión → Sitio web → Configurar manualmente</strong>: una acción «Compra» con el valor de cada transacción. En <strong>Configuración de etiquetas → Usar Google Tag Manager</strong> aparecen el <strong>ID de conversión</strong> (<code>AW-…</code>) y la <strong>etiqueta</strong> (lo que va tras la barra). Ve las dos al panel: ID de conversión y etiqueta de la compra.</li>
+<li>Opcional: acciones de añadir a la bolsa, inicio del checkout y lead, con sus etiquetas.</li>
+<li><strong>Conversiones mejoradas</strong>: actívalas en la acción de compra («Conversiones mejoradas → Etiqueta de Google») y en el ajuste del módulo. Se envía el correo del comprador cifrado (SHA-256), solo con consentimiento de publicidad.</li>
+<li><strong>Remarketing dinámico</strong>: vincula Merchant Center con Google Ads y activa el ajuste. Los IDs que se envían son los del feed de Google.</li>
+<li>Si las conversiones de compra se importan de GA4, no actives además la etiqueta de compra de Ads, o contarán doble. Elige una de las dos.</li>
+</ol>
+<h2>Meta</h2>
+<ol>
+<li><strong>Administrador de eventos → Conjuntos de datos → tu píxel</strong>: copia el <strong>ID</strong> (solo números) en «ID del píxel».</li>
+<li><strong>Configuración → API de conversiones → Generar token de acceso</strong>: copia el token en «Token de la API de conversiones».</li>
+<li><strong>Probar eventos</strong>: copia el código (<code>TEST…</code>) en «Código de prueba». Con él, «Probar conexión» envía un PageView de prueba y los eventos del servidor salen en esa pestaña. <strong>Vacíalo al terminar</strong>.</li>
+<li><strong>Deduplicación</strong>: el píxel y el servidor comparten <code>event_id</code> (<code>purchase-&lt;número de pedido&gt;</code> en la compra, uno aleatorio en cada AddToCart). En «Probar eventos», cada uno debe salir como «Procesado» y «Desduplicado» una vez.</li>
+<li>Catálogo: el píxel envía en <code>content_ids</code> el ID del feed de Meta. En el catálogo, «Coincidencias de eventos» debe acercarse al 100 %.</li>
+</ol>
+<h2>Comprobarlo</h2>
+<ul>
+<li><strong>Antes de elegir</strong>, en una ventana privada con las herramientas del navegador abiertas: ninguna petición a <code>googletagmanager.com</code>, <code>google-analytics.com</code> ni <code>connect.facebook.net</code>, y ninguna cookie <code>_ga</code>, <code>_gcl_*</code> ni <code>_fbp</code>.</li>
+<li><strong>Tag Assistant</strong> (tagassistant.google.com): conecta la web, acepta las cookies y recorre el embudo (lista → ficha → añadir → bolsa → checkout → compra). Debe verse:<ul>
+<li>el <strong>modo de consentimiento</strong> con <code>default</code> en <em>denied</em> al cargar y <code>update</code> al elegir;</li>
+<li>un evento por paso, con sus <code>items</code>;</li>
+<li>en la compra, la conversión de Ads con <code>transaction_id</code>.</li>
+</ul>
+</li>
+<li><strong>GA4 DebugView</strong>: los eventos del navegador y los del servidor (checkout, compra) en la misma sesión, porque el servidor envía el <code>session_id</code> de la cookie.</li>
+<li><strong>Meta Pixel Helper</strong> (extensión de Chrome) para el píxel y <strong>Probar eventos</strong> para el servidor.</li>
+<li><strong>Rechazar</strong> y repetir: ninguna etiqueta se carga. Con «Medición sin cookies tras rechazar» activado, Google recibe avisos sin cookies; está apagado de serie.</li>
+<li><strong>WooCommerce → Estado → La Chinata · módulos</strong>: servicios activos o mal configurados y el último fallo de un envío.</li>
+</ul>
+
+<footer>La Chinata Core 0.10.0</footer>
+</main>
+</body>
+</html>

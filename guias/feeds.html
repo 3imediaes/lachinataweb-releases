@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Feeds de producto · Guías de La Chinata Core</title>
+<style>
+:root { color-scheme: light dark; --ink: #231f20; --soft: #5b5657; --line: #e8ebed; --bg: #fff; --code: #f3eee6; }
+@media (prefers-color-scheme: dark) { :root { --ink: #f3eee6; --soft: #c9c3bd; --line: #3a3637; --bg: #1b1a18; --code: #2b2926; } }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 17px/1.6 system-ui, -apple-system, "Segoe UI", sans-serif; }
+main { max-width: 760px; margin: 0 auto; padding: 24px 16px 64px; }
+nav { font-size: 15px; margin-bottom: 24px; }
+a { color: inherit; }
+h1, h2, h3 { line-height: 1.25; }
+h2 { margin-top: 2em; border-top: 1px solid var(--line); padding-top: 1em; }
+code { background: var(--code); padding: 0 4px; border-radius: 4px; font-size: .9em; }
+pre { background: var(--code); padding: 12px; overflow-x: auto; border-radius: 6px; }
+table { border-collapse: collapse; width: 100%; display: block; overflow-x: auto; font-size: 15px; }
+th, td { border: 1px solid var(--line); padding: 6px 8px; text-align: left; vertical-align: top; }
+footer { color: var(--soft); font-size: 14px; margin-top: 48px; }
+</style>
+</head>
+<body>
+<main>
+<nav><a href="index.html">Guías de La Chinata Core</a></nav>
+<h1>Feeds de producto</h1>
+<p>Feeds de tus productos para <strong>Google Merchant Center</strong> y el <strong>catálogo de Meta</strong> (Facebook e Instagram). Se generan solos cada noche y unos minutos después de cambiar un producto, en un archivo con una dirección propia que lees desde Merchant Center y desde Meta.</p>
+<h2>Antes de empezar</h2>
+<ul>
+<li><strong>IDs de producto</strong> (WooCommerce → La Chinata, guía <a href="core.html">Núcleo</a>). Si Merchant Center o Meta ya tienen tus productos de otro plugin, elige el formato que usaba ese plugin <strong>antes de nada</strong>. Con otro ID, cada producto empieza de cero y pierde su historial y sus campañas.</li>
+<li><strong>Marca</strong> (Datos de la empresa, misma guía). Es la de los productos que no tienen la suya en WooCommerce → Productos → Marcas.</li>
+<li>El <strong>GTIN</strong> de cada producto es el de WooCommerce: Inventario → «GTIN, UPC, EAN o ISBN».</li>
+<li>Con el módulo <strong>Catálogo</strong> encendido, el feed incluye el precio por unidad («500 ml», «1 l»), y los campos de los feeds salen en la pestaña La Chinata del producto. Sin él salen en la pestaña Avanzado.</li>
+</ul>
+<h2>Dónde se configura</h2>
+<p>WooCommerce → La Chinata → <strong>Feeds</strong>. En cada producto, en su pestaña La Chinata (o Avanzado), están «No enviar a los feeds» y «Campaña». En cada categoría de productos está «Categoría de Google».</p>
+<h2>Ajustes</h2>
+<h3>Los feeds</h3>
+<p><strong>Añadir un feed</strong>: elige el destino (Google Merchant Center o catálogo de Meta), el idioma y el país. La moneda es siempre la de la tienda. Puedes tener un feed por cada combinación de destino, idioma y país; con el módulo de traducción habrá uno por idioma, con sus textos y direcciones.</p>
+<p>Cada feed muestra:</p>
+<ul>
+<li>su <strong>dirección (URL)</strong>, para copiarla. Lleva una parte aleatoria: solo la encuentra quien la tiene;</li>
+<li>su <strong>última generación</strong>: cuándo fue, cuántos productos lleva, cuántos quedaron fuera, cuántos avisos tiene y cuánto tardó;</li>
+<li><strong>Generar ahora</strong>, <strong>Descargar y validar</strong> y <strong>Quitar</strong>. «Descargar y validar» descarga el feed como lo harán Google y Meta y comprueba que es válido, que tiene productos, que cada uno lleva sus campos obligatorios y que ningún ID se repite. «Quitar» borra también su archivo: quítalo después de Merchant Center o de Meta;</li>
+<li><strong>Excluidos y por qué</strong> y <strong>Avisos de calidad</strong>: la lista de productos afectados, con un enlace a cada uno.</li>
+</ul>
+<h3>Cómo se forman</h3>
+<table>
+<thead>
+<tr>
+<th>Ajuste</th>
+<th>De serie</th>
+<th>Qué hace</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Dejar fuera sin stock, sin imagen o sin precio</td>
+<td>Los tres marcados</td>
+<td>Esos productos no se envían</td>
+</tr>
+<tr>
+<td>Categorías excluidas</td>
+<td>Ninguna</td>
+<td>Se excluye la categoría con todas sus subcategorías</td>
+</tr>
+<tr>
+<td>MPN</td>
+<td>El SKU</td>
+<td>O no enviar ninguno. Sin GTIN ni MPN, Google recibe «identifier_exists = no»</td>
+</tr>
+<tr>
+<td>custom_label_0 a custom_label_4</td>
+<td>Categoría principal, más vendidos, campaña</td>
+<td>Etiquetas para agrupar productos en tus campañas: categoría principal, subcategoría, más vendidos («bestseller»), en oferta («sale»), campaña (el campo del producto) o franja de precio</td>
+</tr>
+<tr>
+<td>Más vendidos</td>
+<td>20</td>
+<td>Cuántos productos llevan la etiqueta «bestseller»</td>
+</tr>
+</tbody></table>
+<p>Además quedan siempre fuera los productos ocultos o sin publicar y los marcados «No enviar a los feeds».</p>
+<h3>Qué lleva cada producto</h3>
+<p>Identificador, título, descripción, enlace, imagen y hasta diez imágenes más, disponibilidad, precio con IVA, precio de oferta con sus fechas, marca, GTIN, MPN, estado (nuevo), grupo de variantes, categoría de Google, ruta de categorías de la tienda, peso, precio por unidad y las etiquetas personalizadas. Cada variante es un producto del feed y va agrupada con las demás de su producto.</p>
+<p>El título y la descripción son los del producto, sin añadirles nada. <strong>Google rechaza el texto promocional</strong> («envío gratis», «oferta», descuentos, porcentajes en el título). El envío gratis se configura en Merchant Center, en Envíos y devoluciones. Si un producto tiene texto así en su nombre o su descripción, aparece en los avisos de calidad.</p>
+<h2>Comprobar que funciona</h2>
+<ol>
+<li>Añade el feed y pulsa <strong>Descargar y validar</strong>: debe decir «XML válido con N productos».</li>
+<li>Revisa los excluidos y los avisos. Lo habitual es que haya productos sin GTIN o sin categoría de Google.</li>
+<li>Compara el ID de un producto simple y el de una variante con los de tu catálogo actual.</li>
+<li><strong>Merchant Center</strong>: Productos → Fuentes de datos → añade la URL como archivo programado, con descarga diaria. Si ya tenías una fuente, cambia su URL.</li>
+<li><strong>Meta</strong>: Commerce Manager → Catálogo → Orígenes de datos → Lista de datos → URL programada.</li>
+<li>Espera un día y revisa el diagnóstico de Merchant Center y los problemas del catálogo de Meta.</li>
+</ol>
+<h2>Si algo falla</h2>
+<ul>
+<li><strong>«No se pudo escribir el archivo del feed».</strong> Revisa los permisos de <code>wp-content/uploads</code>. El fallo sale también en WooCommerce → Estado.</li>
+<li><strong>Merchant Center no encuentra la dirección.</strong> Pulsa «Descargar y validar». Si responde con un error, el servidor bloquea la carpeta <code>uploads/lachinata-feeds</code>.</li>
+<li><strong>Productos duplicados o nuevos en Merchant Center o Meta.</strong> El formato de IDs no coincide con el anterior: vuelve a IDs de producto.</li>
+<li><strong>Un producto no aparece.</strong> Búscalo en «Excluidos y por qué».</li>
+</ul>
+<h2>Al apagarlo</h2>
+<p>No se generan más feeds. Los archivos se quedan con su última versión, así que Merchant Center y Meta siguen leyendo productos que pueden quedarse viejos. Si lo apagas para siempre, quita antes los feeds. Los campos de los productos y de las categorías se conservan.</p>
+
+<footer>La Chinata Core 0.10.0</footer>
+</main>
+</body>
+</html>

@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Catálogo · Guías de La Chinata Core</title>
+<style>
+:root { color-scheme: light dark; --ink: #231f20; --soft: #5b5657; --line: #e8ebed; --bg: #fff; --code: #f3eee6; }
+@media (prefers-color-scheme: dark) { :root { --ink: #f3eee6; --soft: #c9c3bd; --line: #3a3637; --bg: #1b1a18; --code: #2b2926; } }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 17px/1.6 system-ui, -apple-system, "Segoe UI", sans-serif; }
+main { max-width: 760px; margin: 0 auto; padding: 24px 16px 64px; }
+nav { font-size: 15px; margin-bottom: 24px; }
+a { color: inherit; }
+h1, h2, h3 { line-height: 1.25; }
+h2 { margin-top: 2em; border-top: 1px solid var(--line); padding-top: 1em; }
+code { background: var(--code); padding: 0 4px; border-radius: 4px; font-size: .9em; }
+pre { background: var(--code); padding: 12px; overflow-x: auto; border-radius: 6px; }
+table { border-collapse: collapse; width: 100%; display: block; overflow-x: auto; font-size: 15px; }
+th, td { border: 1px solid var(--line); padding: 6px 8px; text-align: left; vertical-align: top; }
+footer { color: var(--soft); font-size: 14px; margin-top: 48px; }
+</style>
+</head>
+<body>
+<main>
+<nav><a href="index.html">Guías de La Chinata Core</a></nav>
+<h1>Catálogo</h1>
+<p>Añade a tus productos y categorías los datos que WooCommerce no trae de serie: contenido y precio por unidad («500 ml | 9,33 € / 1 l»), ingredientes, etiqueta, imagen de descripción, consumo preferente, sellos con icono y el color (tinta) de cada categoría. También marca los productos que no deben enviarse fuera de tu país.</p>
+<h2>Antes de empezar</h2>
+<ul>
+<li>No necesita ningún otro módulo. Se enciende solo al activar el plugin.</li>
+<li>Necesita WooCommerce 10 o posterior.</li>
+<li><strong>Si tu tienda usaba ACF</strong> (Advanced Custom Fields) para estos datos, no hace falta migrar nada para empezar: mientras un producto no tenga el dato nuevo, el módulo lee el valor antiguo de ACF. ACF puede seguir instalado; los dos conviven. Más abajo, en «Pasar los datos antiguos de ACF», tienes cómo copiarlos de una vez.</li>
+<li>La casilla <strong>Exclusión internacional</strong> solo tiene efecto si el módulo <a href="shipping.html">Envíos</a> está encendido y tiene una restricción para ella (lo explicamos en «Ajustes»).</li>
+</ul>
+<h2>Dónde se configura</h2>
+<p>Este módulo no tiene pestaña propia en WooCommerce → La Chinata. Sus campos están donde editas el catálogo:</p>
+<table>
+<thead>
+<tr>
+<th>Qué</th>
+<th>Dónde</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Datos del producto</td>
+<td>Productos → editar un producto → caja «Datos del producto» → pestaña <strong>La Chinata</strong></td>
+</tr>
+<tr>
+<td>Contenido de cada variación</td>
+<td>Productos → editar un producto variable → Datos del producto → Variaciones → abrir la variación</td>
+</tr>
+<tr>
+<td>Tinta de la categoría</td>
+<td>Productos → Categorías → añadir o editar una categoría → campo <strong>Tinta</strong></td>
+</tr>
+<tr>
+<td>Sellos y su icono</td>
+<td>Productos → <strong>Sellos</strong> (añadir o editar un sello → campo <strong>Icono</strong>)</td>
+</tr>
+</tbody></table>
+<p>Para encenderlo o apagarlo: WooCommerce → La Chinata → Módulos → <strong>Catálogo</strong>.</p>
+<h2>Ajustes</h2>
+<p>El módulo no tiene ajustes generales: todo lo que configuras es contenido de cada producto, categoría o sello. Por eso <strong>no viaja</strong> en la exportación de WooCommerce → La Chinata → Exportar/importar.</p>
+<h3>Pestaña «La Chinata» del producto</h3>
+<table>
+<thead>
+<tr>
+<th>Campo</th>
+<th>Qué es</th>
+<th>De serie</th>
+<th>Cuándo rellenarlo</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Contenido</strong></td>
+<td>Cantidad que trae el envase: un número y una unidad (g, kg, ml, l o ud).</td>
+<td>Vacío (la unidad propuesta es g)</td>
+<td>Siempre que quieras mostrar el contenido o el precio por unidad. En productos variables, cada variación puede tener el suyo.</td>
+</tr>
+<tr>
+<td><strong>Referencia del precio por unidad</strong></td>
+<td>Cantidad para la que se calcula el precio por unidad: 1 kg, 1 l, 100 g, 100 ml o 1 ud.</td>
+<td>«Sin precio por unidad»</td>
+<td>Cuando quieras que la tarjeta y la ficha muestren «500 ml | 9,33 € / 1 l». Tiene que ser de la misma magnitud que el contenido (peso con peso, volumen con volumen, unidades con unidades).</td>
+</tr>
+<tr>
+<td><strong>Etiqueta</strong></td>
+<td>Texto corto que aparece como etiqueta en la tarjeta y en la ficha, antes de las demás insignias.</td>
+<td>Vacío</td>
+<td>Para destacar algo del producto (por ejemplo, «Edición limitada»). Vacío: no se muestra.</td>
+</tr>
+<tr>
+<td><strong>Consumo preferente</strong></td>
+<td>Fecha que se muestra en los detalles de la ficha.</td>
+<td>Vacío</td>
+<td>Solo en productos con fecha de consumo preferente.</td>
+</tr>
+<tr>
+<td><strong>Exclusión internacional</strong></td>
+<td>Marca el producto para limitar sus destinos.</td>
+<td>Sin marcar</td>
+<td>En productos que no pueden salir de ciertos destinos. Por sí sola no hace nada: los destinos permitidos se eligen en WooCommerce → La Chinata → Envíos → Restricciones de producto (ver <a href="shipping.html">Envíos</a>).</td>
+</tr>
+<tr>
+<td><strong>Imagen de descripción</strong></td>
+<td>Imagen que se añade al final de la pestaña «Descripción» de la ficha. Botones «Elegir imagen» y «Quitar».</td>
+<td>Sin imagen</td>
+<td>Cuando la descripción lleva una imagen propia (una infografía, una tabla…).</td>
+</tr>
+<tr>
+<td><strong>Ingredientes</strong></td>
+<td>Texto con formato sencillo. Si lo rellenas, la ficha muestra una pestaña <strong>Ingredientes</strong> justo después de «Descripción».</td>
+<td>Vacío</td>
+<td>En productos de alimentación o cosmética. Vacío: no hay pestaña.</td>
+</tr>
+</tbody></table>
+<p><strong>Cómo se calcula el precio por unidad.</strong> Precio del producto ÷ contenido × referencia, pasando de g a kg y de ml a l cuando hace falta. Si el contenido y la referencia no son de la misma magnitud (por ejemplo, contenido en g y referencia en l), solo se muestra el contenido («500 g»). En un producto variable, la tarjeta y la ficha usan la variación más barata, para que el precio por unidad corresponda siempre a un precio real.</p>
+<p><strong>Variaciones.</strong> Cada variación tiene el campo <strong>Contenido (vacío: el del producto)</strong>. Déjalo vacío si todas las variaciones tienen el mismo contenido que el producto; rellénalo si cada formato es distinto (250 ml, 500 ml…). La referencia del precio por unidad es la del producto.</p>
+<p><strong>Aviso de peso.</strong> Al editar un producto que se envía y no tiene peso, verás arriba: «Este producto no tiene peso. Cuenta como 0 kg en las condiciones de envío». Complétalo en Datos del producto → Envío: el módulo <a href="shipping.html">Envíos</a> usa el peso para decidir qué métodos se ofrecen.</p>
+<h3>Tinta de la categoría</h3>
+<p>Es el color de la categoría en los mosaicos, las tarjetas y el menú. Opciones del desplegable <strong>Tinta</strong>:</p>
+<ul>
+<li>Sin tinta (hereda de la categoría superior) — de serie</li>
+<li>Cosmética, Aceites, Gourmet, Regalos, Hogar</li>
+</ul>
+<p>Basta con ponerla en las categorías principales: las subcategorías sin tinta usan la de su categoría superior. Un producto toma la tinta de su categoría más profunda que tenga (o herede) una.</p>
+<h3>Sellos</h3>
+<p>Los sellos son distintivos del producto (por ejemplo, «100 % vegetal» o «Sin gluten»). Se crean en Productos → <strong>Sellos</strong>, como las etiquetas de WordPress, y se asignan desde la caja «Sellos» al editar el producto.</p>
+<table>
+<thead>
+<tr>
+<th>Campo</th>
+<th>Qué es</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Nombre</td>
+<td>Lo que se lee junto al icono en la ficha.</td>
+</tr>
+<tr>
+<td><strong>Icono</strong></td>
+<td>Imagen del sello que se muestra en la ficha de producto. Botones «Elegir imagen» y «Quitar».</td>
+</tr>
+</tbody></table>
+<p>Cada sello tiene además su propia página pública con los productos que lo llevan, como cualquier etiqueta.</p>
+<h3>Pasar los datos antiguos de ACF</h3>
+<p>Solo si tu tienda viene de ACF. Lo ejecuta quien mantiene el sitio con WP-CLI, una vez por sitio:</p>
+<pre><code class="language-bash">wp lachinata catalog normalize --dry-run   # simula y avisa, sin escribir
+wp lachinata catalog normalize             # copia los valores
+</code></pre>
+<ul>
+<li>Nunca sobrescribe un dato que ya tenga el formato nuevo, así que se puede repetir sin riesgo.</li>
+<li>Avisa de los valores que no entiende (por ejemplo, «500 mililitros») para que los corrijas a mano.</li>
+<li>El EAN antiguo no se copia: manda el campo GTIN de WooCommerce. El comando solo avisa de los productos en los que no coinciden.</li>
+<li>Con <code>--from-shipping-class=&lt;slug de la clase&gt;</code> marca además la <strong>Exclusión internacional</strong> en todos los productos de esa clase de envío.</li>
+<li>Los valores de ACF no se tocan nunca.</li>
+</ul>
+<h2>Comprobar que funciona</h2>
+<ol>
+<li>Edita un producto simple con precio. En la pestaña <strong>La Chinata</strong>, pon Contenido «500 ml» y Referencia «1 l». Guarda.</li>
+<li>Abre su ficha en la tienda: junto al precio debe salir «500 ml | (precio por litro) / 1 l». Búscalo también en su categoría: la tarjeta muestra lo mismo.</li>
+<li>Escribe una <strong>Etiqueta</strong> y comprueba que aparece en la tarjeta y en la ficha.</li>
+<li>Rellena <strong>Ingredientes</strong>: la ficha muestra la pestaña «Ingredientes» después de «Descripción».</li>
+<li>Pon una <strong>Tinta</strong> en una categoría principal y comprueba que su mosaico, sus tarjetas y las de sus subcategorías toman ese color.</li>
+<li>Crea un sello con icono, asígnalo al producto y comprueba que aparece en la ficha.</li>
+<li>Si usas la exclusión internacional: marca la casilla en un producto, crea la restricción en <a href="shipping.html">Envíos</a> y prueba un destino no permitido en Envíos → Probador, marcando «Lleva un producto con exclusión internacional».</li>
+</ol>
+<h2>Si algo falla</h2>
+<table>
+<thead>
+<tr>
+<th>Síntoma</th>
+<th>Qué revisar</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Sale el contenido pero no el precio por unidad</td>
+<td>Que la referencia no sea «Sin precio por unidad», que sea de la misma magnitud que el contenido y que el producto tenga precio.</td>
+</tr>
+<tr>
+<td>El precio por unidad de un producto variable no es el que esperas</td>
+<td>Se calcula con la variación más barata. Revisa el contenido de esa variación (si está vacío, usa el del producto).</td>
+</tr>
+<tr>
+<td>Una subcategoría no toma el color</td>
+<td>Que su tinta sea «Sin tinta (hereda…)» y que alguna categoría superior tenga tinta.</td>
+</tr>
+<tr>
+<td>El sello sale sin imagen</td>
+<td>Que tenga elegido un <strong>Icono</strong> en Productos → Sellos.</td>
+</tr>
+<tr>
+<td>La exclusión internacional no bloquea nada</td>
+<td>Que <a href="shipping.html">Envíos</a> esté encendido y que en Restricciones de producto haya una fila con el origen «Campo &quot;Exclusión internacional&quot; del producto».</td>
+</tr>
+<tr>
+<td>Un producto conserva un dato antiguo que ya borraste</td>
+<td>Si borraste el campo nuevo, el producto guarda el campo vacío y deja de leer el de ACF. Si nunca lo editaste, sigue leyendo ACF: edítalo y guárdalo, o ejecuta la normalización.</td>
+</tr>
+<tr>
+<td>Nada de lo anterior se ve</td>
+<td>WooCommerce → Estado, tabla «La Chinata · módulos»: el estado de <strong>Catálogo</strong> debe ser «Funcionando». Si pone que ha fallado, los detalles están en WooCommerce → Estado → Registros (<code>lachinata-catalog</code>).</td>
+</tr>
+</tbody></table>
+<h2>Al apagarlo</h2>
+<p>La tienda vuelve a su aspecto neutro: sin tintas de categoría, sin precio por unidad, sin etiqueta, sin pestaña de ingredientes ni imagen de descripción, sin sellos y sin consumo preferente. Los sellos dejan de estar disponibles en el menú Productos (siguen guardados) y <a href="shipping.html">Envíos</a> deja de ver la casilla de exclusión internacional: solo cuentan las restricciones por clase de envío.</p>
+<p><strong>Los datos se conservan</strong>: al encenderlo de nuevo, todo vuelve como estaba. Si quieres borrarlos, apaga el módulo y usa <strong>Borrar datos…</strong> en WooCommerce → La Chinata → Módulos: se descarga antes una copia y se borran los campos de productos, categorías y sellos de este módulo (nunca los valores antiguos de ACF ni los pedidos).</p>
+
+<footer>La Chinata Core 0.10.0</footer>
+</main>
+</body>
+</html>

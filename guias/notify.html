@@ -67,7 +67,7 @@ footer { color: var(--soft); font-size: 14px; margin-top: 48px; }
 <li><strong>Versión de la API</strong> — La versión de Graph API que tenga tu app. De serie: <code>v23.0</code>. Cámbiala solo si tu app de Meta usa otra.</li>
 <li><strong>Idioma de las plantillas</strong> — El código de idioma con el que Meta aprobó las plantillas. De serie: <code>es</code>. Si las aprobaste como <code>es_ES</code>, por ejemplo, escribe eso.</li>
 <li><strong>Plantilla del regalo</strong>, <strong>Plantilla del regalo sin seguimiento</strong>, <strong>Plantilla del envío</strong>, <strong>Plantilla del envío sin seguimiento</strong> — Los nombres de las cuatro plantillas en Meta. De serie: <code>lc_regalo_aviso</code>, <code>lc_regalo_aviso_sin_enlace</code>, <code>lc_pedido_enviado</code> y <code>lc_pedido_enviado_sin_enlace</code>. Cámbialos solo si en Meta las creaste con otro nombre.</li>
-<li><strong>URL del webhook</strong> — No se edita: es la dirección que muestra el panel. Pégala en la app de Meta → WhatsApp → Configuración → Webhook, con el token de verificación de arriba, y suscríbete al campo «messages». Sin el webhook no hay caída a SMS cuando un WhatsApp no se puede entregar.</li>
+<li><strong>URL del webhook</strong> — No se edita: es la dirección que muestra el panel. Pégala en la app de Meta → WhatsApp → Configuración → Webhook, con el token de verificación de arriba, y suscríbete al campo «messages». Sin el webhook, el aviso solo pasa a SMS si Meta rechaza el número al enviar; con él, también si el mensaje no llega después.</li>
 </ul>
 <p>Debajo del bloque, el panel te recuerda el número de WhatsApp de la tienda, que se escribe en <strong>WooCommerce → La Chinata → Atención al cliente</strong>. Tiene que ser el mismo número que el del «ID de número»: así las respuestas de los clientes llegan a la misma conversación (se contestan desde la app de WhatsApp de la tienda, no desde WordPress).</p>
 <h3>SMS (OVH)</h3>
@@ -163,7 +163,7 @@ footer { color: var(--soft); font-size: 14px; margin-top: 48px; }
 </ul>
 <p>Se conservan las credenciales, los nombres de plantilla y el registro de avisos de cada pedido: al encenderlo vuelve como estaba. «Borrar datos…» (con el módulo apagado) quita solo los ajustes, nunca lo guardado en los pedidos.</p>
 
-<footer>La Chinata Core 0.10.0</footer>
+<footer>La Chinata Core 0.12.0</footer>
 </main>
 </body>
 </html>

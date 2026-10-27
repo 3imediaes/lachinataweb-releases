@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Destino · Guías de La Chinata Core</title>
+<style>
+:root { color-scheme: light dark; --ink: #231f20; --soft: #5b5657; --line: #e8ebed; --bg: #fff; --code: #f3eee6; }
+@media (prefers-color-scheme: dark) { :root { --ink: #f3eee6; --soft: #c9c3bd; --line: #3a3637; --bg: #1b1a18; --code: #2b2926; } }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 17px/1.6 system-ui, -apple-system, "Segoe UI", sans-serif; }
+main { max-width: 760px; margin: 0 auto; padding: 24px 16px 64px; }
+nav { font-size: 15px; margin-bottom: 24px; }
+a { color: inherit; }
+h1, h2, h3 { line-height: 1.25; }
+h2 { margin-top: 2em; border-top: 1px solid var(--line); padding-top: 1em; }
+code { background: var(--code); padding: 0 4px; border-radius: 4px; font-size: .9em; }
+pre { background: var(--code); padding: 12px; overflow-x: auto; border-radius: 6px; }
+table { border-collapse: collapse; width: 100%; display: block; overflow-x: auto; font-size: 15px; }
+th, td { border: 1px solid var(--line); padding: 6px 8px; text-align: left; vertical-align: top; }
+footer { color: var(--soft); font-size: 14px; margin-top: 48px; }
+</style>
+</head>
+<body>
+<main>
+<nav><a href="index.html">Guías de La Chinata Core</a></nav>
+<h1>Destino</h1>
+<p>Pregunta a quien entra en la tienda <strong>dónde va a recibir el pedido</strong>, lo recuerda y lo usa en toda la tienda: qué productos ve, el umbral de envío gratis, la fecha de entrega estimada y la bolsa. Si el destino es de otra tienda tuya (por ejemplo, otro país con su propia web), le ofrece ir a ella con un botón; nunca le lleva sin que pulse.</p>
+<p>Con <strong>un solo destino y un solo idioma</strong>, el módulo no muestra nada: ni selector, ni pastilla en la cabecera, ni enlace en el pie.</p>
+<h2>Antes de empezar</h2>
+<ul>
+<li><strong>Envíos</strong> (guía <a href="shipping.html">Envíos</a>) encendido y con sus zonas. De sus reglas sale qué productos no se envían a cada destino y el umbral de envío gratis de cada uno. Sin el módulo de envíos, el selector funciona, pero el catálogo no se filtra.</li>
+<li><strong>Países de venta</strong> de WooCommerce (Ajustes → Generales → «Vender a países específicos»). Son los destinos de serie mientras no guardes los tuyos.</li>
+<li>Si usas <strong>caché de página</strong> (un plugin de caché o la del hosting), mira «Caché de página» abajo antes de encenderlo.</li>
+<li>Con el módulo <strong>Cookies y medición</strong>, la barra de cookies espera a que el visitante elija destino, y las cookies de este módulo salen solas en la tabla de la política de cookies.</li>
+</ul>
+<h2>Dónde se configura</h2>
+<p>WooCommerce → La Chinata → <strong>Destino</strong>. Para encender o apagar el módulo: La Chinata → Módulos.</p>
+<h2>Ajustes</h2>
+<h3>Otras tiendas</h3>
+<p>Las tiendas a las que se lleva a quien elige uno de sus destinos: un <strong>nombre</strong> («Canarias») y su <strong>dirección</strong> (<code>https://…</code>, sin nada detrás). El botón del selector dice «Ir a la tienda de Canarias». Al pulsarlo, el visitante va a la misma página en esa tienda, con el destino en la dirección para que allí no se le vuelva a preguntar. Solo se lleva a estas direcciones.</p>
+<h3>Destinos</h3>
+<table>
+<thead>
+<tr>
+<th>Campo</th>
+<th>Qué es</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Código</td>
+<td>ISO 3166-1 para un país (<code>PT</code>, <code>FR</code>) o ISO 3166-2 para una región (<code>ES-IB</code> Baleares, <code>ES-CN</code> Canarias). Una fila de país sin región (<code>ES</code>) es <strong>ese país salvo las regiones que tienen fila propia</strong>. Ponle una etiqueta clara, como «España · Península»</td>
+</tr>
+<tr>
+<td>Etiqueta</td>
+<td>Lo que ve el visitante. Sin banderas ni emojis</td>
+</tr>
+<tr>
+<td>Nota</td>
+<td>Opcional: lo que cambia en ese destino. <code>{envio_gratis}</code> se cambia por su umbral de envío gratis («Envío gratis desde {envio_gratis}»). Para un destino de otra tienda, algo como «Te llevamos a nuestra tienda de Canarias»</td>
+</tr>
+<tr>
+<td>Tienda</td>
+<td>Esta tienda u otra de la lista anterior</td>
+</tr>
+<tr>
+<td>Lista</td>
+<td><strong>Principal</strong> (como mucho 8 filas, las más comunes) u <strong>Otro país</strong> (un desplegable debajo)</td>
+</tr>
+<tr>
+<td>Provincias o estados</td>
+<td>Las de WooCommerce que forman ese destino. Se rellenan solas para las comunidades españolas (<code>ES-CN</code> → Las Palmas y Santa Cruz de Tenerife) y para las regiones con el mismo código en WooCommerce. La primera es la que se usa para calcular envíos y fechas</td>
+</tr>
+<tr>
+<td>Quitar</td>
+<td>Marca la casilla y guarda</td>
+</tr>
+</tbody></table>
+<p>Las tres filas vacías del final sirven para añadir destinos. Un destino que no tiene envío (por ejemplo, un territorio al que no envías) no se pone: si queda dentro de una fila de país, el checkout da el motivo de «sin envío» de la guía de Envíos.</p>
+<h3>Caché de página y ubicación</h3>
+<table>
+<thead>
+<tr>
+<th>Ajuste</th>
+<th>De serie</th>
+<th>Qué hace</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Caché de página</td>
+<td>Varía por la cookie</td>
+<td><strong>Varía por la cookie <code>lc_destino</code> (o no hay caché)</strong>: cada página se pinta para el destino del visitante. <strong>La misma página para todos</strong>: para cachés que no pueden guardar una versión por cookie; el navegador completa la página (ver abajo)</td>
+</tr>
+<tr>
+<td>Cabecera de país del CDN</td>
+<td>vacío</td>
+<td>El nombre de la cabecera con el país del visitante que pone tu CDN (<code>CF-IPCountry</code> en Cloudflare). Vacío: se usa la geolocalización de WooCommerce (Ajustes → Integración → MaxMind) o las cabeceras de CDN que WooCommerce ya conoce. Nunca se consulta un servicio externo</td>
+</tr>
+</tbody></table>
+<h3>Catálogo por destino</h3>
+<p>Qué productos no se envían a cada destino se calcula solo al guardar un producto y unos minutos después de cambiar los envíos o los destinos. <strong>Recalcular el catálogo</strong> lo hace de nuevo (por ejemplo, después de importar productos). La pantalla dice cuándo se calculó por última vez.</p>
+<h2>Qué ve el visitante</h2>
+<ul>
+<li><strong>Primera visita</strong>: el selector, en una hoja que sube desde abajo en el móvil y en una ventana centrada en el ordenador. Lleva preseleccionado el destino de su ubicación y lo dice («Te hemos situado en … por tu conexión»). «Continuar» guarda el destino y recarga la página; con un destino de otra tienda, el botón dice «Ir a la tienda de …». Si lo cierra sin elegir, se queda con la preselección cuando es de esta tienda.</li>
+<li><strong>Cabecera</strong>: «Envío a España · Península», al principio de la barra superior en el móvil y junto a los enlaces de marca en el ordenador. Abre el selector. En el pie, <strong>Cambiar destino</strong> (también sin JavaScript).</li>
+<li><strong>Listados, búsqueda y productos relacionados</strong>: sin los productos que no se envían a su destino.</li>
+<li><strong>Ficha de un producto que no se envía</strong> (llegando por un enlace): se ve entera, con el aviso «No podemos enviar este producto a …» y <strong>Cambiar destino</strong> en lugar del botón de compra. Se indexa con normalidad.</li>
+<li><strong>Bolsa</strong>: cada línea que no se envía lo dice y «Tramitar pedido» queda desactivado, con el motivo debajo, hasta quitarla o cambiar de destino.</li>
+<li><strong>Umbral de envío gratis y fecha estimada</strong>: los de su destino, en la barra superior, en la barra de ventajas, en la ficha y en la bolsa.</li>
+<li>Si su ubicación apunta a otra de tus tiendas y ya eligió destino, una sola vez: «Parece que estás en …. ¿Quieres ir a la tienda de …?».</li>
+</ul>
+<p>El destino se guarda en la cookie <code>lc_destino</code> durante un año y, si el cliente tiene cuenta, en su perfil (vuelve al iniciar sesión en otro dispositivo).</p>
+<h2>Caché de página</h2>
+<p>El HTML cambia con el destino: productos que se ven, umbral de envío gratis y fecha estimada. Hay dos formas de que la caché lo respete:</p>
+<ol>
+<li><p><strong>Una versión por destino</strong> (recomendada si tu caché puede). Configura la caché para que varíe por la cookie <code>lc_destino</code>. Con WP Rocket, añade <code>lc_destino</code> en «Cookies dinámicas» (filtro <code>rocket_cache_dynamic_cookies</code>). Con LiteSpeed Cache, en «Variar por cookie». En Cloudflare, en una regla de caché con la cookie en la clave. En Varnish, incluye la cookie en el <code>hash</code>. En La Chinata → Destino, deja «Varía por la cookie lc_destino». Son pocas versiones: una por destino de la lista principal más la «sin destino».</p>
+</li>
+<li><p><strong>La misma página para todos.</strong> Si tu caché solo sabe saltarse por cookie, pero no guardar versiones (es el caso de la caché dinámica de SiteGround), elige «La misma página para todos». La página sale de la caché sin destino y el navegador, antes de pintarla:</p>
+<ul>
+<li>oculta los productos que no se envían al destino del visitante. La rejilla se recoloca sin huecos; alguna página del listado puede quedarse con un producto menos, y los listados no dicen el número de productos;</li>
+<li>en la ficha, muestra el aviso en lugar del botón de compra;</li>
+<li>pone en la pastilla el destino elegido;</li>
+<li>escribe el destino y su envío gratis en la barra superior y en la barra de ventajas. Si la página se pintó para otro destino, esos textos esperan en su sitio, sin mover nada, hasta tener los del visitante.</li>
+</ul>
+<p>La fecha estimada de la ficha ya la pide el navegador para el destino.</p>
+</li>
+</ol>
+<p>En los dos casos, la bolsa, el checkout y <code>/wp-json/</code> no deben ir en caché. Todos los plugins de caché los excluyen de serie para WooCommerce.</p>
+<p><strong>Cómo comprobarlo</strong>: abre la tienda en una ventana privada, elige un destino con algún producto que no se envíe allí y recarga una categoría. Ese producto no debe aparecer. Abre otra ventana privada con otro destino: la misma categoría debe mostrarlo. Si en la segunda ventana ves lo mismo que en la primera, la caché no está variando por la cookie: cambia al segundo modo.</p>
+<h2>Comprobar que funciona</h2>
+<ul>
+<li><strong>Selector</strong>: en una ventana privada, la tienda abre el selector. Elige un destino: la pastilla lo dice y el selector no vuelve a salir.</li>
+<li><strong>Otra tienda</strong>: elige uno de sus destinos. El botón cambia a «Ir a la tienda de …» y lleva a la misma página allí.</li>
+<li><strong>Catálogo</strong>: con un destino al que algún producto no se envía (WooCommerce → La Chinata → Envíos → probador), ese producto no está en su categoría y su ficha muestra el aviso.</li>
+<li><strong>Bolsa</strong>: con ese producto en la bolsa y ese destino, «Tramitar pedido» está desactivado.</li>
+<li><strong>Estado</strong>: WooCommerce → Estado → «La Chinata · módulos» muestra cuántos destinos hay, el umbral de envío gratis de cada uno de la lista principal, el modo de caché y si el catálogo se está recalculando.</li>
+</ul>
+<h2>Si algo falla</h2>
+<ul>
+<li><strong>El selector no sale</strong>: hay un solo destino y un solo idioma (es lo esperado), o el visitante ya eligió (borra las cookies <code>lc_destino</code> y <code>lc_destino_visto</code>).</li>
+<li><strong>Un producto que no se envía sigue en el listado</strong>: la caché no varía por la cookie (ver «Cómo comprobarlo»), o el catálogo está recalculándose. Pulsa «Recalcular el catálogo» y espera unos minutos.</li>
+<li><strong>La preselección no acierta</strong>: configura MaxMind en WooCommerce (Ajustes → Integración) o la cabecera de país de tu CDN.</li>
+<li><strong>«Ir a la tienda de …» no aparece</strong>: el destino no tiene tienda asignada, o la dirección de la tienda no es válida.</li>
+</ul>
+<h2>Al apagarlo</h2>
+<p>Desaparecen el selector, la pastilla y el enlace del pie, y la barra de cookies sale enseguida. Las páginas vuelven a la zona de envío por defecto (La Chinata → Envíos) y el catálogo deja de filtrarse. Los destinos, las otras tiendas y el destino de cada cliente se conservan para cuando lo vuelvas a encender.</p>
+
+<footer>La Chinata Core 0.12.0</footer>
+</main>
+</body>
+</html>

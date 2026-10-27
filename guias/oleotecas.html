@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Oleotecas · Guías de La Chinata Core</title>
+<style>
+:root { color-scheme: light dark; --ink: #231f20; --soft: #5b5657; --line: #e8ebed; --bg: #fff; --code: #f3eee6; }
+@media (prefers-color-scheme: dark) { :root { --ink: #f3eee6; --soft: #c9c3bd; --line: #3a3637; --bg: #1b1a18; --code: #2b2926; } }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 17px/1.6 system-ui, -apple-system, "Segoe UI", sans-serif; }
+main { max-width: 760px; margin: 0 auto; padding: 24px 16px 64px; }
+nav { font-size: 15px; margin-bottom: 24px; }
+a { color: inherit; }
+h1, h2, h3 { line-height: 1.25; }
+h2 { margin-top: 2em; border-top: 1px solid var(--line); padding-top: 1em; }
+code { background: var(--code); padding: 0 4px; border-radius: 4px; font-size: .9em; }
+pre { background: var(--code); padding: 12px; overflow-x: auto; border-radius: 6px; }
+table { border-collapse: collapse; width: 100%; display: block; overflow-x: auto; font-size: 15px; }
+th, td { border: 1px solid var(--line); padding: 6px 8px; text-align: left; vertical-align: top; }
+footer { color: var(--soft); font-size: 14px; margin-top: 48px; }
+</style>
+</head>
+<body>
+<main>
+<nav><a href="index.html">Guías de La Chinata Core</a></nav>
+<h1>Oleotecas</h1>
+<p>El buscador de tus tiendas físicas, con su mapa, una página por zona y una ficha por tienda: dirección, horario con «abierta ahora», cómo llegar, teléfono, WhatsApp, fotos, redes y favoritos. Sirve para cualquier red de tiendas; «oleoteca» es solo el nombre que le da La Chinata.</p>
+<h2>Antes de empezar</h2>
+<ul>
+<li><strong>Datos de la empresa</strong> (WooCommerce → La Chinata, guía <a href="core.html">Núcleo</a>): el nombre comercial es la marca de las tiendas en Google.</li>
+<li>Si tus tiendas vienen de otro sistema (campos de ACF), se migran con WP-CLI: <code>wp lachinata oleotecas migrate --dry-run</code> primero, para ver el informe, y después sin <code>--dry-run</code>. Las direcciones de las fichas no cambian.</li>
+<li>El módulo <strong>Cookies y medición</strong> es opcional: con él se miden las búsquedas y las salidas (cómo llegar, llamar, WhatsApp, web) y el proveedor del mapa sale en la política de privacidad.</li>
+</ul>
+<h2>Dónde se configura</h2>
+<ul>
+<li><strong>Cada tienda</strong>: menú Oleotecas, en el panel de la derecha del editor.</li>
+<li><strong>Zonas y países</strong>: Oleotecas → Zonas.</li>
+<li><strong>Servicios</strong> (catas, granel, accesible…): Oleotecas → Servicios.</li>
+<li><strong>El resto</strong>: WooCommerce → La Chinata → <strong>Oleotecas</strong>.</li>
+</ul>
+<h2>Una tienda</h2>
+<table>
+<thead>
+<tr>
+<th>Panel</th>
+<th>Qué va</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Dirección y mapa</td>
+<td><strong>Nombre corto</strong> («Bilbao», «Madrid · Sol»): el largo se compone con el ajuste «Nombre largo». Calle y número, código postal, ciudad y país. <strong>Buscar en el mapa</strong> propone la posición; arrastra el marcador si no es exacta. <strong>Zona horaria</strong> de la tienda: con ella se calcula «abierta ahora»</td>
+</tr>
+<tr>
+<td>Contacto y redes</td>
+<td>Teléfono y WhatsApp (se guardan en formato internacional; sin número, no sale el botón), correo (nunca aparece en claro en la página), tienda online propia (URL y etiqueta) y redes: Instagram, Facebook, TikTok, YouTube, X o web</td>
+</tr>
+<tr>
+<td>Horario</td>
+<td>Por día, una franja (horario continuo) o dos (partido). Sin franjas, cerrado. <strong>Copiar el lunes a toda la semana</strong> ahorra tiempo</td>
+</tr>
+<tr>
+<td>Horarios especiales</td>
+<td>Festivos, Navidad o vacaciones: una fecha o un rango, cerrado o con su horario, y una nota. Mandan sobre el horario semanal; los pasados dejan de verse solos</td>
+</tr>
+<tr>
+<td>Texto, fotos y favoritos</td>
+<td>Dos o tres frases propias, hasta 8 fotos 4:3 (la primera es la de la tarjeta y la de compartir) y hasta 4 productos favoritos</td>
+</tr>
+</tbody></table>
+<p>Ninguna sección sale vacía: sin fotos no hay galería, sin servicios no hay lista, sin redes no hay «Síguela». Con nombre, dirección, posición y horario, la ficha ya está completa.</p>
+<p><strong>Zona de la tienda</strong>: marca su país y, si la tiene, su zona (Oleotecas → Zonas en la caja de la derecha).</p>
+<h2>Zonas</h2>
+<p>Una zona es País › Zona (Madrid, Barcelona…). Su página, <code>/oleotecas/{zona}/</code>, existe cuando tiene <strong>dos o más tiendas</strong> y no son exactamente las de su país; si no, la dirección lleva a su tienda o a su país. En cada zona:</p>
+<ul>
+<li><strong>Texto de la zona</strong>: dos o tres frases bajo el título.</li>
+<li><strong>Agrupar por ciudad</strong>: el nombre del grupo de las tiendas fuera de la ciudad con más tiendas («Comunidad de Madrid»). Vacío, sin grupos.</li>
+<li><strong>Preguntas frecuentes</strong>: salen en la página y en los datos estructurados.</li>
+</ul>
+<h2>Ajustes</h2>
+<table>
+<thead>
+<tr>
+<th>Ajuste</th>
+<th>Qué hace</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Cómo se llama cada tienda, en singular y plural</td>
+<td>«oleoteca» / «oleotecas». Se usa en todos los textos del buscador y de la ficha</td>
+</tr>
+<tr>
+<td>Nombre largo de cada tienda</td>
+<td><code>{name}</code> es el nombre corto y <code>{brand}</code> el nombre comercial: «Oleoteca {brand} {name}». Va en el título de la ficha y en Google</td>
+</tr>
+<tr>
+<td>Título y entradilla del buscador</td>
+<td>La entradilla admite <code>{stores}</code> («39 oleotecas») y <code>{countries}</code></td>
+</tr>
+<tr>
+<td>Teselas, clave, atribución, proveedores</td>
+<td>El mapa de fondo. De serie, CARTO Positron con «© OpenStreetMap · © CARTO», que pide una clave gratuita para uso comercial (hasta un millón de peticiones al mes): créala en tu cuenta de CARTO y pégala en «Clave de las teselas». Sin clave no se ofrece el mapa y la salud lo avisa. La atribución es obligatoria y siempre visible</td>
+</tr>
+<tr>
+<td>Distancia de «cerca»</td>
+<td>«Otras oleotecas cerca» en la ficha (150 km de serie)</td>
+</tr>
+<tr>
+<td>Geocodificador y su contacto</td>
+<td>Convierte direcciones en posiciones, desde el servidor y con caché. El contacto va en la identificación, como pide Nominatim</td>
+</tr>
+<tr>
+<td>Texto de inicio de WhatsApp</td>
+<td><code>{site}</code> es el dominio de la tienda online</td>
+</tr>
+<tr>
+<td>Imagen para compartir</td>
+<td>La que se ve al compartir una página sin fotos</td>
+</tr>
+<tr>
+<td>Bloque de franquicias</td>
+<td>Antetítulo, título, texto, enlace y botón al final de las páginas. Sin título o sin enlace, no sale</td>
+</tr>
+<tr>
+<td>Dominios cliente</td>
+<td>Las otras tiendas online que pueden leer los datos desde el navegador</td>
+</tr>
+<tr>
+<td>URL de cada tienda y del buscador</td>
+<td>No se cambian en un sitio publicado: cambian todas las direcciones</td>
+</tr>
+</tbody></table>
+<p><strong>Datos del buscador</strong> muestra el archivo con todas las tiendas que lee el navegador y cuándo se escribió. Se reescribe solo al guardar; «Volver a escribir el JSON» lo hace a mano.</p>
+<h2>Cómo se ve</h2>
+<ul>
+<li><strong>Buscador</strong> (<code>/oleotecas/</code>): campo de ciudad o código postal, <strong>Cerca de mí</strong> (pide la ubicación al pulsar y nunca la envía), <strong>Abierta ahora</strong> y los servicios que tiene alguna tienda. Si no hay tiendas en lo que se busca, dice cuál es la más cercana y a qué distancia: nunca hay cero resultados. Diez tiendas y «Ver más». Debajo, «Por país y ciudad».</li>
+<li><strong>Mapa</strong>: solo se carga al pulsar «Ver en el mapa», el botón bajo el buscador. En el móvil se abre a pantalla completa con la tarjeta abajo; en el escritorio queda junto a la lista.</li>
+<li><strong>Ficha</strong>: «Abierta · Cierra a las 20:00» con la hora de la tienda, «Cómo llegar» (Mapas de Apple en iPhone y Mac, Google Maps en el resto), horario con hoy marcado, servicios, favoritos, la tienda online propia, mapa, redes y otras tiendas cerca.</li>
+<li><strong>Bloque «Buscador de oleotecas»</strong>: el mismo buscador en cualquier página.</li>
+</ul>
+<h2>Salud</h2>
+<p>WooCommerce → Estado → La Chinata · módulos avisa de tiendas sin posición o sin horario, de un geocodificador que falla y de un JSON desactualizado. Recuerda también que nombre, dirección, teléfono y horario deben coincidir con el perfil de Google de cada tienda.</p>
+
+<footer>La Chinata Core 0.12.0</footer>
+</main>
+</body>
+</html>

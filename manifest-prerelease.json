@@ -1,20 +1,26 @@
 {
 	"schema": 1,
-	"generated_at": "2026-10-28T15:00:03.745Z",
+	"generated_at": "2026-10-28T19:18:21.186Z",
 	"packages": {
 		"lachinata-core": {
-			"version": "0.12.2",
+			"version": "0.12.3",
 			"date": "2026-10-28",
-			"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.12.2/lachinata-core-0.12.2.zip",
-			"sha256": "524ce36828337197d8be3eeb8b1cf74cdac3403966f20eb98a8d3f948bfdba1e",
+			"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.12.3/lachinata-core-0.12.3.zip",
+			"sha256": "ccecf44871132c946078b526ade4ab480794234d45abce5b747855d364b29e25",
 			"requires": {
 				"wordpress": "6.8",
 				"php": "8.2",
 				"woocommerce": "10.0",
-				"lachinata": "0.12.2"
+				"lachinata": "0.12.3"
 			},
-			"notes": "La plantilla pinta los datos del catálogo tal como vienen: no los abrevia, no los oculta y no los deduce. Ensayado con los 815 productos de lachinata.es en la vista real.\n\n### Añadido\n- **Tarjeta de producto**: nombre completo, huecos de valoración y formato reservados (el precio queda alineado en la fila), todas las etiquetas apiladas con el tono, la imagen y el orden de su término, marca de la clase de envío (copo y «Envío refrigerado» en Frío y Fresco) e «Imagen de tarjeta». La tinta es la de la raíz que se ve o la de la categoría principal del producto.\n- **Ficha**: aviso de envío refrigerado con sus condiciones sacadas de la configuración (en lachinata.es, «Solo a España peninsular; por …, gratis desde 60 €. Sale de lunes a miércoles.»); opiniones con resumen numérico (media, recuento y una barra por estrellas), las 5 más recientes y «Ver más opiniones» de 10 en 10 desde la Store API (sin JavaScript, página 2 con `noindex`); venta cruzada con título y fuente por categoría raíz.\n- **Catálogo (`catalog`)**: categoría principal del producto; tono, imagen y orden de las etiquetas de producto; WooCommerce → La Chinata → Catálogo con la salud del catálogo (precio por unidad incompleto o raro, GTIN que no puede existir, EAN distinto, sin imagen, sin categoría) y la configuración de la tienda (categorías y campañas de temporada, venta cruzada por raíz, marcas de las clases de envío), que viaja en el JSON; `wp lachinata catalog health` y contador en la portada del panel.\n- **Envíos (`shipping`)**: «Solo se envía a» en cada producto, que sustituye a las reglas por producto de Country Based Restrictions, con `wp lachinata shipping migrate-restrictions`; texto del aviso de la ficha editable en Restricciones de producto (`Contracts\\ShippingRules` v3).\n- **Bloque de productos** (`lachinata/products`, módulo `blocks`) por SKU o ID, con la tarjeta del tema.\n- **Migración** (`wp lachinata catalog normalize`): categoría principal de Rank Math, EAN como GTIN cuando el dígito de control es válido, subtítulos en negrita a `h3` y `[products]` al bloque de productos, sin tocar el texto; informe de lo que no se traslada.\n- Seed: las claves de prueba de los proveedores (teselas, OVH, WhatsApp, Mailchimp) se leen de `.wp-env.override.json`.\n\n### Cambiado\n- Las categorías de la cabecera, el menú, el buscador y la home son la lista configurada (con las campañas del día); sin plugin, todas las raíces.\n- El aviso de un producto que no se envía al destino va encima del título, con el texto de `shipping` («Lo sentimos, este producto no está disponible en tu país.»), como lo ponía Country Based Restrictions.\n- La fila de subcategorías se envuelve en varias líneas en escritorio y, en móvil, se desvanece por la derecha mientras haya más.\n- Fixtures de lachinata.es: la clase de envío `internacional` (antes `ocultar-internacional`) con sus 26 destinos, sin Portugal, Austria ni República Checa.\n- El e2e local prueba contra el `WP_HOME` del override si no se pasa `WP_BASE_URL`.\n\n### Corregido\n- Los GTIN con el dígito de control mal ya no salen en los feeds.\n- Fechas del registro de cambios y del panel de oleotecas con el formato de fecha del sitio («27 de octubre de 2026»).\n- La ficha con más opiniones pasa de 1,27 MB a 142 KB de HTML.\n- e2e de «Cerca de mí» con el sitio en `127.0.0.1.nip.io`: permiso de geolocalización para el origen del sitio.",
+			"notes": "Contraste del botón de carrito y de los avisos, y respuesta al añadir a la bolsa sin toast (decisiones de Alberto del 28/10 en el sistema de diseño).\n\n### Cambiado\n- **«Añadir a la bolsa»** (el «+» de las tarjetas, la ficha y la barra fija) en verde oscuro con texto e icono blancos (5,2:1); hover y «añadido» más oscuros.\n- **Al añadir, sin toast:** el botón gira mientras se añade y no admite otro clic; después pasa a check con un latido (y un anillo en el «+») durante 1,8 s, y el de la ficha dice «Añadido a la bolsa». A la vez, un punto vuela hasta la bolsa de la cabecera, que se balancea y suma el contador con el número real de la respuesta. El lector de pantalla oye «{producto} añadido a la bolsa». Con «reducir movimiento», sin vuelo ni latido. Si falla, el botón vuelve a su estado y sale un aviso de error junto a él, con la frase de WooCommerce si la hay. Sin JavaScript, el enlace `?add-to-cart=` sigue funcionando; la medición de `add_to_cart` no cambia.\n- **Avisos** (disponibilidad, envío gratis, refrigerado, bolsa y errores del checkout): fondo suave del tono, filete de 4 px a la izquierda, icono en el tono fuerte y texto siempre en tinta.\n- **Refrigerado:** en la tarjeta, una pastilla con texto («Refrigerado») en lugar del copo; en la ficha, el aviso con el camión. En La Chinata → Catálogo → Tienda, cada marca tiene texto e icono opcional para la tarjeta y título e icono para el aviso; las marcas guardadas antes siguen funcionando (pastilla con su texto, sin icono, y aviso con el camión).\n- Tokens nuevos del sistema: `cart`, `cart-hover`, `on-cart` y los tonos suaves y fuertes de los avisos. El copo sale del sprite.",
 			"previous": [
+				{
+					"version": "0.12.2",
+					"date": "2026-10-28",
+					"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.12.2/lachinata-core-0.12.2.zip",
+					"sha256": "524ce36828337197d8be3eeb8b1cf74cdac3403966f20eb98a8d3f948bfdba1e"
+				},
 				{
 					"version": "0.12.1",
 					"date": "2026-10-27",
@@ -38,28 +44,28 @@
 					"date": "2026-10-25",
 					"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.9.1/lachinata-core-0.9.1.zip",
 					"sha256": "9d953843e8f99f6490c7afceae0bbb4c31bc28d35b3e0f45b8c2786584cfc1d3"
-				},
-				{
-					"version": "0.9.0",
-					"date": "2026-10-24",
-					"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.9.0/lachinata-core-0.9.0.zip",
-					"sha256": "4f19802544691912d17bc519f313eaa36112d7719ee3b28ddecc4f264b78ecd7"
 				}
 			]
 		},
 		"lachinata": {
-			"version": "0.12.2",
+			"version": "0.12.3",
 			"date": "2026-10-28",
-			"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.12.2/lachinata-0.12.2.zip",
-			"sha256": "be08fc5178df003cab6a5dc40d4f4921115bbe49af35052e68e729361cff8623",
+			"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.12.3/lachinata-0.12.3.zip",
+			"sha256": "97c31510f66a4678ec1d33cdcf7124f73745df568ff4db1a8d494f3ad239a98b",
 			"requires": {
 				"wordpress": "6.8",
 				"php": "8.2",
 				"woocommerce": "10.0",
-				"lachinata-core": "0.12.2"
+				"lachinata-core": "0.12.3"
 			},
-			"notes": "La plantilla pinta los datos del catálogo tal como vienen: no los abrevia, no los oculta y no los deduce. Ensayado con los 815 productos de lachinata.es en la vista real.\n\n### Añadido\n- **Tarjeta de producto**: nombre completo, huecos de valoración y formato reservados (el precio queda alineado en la fila), todas las etiquetas apiladas con el tono, la imagen y el orden de su término, marca de la clase de envío (copo y «Envío refrigerado» en Frío y Fresco) e «Imagen de tarjeta». La tinta es la de la raíz que se ve o la de la categoría principal del producto.\n- **Ficha**: aviso de envío refrigerado con sus condiciones sacadas de la configuración (en lachinata.es, «Solo a España peninsular; por …, gratis desde 60 €. Sale de lunes a miércoles.»); opiniones con resumen numérico (media, recuento y una barra por estrellas), las 5 más recientes y «Ver más opiniones» de 10 en 10 desde la Store API (sin JavaScript, página 2 con `noindex`); venta cruzada con título y fuente por categoría raíz.\n- **Catálogo (`catalog`)**: categoría principal del producto; tono, imagen y orden de las etiquetas de producto; WooCommerce → La Chinata → Catálogo con la salud del catálogo (precio por unidad incompleto o raro, GTIN que no puede existir, EAN distinto, sin imagen, sin categoría) y la configuración de la tienda (categorías y campañas de temporada, venta cruzada por raíz, marcas de las clases de envío), que viaja en el JSON; `wp lachinata catalog health` y contador en la portada del panel.\n- **Envíos (`shipping`)**: «Solo se envía a» en cada producto, que sustituye a las reglas por producto de Country Based Restrictions, con `wp lachinata shipping migrate-restrictions`; texto del aviso de la ficha editable en Restricciones de producto (`Contracts\\ShippingRules` v3).\n- **Bloque de productos** (`lachinata/products`, módulo `blocks`) por SKU o ID, con la tarjeta del tema.\n- **Migración** (`wp lachinata catalog normalize`): categoría principal de Rank Math, EAN como GTIN cuando el dígito de control es válido, subtítulos en negrita a `h3` y `[products]` al bloque de productos, sin tocar el texto; informe de lo que no se traslada.\n- Seed: las claves de prueba de los proveedores (teselas, OVH, WhatsApp, Mailchimp) se leen de `.wp-env.override.json`.\n\n### Cambiado\n- Las categorías de la cabecera, el menú, el buscador y la home son la lista configurada (con las campañas del día); sin plugin, todas las raíces.\n- El aviso de un producto que no se envía al destino va encima del título, con el texto de `shipping` («Lo sentimos, este producto no está disponible en tu país.»), como lo ponía Country Based Restrictions.\n- La fila de subcategorías se envuelve en varias líneas en escritorio y, en móvil, se desvanece por la derecha mientras haya más.\n- Fixtures de lachinata.es: la clase de envío `internacional` (antes `ocultar-internacional`) con sus 26 destinos, sin Portugal, Austria ni República Checa.\n- El e2e local prueba contra el `WP_HOME` del override si no se pasa `WP_BASE_URL`.\n\n### Corregido\n- Los GTIN con el dígito de control mal ya no salen en los feeds.\n- Fechas del registro de cambios y del panel de oleotecas con el formato de fecha del sitio («27 de octubre de 2026»).\n- La ficha con más opiniones pasa de 1,27 MB a 142 KB de HTML.\n- e2e de «Cerca de mí» con el sitio en `127.0.0.1.nip.io`: permiso de geolocalización para el origen del sitio.",
+			"notes": "Contraste del botón de carrito y de los avisos, y respuesta al añadir a la bolsa sin toast (decisiones de Alberto del 28/10 en el sistema de diseño).\n\n### Cambiado\n- **«Añadir a la bolsa»** (el «+» de las tarjetas, la ficha y la barra fija) en verde oscuro con texto e icono blancos (5,2:1); hover y «añadido» más oscuros.\n- **Al añadir, sin toast:** el botón gira mientras se añade y no admite otro clic; después pasa a check con un latido (y un anillo en el «+») durante 1,8 s, y el de la ficha dice «Añadido a la bolsa». A la vez, un punto vuela hasta la bolsa de la cabecera, que se balancea y suma el contador con el número real de la respuesta. El lector de pantalla oye «{producto} añadido a la bolsa». Con «reducir movimiento», sin vuelo ni latido. Si falla, el botón vuelve a su estado y sale un aviso de error junto a él, con la frase de WooCommerce si la hay. Sin JavaScript, el enlace `?add-to-cart=` sigue funcionando; la medición de `add_to_cart` no cambia.\n- **Avisos** (disponibilidad, envío gratis, refrigerado, bolsa y errores del checkout): fondo suave del tono, filete de 4 px a la izquierda, icono en el tono fuerte y texto siempre en tinta.\n- **Refrigerado:** en la tarjeta, una pastilla con texto («Refrigerado») en lugar del copo; en la ficha, el aviso con el camión. En La Chinata → Catálogo → Tienda, cada marca tiene texto e icono opcional para la tarjeta y título e icono para el aviso; las marcas guardadas antes siguen funcionando (pastilla con su texto, sin icono, y aviso con el camión).\n- Tokens nuevos del sistema: `cart`, `cart-hover`, `on-cart` y los tonos suaves y fuertes de los avisos. El copo sale del sprite.",
 			"previous": [
+				{
+					"version": "0.12.2",
+					"date": "2026-10-28",
+					"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.12.2/lachinata-0.12.2.zip",
+					"sha256": "be08fc5178df003cab6a5dc40d4f4921115bbe49af35052e68e729361cff8623"
+				},
 				{
 					"version": "0.12.1",
 					"date": "2026-10-27",
@@ -83,12 +89,6 @@
 					"date": "2026-10-25",
 					"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.9.1/lachinata-0.9.1.zip",
 					"sha256": "756e0e3d9c84bc9f52b2a5c5c2741595a91bff5909bd11f24b70a00780e9bf50"
-				},
-				{
-					"version": "0.9.0",
-					"date": "2026-10-24",
-					"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.9.0/lachinata-0.9.0.zip",
-					"sha256": "ed04d8cb75b0cddeb13b6cec5d0452278eea09a20ebb1cfc83556483b0a651c0"
 				}
 			]
 		}

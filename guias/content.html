@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Blog y recetas · Guías de La Chinata Core</title>
+<style>
+:root { color-scheme: light dark; --ink: #231f20; --soft: #5b5657; --line: #e8ebed; --bg: #fff; --code: #f3eee6; }
+@media (prefers-color-scheme: dark) { :root { --ink: #f3eee6; --soft: #c9c3bd; --line: #3a3637; --bg: #1b1a18; --code: #2b2926; } }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 17px/1.6 system-ui, -apple-system, "Segoe UI", sans-serif; }
+main { max-width: 760px; margin: 0 auto; padding: 24px 16px 64px; }
+nav { font-size: 15px; margin-bottom: 24px; }
+a { color: inherit; }
+h1, h2, h3 { line-height: 1.25; }
+h2 { margin-top: 2em; border-top: 1px solid var(--line); padding-top: 1em; }
+code { background: var(--code); padding: 0 4px; border-radius: 4px; font-size: .9em; }
+pre { background: var(--code); padding: 12px; overflow-x: auto; border-radius: 6px; }
+table { border-collapse: collapse; width: 100%; display: block; overflow-x: auto; font-size: 15px; }
+th, td { border: 1px solid var(--line); padding: 6px 8px; text-align: left; vertical-align: top; }
+footer { color: var(--soft); font-size: 14px; margin-top: 48px; }
+</style>
+</head>
+<body>
+<main>
+<nav><a href="index.html">Guías de La Chinata Core</a></nav>
+<h1>Blog y recetas</h1>
+<p>Convierte el blog en una <strong>revista</strong>: portada en <code>/blog/</code>, secciones con su página, como mucho 20 temas curados y entradas que abren con la respuesta corta. Las <strong>recetas</strong> se escriben como datos (raciones, tiempos, ingredientes con su producto, pasos), y con ellos la tienda pinta la cabecera de la receta, las raciones que se recalculan, el modo cocina, la vista para imprimir, los productos de la tienda que usa y las recetas en la ficha de cada producto.</p>
+<p>Las entradas <strong>conservan su dirección</strong> (<code>/nombre-de-la-entrada/</code>): ni una URL cambia.</p>
+<h2>Antes de empezar</h2>
+<ul>
+<li><strong>Rank Math</strong> (gratuito) sigue con los títulos, las descripciones, los sitemaps y las redirecciones. El módulo pone sus propios datos estructurados donde Rank Math se queda corto (receta, artículo, migas, organización) y quita los de Rank Math de esos tipos, para que no salgan dos veces.</li>
+<li><strong>Datos de la empresa</strong> (La Chinata → Datos de la empresa): el nombre comercial firma las entradas («Contenido elaborado y revisado por el equipo de {nombre}») y es el autor de todo en los datos estructurados. En <strong>Redes</strong> van los perfiles de la marca: salen en el pie y en los datos de la organización.</li>
+<li>Si ya tienes una <strong>página</strong> con la dirección <code>/blog/</code>, cámbiale la dirección o bórrala: la revista ocupa esa dirección.</li>
+</ul>
+<h2>Dónde se configura</h2>
+<ul>
+<li>WooCommerce → La Chinata → <strong>Blog</strong>: textos de la revista y reglas.</li>
+<li>Entradas → <strong>Secciones</strong> y <strong>Temas</strong>: el texto de cada sección (su descripción), su orden en la revista y la categoría de productos que acompaña a sus artículos.</li>
+<li>En cada entrada, el panel <strong>Blog y recetas</strong> (columna derecha del editor) y el bloque <strong>Receta</strong>.</li>
+</ul>
+<h2>Formatos y secciones</h2>
+<p>Cada entrada tiene un <strong>formato</strong>: <strong>receta</strong>, <strong>artículo</strong> (guías, consejos, cultura, cuidado) o <strong>noticia</strong> (prensa, aperturas, concursos, eventos). Una entrada con el bloque Receta es una receta aunque no se haya elegido el formato.</p>
+<p>Las <strong>secciones</strong> son las grandes partes de la revista (<code>/blog/{seccion}/</code>). La sección de las recetas tiene <strong>subsecciones por tipo de plato</strong> (<code>/blog/recetas/postres/</code>). Una subsección solo tiene página propia a partir de un número de recetas (6 de serie): por debajo, su enlace lleva a la sección y su nombre en las tarjetas va sin enlace.</p>
+<p>Los <strong>temas</strong> (como mucho 20) agrupan entradas de distintas secciones con un texto propio (<code>/blog/tema/{tema}/</code>). Las <strong>etiquetas</strong> de WordPress dejan de tener página.</p>
+<h2>En cada entrada</h2>
+<table>
+<thead>
+<tr>
+<th>Campo</th>
+<th>Qué es</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Formato</td>
+<td>Receta, artículo o noticia</td>
+</tr>
+<tr>
+<td>En pocas palabras</td>
+<td>2 o 3 frases que responden a la pregunta del título. Se ve arriba del todo, es la base de la meta descripción y es lo que citan los buscadores y los asistentes</td>
+</tr>
+<tr>
+<td>Revisado el</td>
+<td>La fecha de la <strong>última revisión de verdad</strong>. La página dice «Publicado el…» siempre y «Actualizado el…» solo con esta fecha. Guardar la entrada no la cambia. «Revisado hoy» la pone en un clic</td>
+</tr>
+<tr>
+<td>Fuentes</td>
+<td>Título y enlace de cada fuente. Obligatorias en salud y belleza: no se hacen afirmaciones de salud sin fuente</td>
+</tr>
+</tbody></table>
+<p>Si una entrada tiene algo que revisar (por ejemplo, salió de la migración con ingredientes dudosos), el panel lo dice arriba. La lista de entradas muestra un aviso con <strong>«Ver la lista»</strong> de todas las que esperan revisión.</p>
+<h2>La receta</h2>
+<p>En el bloque <strong>Receta</strong>:</p>
+<ul>
+<li><strong>Datos</strong>: raciones; preparación, cocción y reposo en minutos (el total se calcula); dificultad; cocina. El tipo de plato es la subsección de la entrada.</li>
+<li><strong>Ingredientes</strong>: grupos opcionales («Para la base», «Para la crema»); en cada línea, cantidad (<code>200</code>, <code>1/2</code>, <code>1,5</code>), unidad (siempre métricas: g, kg, ml, l, o cucharada, pizca…), ingrediente, nota («a temperatura ambiente») y, si es de la tienda, el <strong>producto</strong> (se busca por nombre; se guardan su número y su SKU, nunca su dirección). Si el producto se despublica o se agota, el ingrediente sigue en texto, sin enlace ni compra.</li>
+<li><strong>Pasos</strong>: una acción por paso, con su tiempo si lo tiene (sale en el modo cocina) y una foto opcional con su texto alternativo.</li>
+<li><strong>Consejos</strong>, <strong>variantes</strong>, <strong>conservación</strong> y <strong>vídeo</strong> (un enlace; no se incrusta ningún reproductor).</li>
+</ul>
+<p>No hay campos de nutrición ni de alérgenos: no se inventan ni se calculan. No hay valoraciones.</p>
+<p>En la página, quien cocina puede cambiar las <strong>raciones</strong> (las cantidades que son números se recalculan; «una pizca» no cambia), tachar ingredientes, abrir el <strong>modo cocina</strong> (un paso a pantalla completa, con la pantalla encendida) e <strong>imprimir</strong>. Justo después de los ingredientes salen los <strong>ingredientes de la tienda</strong> con su «+» y «Añadir los N a la bolsa».</p>
+<h2>Ajustes</h2>
+<table>
+<thead>
+<tr>
+<th>Ajuste</th>
+<th>Qué hace</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Antetítulo, título y entradilla de la revista</td>
+<td>La cabecera de <code>/blog/</code>. Sin antetítulo: «La revista de {nombre}»; sin título: «Blog»</td>
+</tr>
+<tr>
+<td>Sección de las recetas</td>
+<td>La sección cuyas subsecciones son tipos de plato y a la que lleva «Ver todas» desde la ficha</td>
+</tr>
+<tr>
+<td>Recetas en la ficha de producto</td>
+<td>Las categorías de producto (y sus hijas) que muestran «Recetas con este producto» en la ficha, y «Ideas para tu {producto}» en la página de gracias y en el correo de pedido enviado. Solo categorías de cocina</td>
+</tr>
+<tr>
+<td>Secciones de salud y belleza</td>
+<td>Sus entradas pasan a la lista de revisión si no se revisan en el plazo</td>
+</tr>
+<tr>
+<td>Recetas para que una subsección tenga página</td>
+<td>6 de serie</td>
+</tr>
+<tr>
+<td>Meses sin revisar (salud y belleza)</td>
+<td>12 de serie</td>
+</tr>
+<tr>
+<td>Meses para el aviso de noticia antigua</td>
+<td>Pasado el plazo, la noticia abre con «Esta noticia es de… Puede que la información haya cambiado». 0: sin aviso</td>
+</tr>
+<tr>
+<td>Categorías antiguas</td>
+<td>Una por línea, «categoría = sección»: la dirección antigua de la categoría lleva a su sección (redirección permanente). La rellena la migración</td>
+</tr>
+</tbody></table>
+<p>Los textos y las reglas viajan en el JSON de configuración; las secciones, los temas y las entradas son contenido de cada tienda.</p>
+<h2>Recetas en la ficha de producto</h2>
+<p>Como mucho <strong>3 recetas</strong>, debajo de todo lo que sirve para comprar (compra, descripción, opiniones y «También te puede gustar»), con «Ver todas» a la sección de recetas filtrada por el producto. Nunca en la bolsa ni en el checkout, y solo en las categorías del ajuste. Sin recetas, la sección no sale.</p>
+<h2>Direcciones antiguas</h2>
+<ul>
+<li>Una <strong>categoría</strong> del blog lleva a su sección (ajuste «Categorías antiguas») o a la revista.</li>
+<li>Una <strong>etiqueta</strong> lleva a la sección de su entrada más reciente, o a la revista.</li>
+<li>Las <strong>páginas de autor</strong> llevan a la revista: el contenido es de la marca y no se expone ningún usuario.</li>
+</ul>
+<h2>Migrar un blog existente</h2>
+<p>Desde la línea de órdenes, primero en seco:</p>
+<pre><code class="language-bash">wp lachinata content migrate --map=mapa.json --gsc=search-console.csv --report=informe.md --dry-run
+wp lachinata content migrate --map=mapa.json --gsc=search-console.csv --report=informe.md
+</code></pre>
+<p>El <strong>mapa</strong> (JSON) dice lo que es de tu tienda: las secciones (<code>slug</code>, <code>name</code>, <code>order</code>, <code>products</code>, <code>text</code>), los textos de la revista (<code>texts</code>), la sección de las recetas, las de salud y belleza, las categorías de producto con recetas, a qué formato y sección va cada categoría antigua (<code>categories</code>, con <code>priority</code> cuando una entrada tiene varias; manda la categoría principal de Rank Math), los tipos de plato del esquema de recetas antiguo (<code>dishes</code>) y las dificultades (<code>difficulty</code>).</p>
+<p>La migración:</p>
+<ul>
+<li>pone formato y sección a cada entrada;</li>
+<li>convierte cada receta (el esquema <code>Recipe</code> de Rank Math y su texto) al bloque: los ingredientes del texto si los hay (suelen traer las cantidades), si no los del esquema; los pasos del esquema, si no los del texto. Un analizador separa cantidad, unidad e ingrediente y marca lo dudoso. Lo que pasa al bloque sale del texto. La reseña propia del esquema desaparece;</li>
+<li>marca para revisar las recetas sin esquema, las incompletas y las que tienen ingredientes dudosos o sin cantidad, con el motivo;</li>
+<li>guarda los clics de Search Console (CSV de páginas) para «Lo más leído»;</li>
+<li>rellena las redirecciones de las categorías;</li>
+<li>y escribe un informe con todo, también los códigos cortos que quedan en los textos.</li>
+</ul>
+<p>Repetirla no cambia lo que ya está migrado.</p>
+<h2>Qué pasa al apagarlo</h2>
+<p>Las entradas vuelven a la plantilla de entrada del tema, sin receta, y desaparecen la revista, las secciones y las redirecciones. No se borra nada: al encenderlo vuelve como estaba.</p>
+
+<footer>La Chinata Core 0.13.0</footer>
+</main>
+</body>
+</html>

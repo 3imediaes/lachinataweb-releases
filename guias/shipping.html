@@ -235,6 +235,9 @@ footer { color: var(--soft); font-size: 14px; margin-top: 48px; }
 </tr>
 </tbody></table>
 <p>Para añadir una, usa la última fila («Añadir una restricción…») y pulsa <strong>Guardar restricciones</strong>.</p>
+<p><strong>Solo se envía a (un producto concreto).</strong> Además de las de su clase, cada producto puede tener su propia lista en Productos → editar → Datos del producto → pestaña <strong>Envío</strong> → <strong>Solo se envía a</strong>. Vacía: sin restricción propia. Fuera de esos destinos el producto no se puede comprar: el catálogo de ese destino no lo muestra y su ficha lo avisa.</p>
+<p><strong>Aviso en la ficha.</strong> Debajo de la tabla, el texto que lee, encima del título, quien visita la ficha de un producto desde un destino al que no se envía (lo pinta el módulo <a href="locale.html">Destino</a>). Vacío: «Lo sentimos, este producto no está disponible en tu país.».</p>
+<p><strong>Si venías de Country Based Restrictions</strong>: quien mantiene el sitio copia las reglas de cada producto con <code>wp lachinata shipping migrate-restrictions --dry-run</code> y, revisado, sin <code>--dry-run</code>. Solo copia las reglas «solo estos países»; las de «todos menos estos» las lista para hacerlas a mano. Después, el plugin se puede desactivar.</p>
 <h3>Tarifa en vivo</h3>
 <p>Es un tipo de método más en WooCommerce → Ajustes → Envío → editar zona → Añadir método de envío → <strong>Tarifa en vivo</strong>. Cobra el precio que devuelve un transportista a través de un proveedor de tarifas instalado en la tienda. Además de las condiciones de arriba, tiene:</p>
 <table>
@@ -283,6 +286,7 @@ footer { color: var(--soft); font-size: 14px; margin-top: 48px; }
 <pre><code class="language-bash">wp lachinata shipping simulate --to=ES --weight=3 --amount=45
 </code></pre>
 <p>Opciones: <code>--to</code> (país, o país y provincia con dos puntos), <code>--postcode</code>, <code>--weight</code> (kg, de serie 1), <code>--amount</code> (de serie 30), <code>--classes</code> (slugs separados por comas) y <code>--flag</code> (lleva un producto con exclusión internacional).</p>
+<p>Las condiciones de una clase (a dónde va, cuánto cuesta, desde cuánto es gratis) también salen en el aviso de la ficha de sus productos si el <a href="catalog.html">Catálogo</a> le pone una marca con aviso (por ejemplo, el copo de «Envío refrigerado»).</p>
 <h2>Comprobar que funciona</h2>
 <ol>
 <li>Ve a WooCommerce → La Chinata → Envíos → <strong>Probador</strong>. Elige un destino, un peso, un importe y, si quieres, clases de envío. Pulsa <strong>Probar</strong>.</li>
@@ -338,7 +342,7 @@ footer { color: var(--soft); font-size: 14px; margin-top: 48px; }
 <p>WooCommerce vuelve a ofrecer sus zonas y métodos tal cual: sin condiciones, sin peso máximo, sin umbral de envío gratis anunciado, sin restricciones de producto, sin mensajes propios de «sin envío» y sin «Tarifa en vivo» (esos métodos dejan de calcular). <a href="eta.html">Entrega estimada</a> se apaga con él.</p>
 <p><strong>Los datos se conservan</strong>: los límites y mensajes de zona, las restricciones y las condiciones guardadas en cada método vuelven al encenderlo. «Borrar datos…» (WooCommerce → La Chinata → Módulos, con el módulo apagado) borra los ajustes de zonas y restricciones tras descargar una copia; las condiciones de cada método y los pedidos no se tocan.</p>
 
-<footer>La Chinata Core 0.12.1</footer>
+<footer>La Chinata Core 0.12.2</footer>
 </main>
 </body>
 </html>

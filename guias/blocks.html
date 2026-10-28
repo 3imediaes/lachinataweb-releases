@@ -24,7 +24,7 @@ footer { color: var(--soft); font-size: 14px; margin-top: 48px; }
 <main>
 <nav><a href="index.html">Guías de La Chinata Core</a></nav>
 <h1>Bloques editoriales</h1>
-<p>Añade al editor de páginas de WordPress seis bloques con el diseño de la tienda (hero, tiles de categoría, banner de campaña, ventajas, historia y cita) y dos patrones listos para montar la página de inicio y la de «Acerca de». Tú eliges y rellenas textos; el diseño ya está hecho.</p>
+<p>Añade al editor de páginas de WordPress siete bloques con el diseño de la tienda (hero, tiles de categoría, banner de campaña, ventajas, historia, cita y productos) y dos patrones listos para montar la página de inicio y la de «Acerca de». Tú eliges y rellenas textos; el diseño ya está hecho.</p>
 <h2>Antes de empezar</h2>
 <ul>
 <li>Activa el módulo en <strong>WooCommerce → La Chinata → Módulos</strong>: marca <strong>Bloques editoriales</strong> y pulsa «Guardar cambios».</li>
@@ -104,6 +104,13 @@ Iconos disponibles, entre otros: <code>truck</code>, <code>leaf</code>, <code>ph
 <li><strong>Cita</strong>: el texto. Sin texto, el bloque no sale.</li>
 <li><strong>Autor</strong>: opcional.</li>
 </ul>
+<h3>Productos</h3>
+<p>Una rejilla de productos elegidos, con la tarjeta de la tienda. Sirve también dentro de la descripción de un producto (por ejemplo, el contenido de una caja de regalo).</p>
+<ul>
+<li><strong>SKU</strong>: los SKU separados por comas, en el orden en que quieres que salgan. Es la forma recomendada: el SKU no cambia entre tiendas ni al migrar.</li>
+<li><strong>ID de producto</strong>: alternativa al SKU, separados por comas.</li>
+</ul>
+<p>Los productos que no existen, no están publicados o no se envían al destino del visitante no salen; sin ninguno, el bloque no se pinta. Sustituye al código <code>[products skus=&quot;…&quot;]</code> de las descripciones antiguas: la migración del <a href="catalog.html">Catálogo</a> lo cambia solo.</p>
 <h2>Comprobar que funciona</h2>
 <ol>
 <li>Abre una página de prueba, añade cada bloque desde la categoría <strong>La Chinata</strong> y rellena sus campos: la vista previa del centro tiene que cambiar al escribir.</li>
@@ -129,7 +136,7 @@ Iconos disponibles, entre otros: <code>truck</code>, <code>leaf</code>, <code>ph
 <li>Mientras está apagado, el insertador vuelve a ofrecer los patrones propios del tema como alternativa.</li>
 </ul>
 
-<footer>La Chinata Core 0.12.1</footer>
+<footer>La Chinata Core 0.12.2</footer>
 </main>
 </body>
 </html>

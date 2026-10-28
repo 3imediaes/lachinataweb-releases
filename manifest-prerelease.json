@@ -1,20 +1,26 @@
 {
 	"schema": 1,
-	"generated_at": "2026-10-28T08:22:11.741Z",
+	"generated_at": "2026-10-28T15:00:03.745Z",
 	"packages": {
 		"lachinata-core": {
-			"version": "0.12.1",
-			"date": "2026-10-27",
-			"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.12.1/lachinata-core-0.12.1.zip",
-			"sha256": "fde680d2a580851db204782300ee311207da54ca43c6ca133322f3ec4551cd39",
+			"version": "0.12.2",
+			"date": "2026-10-28",
+			"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.12.2/lachinata-core-0.12.2.zip",
+			"sha256": "524ce36828337197d8be3eeb8b1cf74cdac3403966f20eb98a8d3f948bfdba1e",
 			"requires": {
 				"wordpress": "6.8",
 				"php": "8.2",
 				"woocommerce": "10.0",
-				"lachinata": "0.12.1"
+				"lachinata": "0.12.2"
 			},
-			"notes": "### Añadido\n- **API de socios (módulo `oleotecas`, sitio maestro)** para el panel de franquicias: `GET` y `PUT /lachinata/v1/oleotecas/partner/<slug>` con `Authorization: Bearer`. Solo horario semanal, horarios especiales y cierre temporal; lo demás se ignora y se dice. Misma validación que el editor con errores por campo (422, nada guardado), `X-LC-Actor` obligatorio para escribir, `ETag` e `If-Match` (412), 120 peticiones cada 10 minutos por token (429 con `Retry-After`) y el JSON del buscador reescrito al momento. Contrato con ejemplos en `docs/guias/oleotecas.md`.\n- Tokens de la API en WooCommerce → La Chinata → Oleotecas: varios con nombre, guardados como huella, se ven una vez, último uso, rotar (el anterior vale 24 horas) y revocar al momento. Fuera de la exportación.\n- **Cierre temporal**: un horario especial cerrado de tipo `closure` (uno a la vez), con su casilla en el editor y su campo `closure` en la API.\n- **Registro de cambios** de horario, especiales y cierre en cada tienda (API, editor o WP-CLI; quién, cuándo, antes y después), visible en el editor. Aviso opcional por correo a la central de los cambios hechos desde el panel (`partner_notify_email`).\n- **Modo cliente (módulo `oleotecas`)**: una tienda cliente enseña las tiendas de la maestra con el mismo buscador, sin fichas ni zonas propias. Su servidor lee el documento de la maestra cada hora y guarda una copia de respaldo; el navegador lee la copia del propio dominio. Tarjetas y zonas con las URL de la maestra; canonical al buscador de la maestra en el mismo idioma; salud con maestra caída y copia de más de 48 horas. Perfiles `canarias` y `cz` en modo cliente con un maestro de prueba.\n- El documento del buscador lleva `lang` y `finder` (lo leen las tiendas cliente).\n- **Tema**: variante corta de los mensajes de la PromoBar (`short`; en los menús, la descripción del elemento), que se ve en móvil junto a la `MarketBadge` sin repetir el destino: «Envío gratis desde 60 €».\n\n### Cambiado\n- El mapa del buscador encuadra al abrirse el grupo principal de tiendas del país con más tiendas (medoide y tres veces la mediana de las distancias, con «cerca» de mínimo); las lejanas, como Canarias, siguen en el mapa.\n- Desaparece el ajuste `partner_token` (hueco sin uso de la 0.12.0): los tokens no son ajustes.\n\n### Corregido\n- e2e intermitente de la factura de empresa en el checkout: el aviso de consola del 400 esperado de la Store API (NIF erróneo) podía llegar después de vaciar la lista de errores.",
+			"notes": "La plantilla pinta los datos del catálogo tal como vienen: no los abrevia, no los oculta y no los deduce. Ensayado con los 815 productos de lachinata.es en la vista real.\n\n### Añadido\n- **Tarjeta de producto**: nombre completo, huecos de valoración y formato reservados (el precio queda alineado en la fila), todas las etiquetas apiladas con el tono, la imagen y el orden de su término, marca de la clase de envío (copo y «Envío refrigerado» en Frío y Fresco) e «Imagen de tarjeta». La tinta es la de la raíz que se ve o la de la categoría principal del producto.\n- **Ficha**: aviso de envío refrigerado con sus condiciones sacadas de la configuración (en lachinata.es, «Solo a España peninsular; por …, gratis desde 60 €. Sale de lunes a miércoles.»); opiniones con resumen numérico (media, recuento y una barra por estrellas), las 5 más recientes y «Ver más opiniones» de 10 en 10 desde la Store API (sin JavaScript, página 2 con `noindex`); venta cruzada con título y fuente por categoría raíz.\n- **Catálogo (`catalog`)**: categoría principal del producto; tono, imagen y orden de las etiquetas de producto; WooCommerce → La Chinata → Catálogo con la salud del catálogo (precio por unidad incompleto o raro, GTIN que no puede existir, EAN distinto, sin imagen, sin categoría) y la configuración de la tienda (categorías y campañas de temporada, venta cruzada por raíz, marcas de las clases de envío), que viaja en el JSON; `wp lachinata catalog health` y contador en la portada del panel.\n- **Envíos (`shipping`)**: «Solo se envía a» en cada producto, que sustituye a las reglas por producto de Country Based Restrictions, con `wp lachinata shipping migrate-restrictions`; texto del aviso de la ficha editable en Restricciones de producto (`Contracts\\ShippingRules` v3).\n- **Bloque de productos** (`lachinata/products`, módulo `blocks`) por SKU o ID, con la tarjeta del tema.\n- **Migración** (`wp lachinata catalog normalize`): categoría principal de Rank Math, EAN como GTIN cuando el dígito de control es válido, subtítulos en negrita a `h3` y `[products]` al bloque de productos, sin tocar el texto; informe de lo que no se traslada.\n- Seed: las claves de prueba de los proveedores (teselas, OVH, WhatsApp, Mailchimp) se leen de `.wp-env.override.json`.\n\n### Cambiado\n- Las categorías de la cabecera, el menú, el buscador y la home son la lista configurada (con las campañas del día); sin plugin, todas las raíces.\n- El aviso de un producto que no se envía al destino va encima del título, con el texto de `shipping` («Lo sentimos, este producto no está disponible en tu país.»), como lo ponía Country Based Restrictions.\n- La fila de subcategorías se envuelve en varias líneas en escritorio y, en móvil, se desvanece por la derecha mientras haya más.\n- Fixtures de lachinata.es: la clase de envío `internacional` (antes `ocultar-internacional`) con sus 26 destinos, sin Portugal, Austria ni República Checa.\n- El e2e local prueba contra el `WP_HOME` del override si no se pasa `WP_BASE_URL`.\n\n### Corregido\n- Los GTIN con el dígito de control mal ya no salen en los feeds.\n- Fechas del registro de cambios y del panel de oleotecas con el formato de fecha del sitio («27 de octubre de 2026»).\n- La ficha con más opiniones pasa de 1,27 MB a 142 KB de HTML.\n- e2e de «Cerca de mí» con el sitio en `127.0.0.1.nip.io`: permiso de geolocalización para el origen del sitio.",
 			"previous": [
+				{
+					"version": "0.12.1",
+					"date": "2026-10-27",
+					"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.12.1/lachinata-core-0.12.1.zip",
+					"sha256": "fde680d2a580851db204782300ee311207da54ca43c6ca133322f3ec4551cd39"
+				},
 				{
 					"version": "0.12.0",
 					"date": "2026-10-27",
@@ -38,28 +44,28 @@
 					"date": "2026-10-24",
 					"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.9.0/lachinata-core-0.9.0.zip",
 					"sha256": "4f19802544691912d17bc519f313eaa36112d7719ee3b28ddecc4f264b78ecd7"
-				},
-				{
-					"version": "0.8.1",
-					"date": "2026-10-24",
-					"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.8.1/lachinata-core-0.8.1.zip",
-					"sha256": "74b31726157d8264ca9eca25c0f58e0bfa2220d713c2a38f92c296bc78b5cbc9"
 				}
 			]
 		},
 		"lachinata": {
-			"version": "0.12.1",
-			"date": "2026-10-27",
-			"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.12.1/lachinata-0.12.1.zip",
-			"sha256": "b33e3eba9bcd9a26ed5b021a06d69a73f5e935da4548ed32176f9412fdcec5d8",
+			"version": "0.12.2",
+			"date": "2026-10-28",
+			"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.12.2/lachinata-0.12.2.zip",
+			"sha256": "be08fc5178df003cab6a5dc40d4f4921115bbe49af35052e68e729361cff8623",
 			"requires": {
 				"wordpress": "6.8",
 				"php": "8.2",
 				"woocommerce": "10.0",
-				"lachinata-core": "0.12.1"
+				"lachinata-core": "0.12.2"
 			},
-			"notes": "### Añadido\n- **API de socios (módulo `oleotecas`, sitio maestro)** para el panel de franquicias: `GET` y `PUT /lachinata/v1/oleotecas/partner/<slug>` con `Authorization: Bearer`. Solo horario semanal, horarios especiales y cierre temporal; lo demás se ignora y se dice. Misma validación que el editor con errores por campo (422, nada guardado), `X-LC-Actor` obligatorio para escribir, `ETag` e `If-Match` (412), 120 peticiones cada 10 minutos por token (429 con `Retry-After`) y el JSON del buscador reescrito al momento. Contrato con ejemplos en `docs/guias/oleotecas.md`.\n- Tokens de la API en WooCommerce → La Chinata → Oleotecas: varios con nombre, guardados como huella, se ven una vez, último uso, rotar (el anterior vale 24 horas) y revocar al momento. Fuera de la exportación.\n- **Cierre temporal**: un horario especial cerrado de tipo `closure` (uno a la vez), con su casilla en el editor y su campo `closure` en la API.\n- **Registro de cambios** de horario, especiales y cierre en cada tienda (API, editor o WP-CLI; quién, cuándo, antes y después), visible en el editor. Aviso opcional por correo a la central de los cambios hechos desde el panel (`partner_notify_email`).\n- **Modo cliente (módulo `oleotecas`)**: una tienda cliente enseña las tiendas de la maestra con el mismo buscador, sin fichas ni zonas propias. Su servidor lee el documento de la maestra cada hora y guarda una copia de respaldo; el navegador lee la copia del propio dominio. Tarjetas y zonas con las URL de la maestra; canonical al buscador de la maestra en el mismo idioma; salud con maestra caída y copia de más de 48 horas. Perfiles `canarias` y `cz` en modo cliente con un maestro de prueba.\n- El documento del buscador lleva `lang` y `finder` (lo leen las tiendas cliente).\n- **Tema**: variante corta de los mensajes de la PromoBar (`short`; en los menús, la descripción del elemento), que se ve en móvil junto a la `MarketBadge` sin repetir el destino: «Envío gratis desde 60 €».\n\n### Cambiado\n- El mapa del buscador encuadra al abrirse el grupo principal de tiendas del país con más tiendas (medoide y tres veces la mediana de las distancias, con «cerca» de mínimo); las lejanas, como Canarias, siguen en el mapa.\n- Desaparece el ajuste `partner_token` (hueco sin uso de la 0.12.0): los tokens no son ajustes.\n\n### Corregido\n- e2e intermitente de la factura de empresa en el checkout: el aviso de consola del 400 esperado de la Store API (NIF erróneo) podía llegar después de vaciar la lista de errores.",
+			"notes": "La plantilla pinta los datos del catálogo tal como vienen: no los abrevia, no los oculta y no los deduce. Ensayado con los 815 productos de lachinata.es en la vista real.\n\n### Añadido\n- **Tarjeta de producto**: nombre completo, huecos de valoración y formato reservados (el precio queda alineado en la fila), todas las etiquetas apiladas con el tono, la imagen y el orden de su término, marca de la clase de envío (copo y «Envío refrigerado» en Frío y Fresco) e «Imagen de tarjeta». La tinta es la de la raíz que se ve o la de la categoría principal del producto.\n- **Ficha**: aviso de envío refrigerado con sus condiciones sacadas de la configuración (en lachinata.es, «Solo a España peninsular; por …, gratis desde 60 €. Sale de lunes a miércoles.»); opiniones con resumen numérico (media, recuento y una barra por estrellas), las 5 más recientes y «Ver más opiniones» de 10 en 10 desde la Store API (sin JavaScript, página 2 con `noindex`); venta cruzada con título y fuente por categoría raíz.\n- **Catálogo (`catalog`)**: categoría principal del producto; tono, imagen y orden de las etiquetas de producto; WooCommerce → La Chinata → Catálogo con la salud del catálogo (precio por unidad incompleto o raro, GTIN que no puede existir, EAN distinto, sin imagen, sin categoría) y la configuración de la tienda (categorías y campañas de temporada, venta cruzada por raíz, marcas de las clases de envío), que viaja en el JSON; `wp lachinata catalog health` y contador en la portada del panel.\n- **Envíos (`shipping`)**: «Solo se envía a» en cada producto, que sustituye a las reglas por producto de Country Based Restrictions, con `wp lachinata shipping migrate-restrictions`; texto del aviso de la ficha editable en Restricciones de producto (`Contracts\\ShippingRules` v3).\n- **Bloque de productos** (`lachinata/products`, módulo `blocks`) por SKU o ID, con la tarjeta del tema.\n- **Migración** (`wp lachinata catalog normalize`): categoría principal de Rank Math, EAN como GTIN cuando el dígito de control es válido, subtítulos en negrita a `h3` y `[products]` al bloque de productos, sin tocar el texto; informe de lo que no se traslada.\n- Seed: las claves de prueba de los proveedores (teselas, OVH, WhatsApp, Mailchimp) se leen de `.wp-env.override.json`.\n\n### Cambiado\n- Las categorías de la cabecera, el menú, el buscador y la home son la lista configurada (con las campañas del día); sin plugin, todas las raíces.\n- El aviso de un producto que no se envía al destino va encima del título, con el texto de `shipping` («Lo sentimos, este producto no está disponible en tu país.»), como lo ponía Country Based Restrictions.\n- La fila de subcategorías se envuelve en varias líneas en escritorio y, en móvil, se desvanece por la derecha mientras haya más.\n- Fixtures de lachinata.es: la clase de envío `internacional` (antes `ocultar-internacional`) con sus 26 destinos, sin Portugal, Austria ni República Checa.\n- El e2e local prueba contra el `WP_HOME` del override si no se pasa `WP_BASE_URL`.\n\n### Corregido\n- Los GTIN con el dígito de control mal ya no salen en los feeds.\n- Fechas del registro de cambios y del panel de oleotecas con el formato de fecha del sitio («27 de octubre de 2026»).\n- La ficha con más opiniones pasa de 1,27 MB a 142 KB de HTML.\n- e2e de «Cerca de mí» con el sitio en `127.0.0.1.nip.io`: permiso de geolocalización para el origen del sitio.",
 			"previous": [
+				{
+					"version": "0.12.1",
+					"date": "2026-10-27",
+					"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.12.1/lachinata-0.12.1.zip",
+					"sha256": "b33e3eba9bcd9a26ed5b021a06d69a73f5e935da4548ed32176f9412fdcec5d8"
+				},
 				{
 					"version": "0.12.0",
 					"date": "2026-10-27",
@@ -83,12 +89,6 @@
 					"date": "2026-10-24",
 					"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.9.0/lachinata-0.9.0.zip",
 					"sha256": "ed04d8cb75b0cddeb13b6cec5d0452278eea09a20ebb1cfc83556483b0a651c0"
-				},
-				{
-					"version": "0.8.1",
-					"date": "2026-10-24",
-					"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.8.1/lachinata-0.8.1.zip",
-					"sha256": "54e62326552672961d5d48fe764a3ecb7ff1f2ba7ff1707271a8c0d1720423d0"
 				}
 			]
 		}

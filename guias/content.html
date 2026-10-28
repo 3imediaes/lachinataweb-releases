@@ -133,7 +133,8 @@ footer { color: var(--soft); font-size: 14px; margin-top: 48px; }
 <pre><code class="language-bash">wp lachinata content migrate --map=mapa.json --gsc=search-console.csv --report=informe.md --dry-run
 wp lachinata content migrate --map=mapa.json --gsc=search-console.csv --report=informe.md
 </code></pre>
-<p>El <strong>mapa</strong> (JSON) dice lo que es de tu tienda: las secciones (<code>slug</code>, <code>name</code>, <code>order</code>, <code>products</code>, <code>text</code>), los textos de la revista (<code>texts</code>), la sección de las recetas, las de salud y belleza, las categorías de producto con recetas, a qué formato y sección va cada categoría antigua (<code>categories</code>, con <code>priority</code> cuando una entrada tiene varias; manda la categoría principal de Rank Math), los tipos de plato del esquema de recetas antiguo (<code>dishes</code>) y las dificultades (<code>difficulty</code>).</p>
+<p>Si un plugin del sitio anterior (como Permalink Manager) servía algunas entradas en una dirección que no es su slug, <code>--urls=urls.csv</code> (<code>post_id, url_actual</code>) hace de esa dirección su slug, y el slug antiguo redirige con 301. Así ninguna URL cambia.</p>
+<p>El <strong>mapa</strong> (JSON) dice lo que es de tu tienda: las secciones (<code>slug</code>, <code>name</code>, <code>order</code>, <code>products</code>, <code>text</code>), los textos de la revista (<code>texts</code>), la sección de las recetas, las de salud y belleza, las categorías de producto con recetas, a qué formato y sección va cada categoría antigua (<code>categories</code>, con <code>priority</code> cuando una entrada tiene varias; manda la categoría principal de Rank Math), los tipos de plato del esquema de recetas antiguo (<code>dishes</code>), las dificultades (<code>difficulty</code>) y adónde va lo que está en la categoría de recetas sin ser una receta (<code>not_recipe</code>: formato y sección).</p>
 <p>La migración:</p>
 <ul>
 <li>pone formato y sección a cada entrada;</li>
@@ -141,13 +142,85 @@ wp lachinata content migrate --map=mapa.json --gsc=search-console.csv --report=i
 <li>marca para revisar las recetas sin esquema, las incompletas y las que tienen ingredientes dudosos o sin cantidad, con el motivo;</li>
 <li>guarda los clics de Search Console (CSV de páginas) para «Lo más leído»;</li>
 <li>rellena las redirecciones de las categorías;</li>
+<li>aplica las <strong>correcciones por ID</strong> del mapa (<code>overrides</code>: formato, sección, «no se migra») por encima de las reglas, y el informe las lista aparte;</li>
+<li>convierte los enlaces a producto de los textos (las direcciones antiguas <code>.html</code> y <code>/product/…</code> de los dominios propios) en referencias, y lista las que no encuentra;</li>
+<li>reparte las entradas de una categoría antigua de productos por la categoría raíz de los productos que enlazan (<code>section_by_products</code>), con las dudosas en el informe;</li>
+<li>y lista las oleotecas que se mencionan y ya no existen (esas entradas van a «Revisar»);</li>
 <li>y escribe un informe con todo, también los códigos cortos que quedan en los textos.</li>
 </ul>
 <p>Repetirla no cambia lo que ya está migrado.</p>
+<h2>Referencias a producto</h2>
+<p>Un enlace a un producto en el texto (botón «Enlace» del editor sobre un producto, o los enlaces antiguos que pasa la migración) se guarda como referencia: lleva el ID del producto y, al pintar, siempre su dirección actual. Si el producto deja de estar publicado, se ve solo el texto, sin enlace. Los productos que menciona la entrada salen primero en «En este artículo».</p>
+<h2>Contenido que caduca</h2>
+<p>Una entrada pasa a la lista <strong>para revisar</strong>, con el motivo, cuando:</p>
+<ul>
+<li>un producto que menciona cambia lo que cuenta (sus sellos o los campos de <a href="catalog.html">«Cambios que cuentan»</a>; de serie, los ingredientes, que llevan alérgenos, trazas y nutrición) después de su última revisión;</li>
+<li>un producto que menciona deja de estar publicado (quedarse sin existencias no cuenta);</li>
+<li>una oleoteca que menciona cierra (la entrada avisa «{tienda} ya no está abierta» con un enlace a las más cercanas) o ya no existe («Menciona una oleoteca que ya no existe»);</li>
+<li>una entrada de salud o belleza lleva más del plazo sin revisar.</li>
+</ul>
+<p>Al marcarla como revisada (fecha de revisión en el panel), los motivos anteriores quedan resueltos. La lista va por clics: arriba lo que más se lee.</p>
+<h2>Revisión del archivo (poda)</h2>
+<p>WooCommerce → La Chinata → <strong>Revisión de contenido</strong>, o <code>wp lachinata content review</code>:</p>
+<ol>
+<li><strong>Importar</strong> la lista de decisiones (CSV con <code>post_id, url, tipo, clics_16m, propuesta, destino, motivo</code>; si trae <code>decision_final</code> y <code>destino_final</code>, mandan; si trae <code>destino_id</code>, el destino es esa entrada o producto, aunque su dirección no sea su slug) y el CSV de páginas de Search Console. Se cruza por <code>post_id</code>, y si no lo hay, por dirección.</li>
+<li><strong>Proponer</strong>: cuenta los enlaces internos que recibe cada entrada y, solo para las que <strong>no</strong> están en la lista, propone con las reglas: retirar las noticias antiguas sin clics, fusionar las repetidas (mismo producto principal y título parecido, o la misma palabra clave de Rank Math), mantener y mejorar lo que se lee. La pantalla propone; nunca junta textos.</li>
+<li><strong>Revisar</strong> la tabla por decisión, con su origen (lista o reglas).</li>
+<li><strong>Aplicar</strong> (marcando que la lista está aprobada; antes, en seco desde la línea de órdenes con <code>--dry-run</code>):<ul>
+<li><strong>Retirar</strong>: la entrada pasa a «Retirada» con su destino. Destino <code>410</code>: «Ya no existe» (410), solo si nadie la enlaza; con enlaces internos, 301 a su sección. Una dirección: 301 a lo que sea hoy (entrada, sección, oleoteca, producto; también la dirección antigua <code>.html</code> de un producto), guardado por ID. Si ese producto ya no existe, 301 a la sección de la entrada, nunca a una página que no está. El informe dice cuántas van a cada tipo de destino.</li>
+<li><strong>Fusionar</strong>: la secundaria se retira con 301 a la principal, y la principal pasa a «Revisar» con un enlace a la secundaria para llevarse lo que valga.</li>
+<li><strong>Revisar</strong>: a la lista para revisar.</li>
+<li><strong>Mantener y mejorar</strong>: a la lista <strong>Por mejorar</strong> (no a «Revisar»), por clics, con lo que le falta a cada una: «En pocas palabras», datos de receta, imagen destacada, texto alternativo, enlaces a producto, fuentes en salud y belleza. «Mantener» no va a ninguna lista.</li>
+</ul>
+</li>
+</ol>
+<p>Aplicar dos veces no hace nada más.</p>
+<h2>Entradas retiradas</h2>
+<p>«Retirada» es un estado propio: la entrada no es pública, sale de los listados, la búsqueda y los sitemaps, y conserva su contenido y sus métricas. Su dirección responde 410 o la 301 guardada. Si el destino desaparece, va a su sección, y la salud del módulo lo avisa. Se deshace volviendo a publicarla. Nunca se borra sola.</p>
+<h2>llms.txt y rastreadores</h2>
+<p><code>/llms.txt</code> (y <code>/{idioma}/llms.txt</code> en cada idioma) resume la tienda para los asistentes de IA: quién es (de «Datos de la empresa» y el texto del ajuste), las páginas clave (las del ajuste, el buscador de oleotecas y las categorías de la tienda en su orden) y los artículos y recetas con más clics que tienen «En pocas palabras», que describe cada enlace. En cada entrada, «En llms.txt» permite <strong>fijarla</strong> o <strong>excluirla</strong>. Nunca salen noticias, «Retiradas», entradas por revisar ni nada que no esté publicado en ese idioma.</p>
+<p>En <code>robots.txt</code> todos los rastreadores pueden leer el contenido; los filtros, los parámetros, la bolsa, el pago y la cuenta están cerrados para todos. En <strong>Rastreadores</strong> puedes permitir o bloquear un agente concreto (una línea por agente: «GPTBot = bloquear»).</p>
+<table>
+<thead>
+<tr>
+<th>Ajuste</th>
+<th>Qué hace</th>
+<th>De serie</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Quién es (llms.txt)</td>
+<td>La frase de presentación</td>
+<td>El lema del sitio</td>
+</tr>
+<tr>
+<td>Páginas clave</td>
+<td>Las páginas que salen arriba (sobre nosotros, envíos y devoluciones, preguntas frecuentes, contacto)</td>
+<td>Ninguna</td>
+</tr>
+<tr>
+<td>Artículos / recetas en llms.txt</td>
+<td>Cuántos</td>
+<td>30 y 30</td>
+</tr>
+<tr>
+<td>Rastreadores</td>
+<td>Reglas por agente</td>
+<td>Ninguna: todos permitidos</td>
+</tr>
+<tr>
+<td>Dominios propios</td>
+<td>Los dominios de la tienda que pueden aparecer en textos antiguos (para reconocer los enlaces a producto y los enlaces internos)</td>
+<td>Solo este sitio</td>
+</tr>
+</tbody></table>
+<p>Si Rank Math tiene encendido su módulo de llms.txt, apágalo: los dos responden en la misma dirección.</p>
+<h2>Medición</h2>
+<p>Con <a href="tracking.html">Medición</a> encendida y el consentimiento dado, el blog manda a GA4 <code>lc_recipe_view</code>, <code>lc_recipe_print</code>, <code>lc_recipe_cook_mode</code>, <code>lc_recipe_scale</code>, <code>lc_ingredient_product</code> y <code>lc_article_read</code> (al leer el 75 % del texto). Elegir una entrada de una lista es <code>select_item</code>, y añadir desde los ingredientes de una receta es <code>add_to_cart</code> con la lista «Receta: {título}», adonde ya va (GA4 y Meta). Ver una receta no es <code>ViewContent</code> de Meta.</p>
 <h2>Qué pasa al apagarlo</h2>
 <p>Las entradas vuelven a la plantilla de entrada del tema, sin receta, y desaparecen la revista, las secciones y las redirecciones. No se borra nada: al encenderlo vuelve como estaba.</p>
 
-<footer>La Chinata Core 0.13.0</footer>
+<footer>La Chinata Core 0.13.1</footer>
 </main>
 </body>
 </html>

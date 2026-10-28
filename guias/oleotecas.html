@@ -73,6 +73,15 @@ footer { color: var(--soft); font-size: 14px; margin-top: 48px; }
 </tbody></table>
 <p>Ninguna sección sale vacía: sin fotos no hay galería, sin servicios no hay lista, sin redes no hay «Síguela». Con nombre, dirección, posición y horario, la ficha ya está completa.</p>
 <p><strong>Zona de la tienda</strong>: marca su país y, si la tiene, su zona (Oleotecas → Zonas en la caja de la derecha).</p>
+<h2>Cierre definitivo</h2>
+<p>En el panel de la tienda, <strong>Cerrada desde</strong> (una fecha; si es futura, el cierre se hace ese día). Desde entonces:</p>
+<ul>
+<li>sale del buscador, el mapa, las zonas, el JSON de la red y los sitemaps;</li>
+<li>su página sigue, sin indexar, con su nombre y dirección, el aviso de cierre y las tres oleotecas más cercanas (sin horario ni botones de contacto), durante los meses del ajuste <strong>Meses de la ficha de una tienda cerrada</strong> (6 de serie); después lleva con 301 a su zona, o al buscador;</li>
+<li>sus tokens de la API dejan de valer para ella en el acto (410), sin el día de gracia de la rotación; un token de varias tiendas sigue valiendo para las demás. La tabla de tokens lo dice: «Revocado para {tienda}: oleoteca cerrada». El registro de cambios se conserva;</li>
+<li>las entradas del blog que la mencionan avisan del cierre y pasan a «Revisar».</li>
+</ul>
+<p><strong>Quitar el cierre</strong> la devuelve a todo, pero los tokens anteriores al cierre ya no valen para ella: hace falta uno nuevo. El <strong>cierre temporal</strong> (vacaciones, obras) no toca nada de esto.</p>
 <h2>Zonas</h2>
 <p>Una zona es País › Zona (Madrid, Barcelona…). Su página, <code>/oleotecas/{zona}/</code>, existe cuando tiene <strong>dos o más tiendas</strong> y no son exactamente las de su país; si no, la dirección lleva a su tienda o a su país. En cada zona:</p>
 <ul>
@@ -295,10 +304,11 @@ curl -s -X PUT https://tienda-maestra.example/wp-json/lachinata/v1/oleotecas/par
 }
 </code></pre>
 <p>Algunos servidores Apache quitan la cabecera <code>Authorization</code> antes de que llegue a WordPress. El <code>.htaccess</code> de WordPress la conserva desde la versión 5.6; si recibes 401 con un token bueno, revisa que siga esta línea: <code>RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]</code>.</p>
+<p>Una tienda <strong>cerrada para siempre</strong> responde <code>410 lachinata_oleotecas_closed</code>; un token anterior al cierre de una tienda que ha reabierto, <code>403 lachinata_oleotecas_token_closed</code>.</p>
 <h2>Salud</h2>
 <p>WooCommerce → Estado → La Chinata · módulos avisa de tiendas sin posición o sin horario, de un geocodificador que falla y de un JSON desactualizado. En una tienda cliente, de una maestra que no responde (y desde cuándo se enseña la copia) y de una copia de más de 48 horas. Recuerda también que nombre, dirección, teléfono y horario deben coincidir con el perfil de Google de cada tienda.</p>
 
-<footer>La Chinata Core 0.13.0</footer>
+<footer>La Chinata Core 0.13.1</footer>
 </main>
 </body>
 </html>

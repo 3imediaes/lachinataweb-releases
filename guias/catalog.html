@@ -233,6 +233,7 @@ footer { color: var(--soft); font-size: 14px; margin-top: 48px; }
 <td>Ninguna</td>
 </tr>
 </tbody></table>
+<p><strong>Cambios que cuentan.</strong> Los campos del producto cuyo cambio vale como cambio del producto para el contenido que lo menciona (claves separadas por comas; de serie, los ingredientes; si los alérgenos, las trazas o la nutrición van dentro de ese campo, también cuentan). Los sellos siempre cuentan. La descripción libre y el stock no. Al cambiar, el blog manda a «Revisar» las entradas que mencionan el producto; al dejar de estar publicado («descatalogado»), también.</p>
 <h3>Pasar los datos antiguos de ACF</h3>
 <p>Solo si tu tienda viene de ACF. Lo ejecuta quien mantiene el sitio con WP-CLI, una vez por sitio:</p>
 <pre><code class="language-bash">wp lachinata catalog normalize --dry-run   # simula y avisa, sin escribir
@@ -309,7 +310,7 @@ wp lachinata catalog normalize             # copia los valores
 <p>La tienda vuelve a su aspecto neutro: sin tintas de categoría, sin precio por unidad, sin etiqueta, sin pestaña de ingredientes ni imagen de descripción, sin sellos y sin consumo preferente; las etiquetas en gris, sin copo ni aviso de refrigerado, todas las categorías principales en la cabecera y la venta cruzada «También te puede gustar». Los sellos dejan de estar disponibles en el menú Productos (siguen guardados) y <a href="shipping.html">Envíos</a> deja de ver la casilla de exclusión internacional: solo cuentan las restricciones por clase de envío.</p>
 <p><strong>Los datos se conservan</strong>: al encenderlo de nuevo, todo vuelve como estaba. Si quieres borrarlos, apaga el módulo y usa <strong>Borrar datos…</strong> en WooCommerce → La Chinata → Módulos: se descarga antes una copia y se borran los campos de productos, categorías y sellos de este módulo (nunca los valores antiguos de ACF ni los pedidos).</p>
 
-<footer>La Chinata Core 0.13.0</footer>
+<footer>La Chinata Core 0.13.1</footer>
 </main>
 </body>
 </html>

@@ -60,7 +60,11 @@ footer { color: var(--soft); font-size: 14px; margin-top: 48px; }
 </tr>
 <tr>
 <td>Horarios especiales</td>
-<td>Festivos, Navidad o vacaciones: una fecha o un rango, cerrado o con su horario, y una nota. Mandan sobre el horario semanal; los pasados dejan de verse solos</td>
+<td>Festivos, Navidad o vacaciones: una fecha o un rango, cerrado o con su horario, y una nota. Mandan sobre el horario semanal; los pasados dejan de verse solos. Un rango cerrado puede marcarse como <strong>Cierre temporal</strong> (vacaciones, reforma): solo uno a la vez, y es el que la franquicia ve y cambia en su panel</td>
+</tr>
+<tr>
+<td>Registro de cambios</td>
+<td>Quién cambió el horario, los especiales o el cierre temporal, cuándo, desde dónde (el panel de franquicias, WordPress o WP-CLI) y qué había antes. Solo lectura</td>
 </tr>
 <tr>
 <td>Texto, fotos y favoritos</td>
@@ -85,6 +89,14 @@ footer { color: var(--soft); font-size: 14px; margin-top: 48px; }
 </tr>
 </thead>
 <tbody><tr>
+<td>Esta tienda (modo)</td>
+<td><strong>Maestra</strong>: las tiendas se editan aquí. <strong>Cliente</strong>: el buscador enseña las tiendas de otra tienda online (ver «Tienda cliente»)</td>
+</tr>
+<tr>
+<td>URL de la tienda maestra</td>
+<td>Solo en modo cliente: la dirección de la maestra (<code>https://tienda-maestra.example</code>)</td>
+</tr>
+<tr>
 <td>Cómo se llama cada tienda, en singular y plural</td>
 <td>«oleoteca» / «oleotecas». Se usa en todos los textos del buscador y de la ficha</td>
 </tr>
@@ -122,7 +134,11 @@ footer { color: var(--soft); font-size: 14px; margin-top: 48px; }
 </tr>
 <tr>
 <td>Dominios cliente</td>
-<td>Las otras tiendas online que pueden leer los datos desde el navegador</td>
+<td>Las otras tiendas online que pueden leer los datos desde el navegador (CORS). Las tiendas cliente de este módulo no lo necesitan: su servidor lee los datos y su navegador, la copia propia</td>
+</tr>
+<tr>
+<td>Avisar de los cambios a</td>
+<td>Un correo a esta dirección cada vez que una franquicia cambia su horario desde el panel. Vacío, sin aviso</td>
 </tr>
 <tr>
 <td>URL de cada tienda y del buscador</td>
@@ -137,10 +153,152 @@ footer { color: var(--soft); font-size: 14px; margin-top: 48px; }
 <li><strong>Ficha</strong>: «Abierta · Cierra a las 20:00» con la hora de la tienda, «Cómo llegar» (Mapas de Apple en iPhone y Mac, Google Maps en el resto), horario con hoy marcado, servicios, favoritos, la tienda online propia, mapa, redes y otras tiendas cerca.</li>
 <li><strong>Bloque «Buscador de oleotecas»</strong>: el mismo buscador en cualquier página.</li>
 </ul>
-<h2>Salud</h2>
-<p>WooCommerce → Estado → La Chinata · módulos avisa de tiendas sin posición o sin horario, de un geocodificador que falla y de un JSON desactualizado. Recuerda también que nombre, dirección, teléfono y horario deben coincidir con el perfil de Google de cada tienda.</p>
+<h2>Tienda cliente</h2>
+<p>Otra tienda online de la misma red (por ejemplo, la de otro país) puede enseñar el mismo buscador sin tener tiendas propias:</p>
+<ol>
+<li>En la tienda cliente: WooCommerce → La Chinata → Módulos, enciende Oleotecas; en su pestaña, <strong>Esta tienda: Cliente</strong> y la <strong>URL de la tienda maestra</strong>. Guarda (las direcciones se actualizan solas).</li>
+<li>Su buscador está en <code>/oleotecas/</code> (o la URL del buscador de sus ajustes), con las mismas tarjetas, filtros, «abierta ahora» y mapa. Las tarjetas y «Por país y ciudad» llevan a las fichas y zonas de la maestra, en la misma pestaña. No hay fichas ni zonas propias.</li>
+<li>El servidor lee las tiendas de la maestra cada hora y guarda una copia: si la maestra no responde, el buscador sigue con la última copia y la salud lo avisa.</li>
+<li>Google: si la tienda cliente está en el mismo idioma que la maestra, su buscador apunta (canonical) al de la maestra; en otro idioma, es una página propia. Los textos del buscador (título, entradilla, nombres) son los de los ajustes de la tienda cliente.</li>
+</ol>
+<h2>API de socios (panel de franquicias)</h2>
+<p>Para que cada franquicia mantenga su horario sin entrar en WordPress, una aplicación externa (el panel de franquicias) puede leer y cambiar, de una tienda, <strong>solo</strong> el horario semanal, los horarios especiales y el cierre temporal. Fotos, textos, redes y favoritos siguen siendo cosa de la central, en WordPress. Solo en la tienda maestra.</p>
+<p><strong>Tokens.</strong> En la pestaña Oleotecas, «Tokens de la API de socios»: pon un nombre («Panel de franquicias») y <strong>Crear token</strong>. El token se ve una sola vez: cópialo al panel. <strong>Rotar</strong> crea uno nuevo y deja el anterior 24 horas más, para cambiarlo sin cortes; <strong>Revocar</strong> lo anula al momento. Se guarda solo su huella, no va en la exportación de la configuración y la tabla muestra cuándo se usó por última vez. El panel debe guardarlo en su servidor, nunca en el navegador.</p>
+<h3>Contrato</h3>
+<p>Base: <code>https://tienda-maestra.example/wp-json/lachinata/v1/oleotecas/partner/{slug}</code>, donde <code>{slug}</code> es el de la ficha (<code>/oleoteca/{slug}/</code>). El panel decide qué persona puede tocar qué tienda; la API confía en el token.</p>
+<table>
+<thead>
+<tr>
+<th>Cabecera</th>
+<th>Cuándo</th>
+<th>Qué</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>Authorization: Bearer lcp_…</code></td>
+<td>siempre</td>
+<td>El token. Sin él o revocado, 401</td>
+</tr>
+<tr>
+<td><code>X-LC-Actor: persona@ejemplo.es</code></td>
+<td><code>PUT</code></td>
+<td>El correo de quien hace el cambio, según el panel. Va al registro y al aviso. Sin él, 400</td>
+</tr>
+<tr>
+<td><code>Content-Type: application/json</code></td>
+<td><code>PUT</code></td>
+<td>El cuerpo va en JSON</td>
+</tr>
+<tr>
+<td><code>If-Match: &quot;&lt;version&gt;&quot;</code></td>
+<td><code>PUT</code>, opcional</td>
+<td>La <code>version</code> (o el <code>ETag</code>) que leíste. Si alguien cambió la tienda entre medias, 412 y no se guarda nada</td>
+</tr>
+</tbody></table>
+<p><strong><code>GET</code></strong> devuelve la tienda:</p>
+<pre><code class="language-json">{
+  &quot;slug&quot;: &quot;centro&quot;,
+  &quot;name&quot;: &quot;Centro&quot;,
+  &quot;timezone&quot;: &quot;Europe/Madrid&quot;,
+  &quot;hours&quot;: {
+    &quot;mon&quot;: [[&quot;10:00&quot;, &quot;14:00&quot;], [&quot;17:00&quot;, &quot;20:30&quot;]],
+    &quot;tue&quot;: [[&quot;10:00&quot;, &quot;20:00&quot;]],
+    &quot;wed&quot;: [], &quot;thu&quot;: [], &quot;fri&quot;: [], &quot;sat&quot;: [], &quot;sun&quot;: []
+  },
+  &quot;specials&quot;: [
+    { &quot;from&quot;: &quot;2026-12-24&quot;, &quot;to&quot;: &quot;2026-12-24&quot;, &quot;slots&quot;: [[&quot;10:00&quot;, &quot;14:00&quot;]], &quot;note&quot;: &quot;Nochebuena&quot; },
+    { &quot;from&quot;: &quot;2026-12-25&quot;, &quot;to&quot;: &quot;2026-12-25&quot;, &quot;slots&quot;: [], &quot;note&quot;: &quot;Navidad&quot; }
+  ],
+  &quot;closure&quot;: { &quot;from&quot;: &quot;2027-08-10&quot;, &quot;to&quot;: &quot;2027-08-24&quot;, &quot;note&quot;: &quot;Vacaciones&quot; },
+  &quot;modified&quot;: &quot;2026-10-27T10:00:00+00:00&quot;,
+  &quot;version&quot;: &quot;9f2c4e1a0b3d5c7e&quot;
+}
+</code></pre>
+<ul>
+<li><strong><code>hours</code></strong>: los siete días (<code>mon</code> … <code>sun</code>), cada uno con cero franjas (cerrado), una (continuo) o dos (partido). Franjas <code>[&quot;HH:MM&quot;, &quot;HH:MM&quot;]</code> en 24 h y en la hora de la tienda; el cierre puede ser <code>24:00</code>.</li>
+<li><strong><code>specials</code></strong>: fechas o rangos (<code>from</code>, <code>to</code> en <code>AAAA-MM-DD</code>; <code>to</code> igual a <code>from</code> para un día), sin franjas si está cerrado, y una nota. Mandan sobre el horario semanal.</li>
+<li><strong><code>closure</code></strong>: el cierre temporal (<code>from</code>, <code>to</code>, <code>note</code>) o <code>null</code>. Solo uno.</li>
+<li><strong><code>version</code></strong>: cambia con cualquiera de los tres. Es también el <code>ETag</code> de la respuesta.</li>
+</ul>
+<p><strong><code>PUT</code></strong> cambia los campos que vengan, cada uno entero; los que no vengan se quedan como estaban. <code>hours</code> es la semana completa (un día que falta queda cerrado), <code>specials</code> la lista completa y <code>closure: null</code> quita el cierre. Cualquier otro campo se ignora y se dice en <code>ignored</code>. Responde la tienda como el <code>GET</code>, con <code>ignored</code>. El buscador y la ficha lo muestran al momento y el cambio queda en el registro de la tienda (y en el correo de aviso, si está configurado).</p>
+<pre><code class="language-bash">curl -s https://tienda-maestra.example/wp-json/lachinata/v1/oleotecas/partner/centro \
+  -H &quot;Authorization: Bearer $TOKEN&quot;
 
-<footer>La Chinata Core 0.12.0</footer>
+curl -s -X PUT https://tienda-maestra.example/wp-json/lachinata/v1/oleotecas/partner/centro \
+  -H &quot;Authorization: Bearer $TOKEN&quot; \
+  -H &quot;X-LC-Actor: persona@ejemplo.es&quot; \
+  -H &#39;If-Match: &quot;9f2c4e1a0b3d5c7e&quot;&#39; \
+  -H &quot;Content-Type: application/json&quot; \
+  -d &#39;{&quot;closure&quot;: {&quot;from&quot;: &quot;2027-08-10&quot;, &quot;to&quot;: &quot;2027-08-24&quot;, &quot;note&quot;: &quot;Cerrado por vacaciones&quot;}}&#39;
+
+curl -s -X PUT https://tienda-maestra.example/wp-json/lachinata/v1/oleotecas/partner/centro \
+  -H &quot;Authorization: Bearer $TOKEN&quot; \
+  -H &quot;X-LC-Actor: persona@ejemplo.es&quot; \
+  -H &quot;Content-Type: application/json&quot; \
+  -d &#39;{&quot;specials&quot;: [{&quot;from&quot;: &quot;2026-12-08&quot;, &quot;to&quot;: &quot;2026-12-08&quot;, &quot;slots&quot;: [], &quot;note&quot;: &quot;Festivo&quot;}]}&#39;
+</code></pre>
+<p><strong>Errores</strong> (cuerpo de WordPress: <code>code</code>, <code>message</code>, <code>data.status</code>):</p>
+<table>
+<thead>
+<tr>
+<th>Estado</th>
+<th><code>code</code></th>
+<th>Cuándo</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>400</td>
+<td><code>lachinata_oleotecas_actor</code></td>
+<td>Falta <code>X-LC-Actor</code> o no es un correo</td>
+</tr>
+<tr>
+<td>400</td>
+<td><code>lachinata_oleotecas_body</code></td>
+<td>El cuerpo no es JSON</td>
+</tr>
+<tr>
+<td>401</td>
+<td><code>lachinata_oleotecas_token</code></td>
+<td>Sin token, token equivocado, revocado o rotado hace más de 24 horas</td>
+</tr>
+<tr>
+<td>404</td>
+<td><code>lachinata_oleotecas_not_found</code></td>
+<td>No hay una tienda publicada con ese <code>slug</code></td>
+</tr>
+<tr>
+<td>412</td>
+<td><code>lachinata_oleotecas_changed</code></td>
+<td><code>If-Match</code> no coincide: <code>data.current</code> trae la tienda como está ahora</td>
+</tr>
+<tr>
+<td>422</td>
+<td><code>lachinata_oleotecas_invalid</code></td>
+<td>Algo no es válido: <code>data.errors</code> dice qué, por campo (<code>hours.mon</code>, <code>specials.2</code>, <code>closure</code>), con el mismo texto que el editor. No se guarda nada</td>
+</tr>
+<tr>
+<td>429</td>
+<td><code>lachinata_oleotecas_limit</code></td>
+<td>Más de 120 peticiones en 10 minutos con el mismo token. <code>Retry-After</code> dice cuántos segundos esperar</td>
+</tr>
+</tbody></table>
+<pre><code class="language-json">{
+  &quot;code&quot;: &quot;lachinata_oleotecas_invalid&quot;,
+  &quot;message&quot;: &quot;Revisa los datos: no se ha guardado nada.&quot;,
+  &quot;data&quot;: {
+    &quot;status&quot;: 422,
+    &quot;errors&quot;: {
+      &quot;hours.mon&quot;: &quot;Revisa las franjas: hora de apertura antes que la de cierre, sin solaparse y como mucho dos.&quot;,
+      &quot;closure&quot;: &quot;Revisa las fechas: «desde» con el formato AAAA-MM-DD y «hasta», si va, igual o posterior.&quot;
+    }
+  }
+}
+</code></pre>
+<p>Algunos servidores Apache quitan la cabecera <code>Authorization</code> antes de que llegue a WordPress. El <code>.htaccess</code> de WordPress la conserva desde la versión 5.6; si recibes 401 con un token bueno, revisa que siga esta línea: <code>RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]</code>.</p>
+<h2>Salud</h2>
+<p>WooCommerce → Estado → La Chinata · módulos avisa de tiendas sin posición o sin horario, de un geocodificador que falla y de un JSON desactualizado. En una tienda cliente, de una maestra que no responde (y desde cuándo se enseña la copia) y de una copia de más de 48 horas. Recuerda también que nombre, dirección, teléfono y horario deben coincidir con el perfil de Google de cada tienda.</p>
+
+<footer>La Chinata Core 0.12.1</footer>
 </main>
 </body>
 </html>

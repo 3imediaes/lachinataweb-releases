@@ -1,20 +1,26 @@
 {
 	"schema": 1,
-	"generated_at": "2026-10-27T12:30:28.918Z",
+	"generated_at": "2026-10-28T08:22:11.741Z",
 	"packages": {
 		"lachinata-core": {
-			"version": "0.12.0",
+			"version": "0.12.1",
 			"date": "2026-10-27",
-			"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.12.0/lachinata-core-0.12.0.zip",
-			"sha256": "60710e329f2aca9101b0bad9181166a70893a6eb93a57bb55b6451fa807a68b2",
+			"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.12.1/lachinata-core-0.12.1.zip",
+			"sha256": "fde680d2a580851db204782300ee311207da54ca43c6ca133322f3ec4551cd39",
 			"requires": {
 				"wordpress": "6.8",
 				"php": "8.2",
 				"woocommerce": "10.0",
-				"lachinata": "0.12.0"
+				"lachinata": "0.12.1"
 			},
-			"notes": "### Añadido\n- **Oleotecas (módulo `oleotecas`)**, para cualquier red de tiendas físicas:\n  - Tipo de contenido `oleoteca` con las mismas URL (`/oleoteca/{slug}/`), buscador en `/oleotecas/`, zonas País › Zona en `/oleotecas/{zona}/` (solo con dos o más tiendas que no repitan su país) y servicios.\n  - Campos propios en lugar de ACF: nombre corto, dirección por partes, coordenadas, zona horaria, teléfono y WhatsApp en E.164, correo, tienda online propia, redes, horario semanal con una o dos franjas, horarios especiales, fotos, texto y favoritos.\n  - Panel en el editor con «Buscar en el mapa» y marcador que se arrastra, horario con «copiar a toda la semana», días especiales y redes como lista. Zonas con texto, preguntas y «agrupar por ciudad».\n  - Geocodificador en el servidor (Nominatim de serie, sustituible por `lachinata/oleotecas/geocoder`), una petición por segundo y caché.\n  - `wp lachinata oleotecas migrate` desde los campos de ACF, con mapa por tienda e informe; lee todos los formatos de horario escritos a mano. `wp lachinata oleotecas json`.\n  - JSON versionado para el navegador y REST (`/lachinata/v1/oleotecas`, `/oleotecas/<slug>`, `/oleotecas/geocode`), con CORS solo para los dominios cliente.\n  - Mapa con teselas de CARTO y su clave como credencial del sitio (fuera de la exportación); sin clave no se ofrece el mapa y la salud lo avisa. «Ver en el mapa» es un botón a todo el ancho bajo el buscador en móvil (en escritorio, el del panel). El mapa encuadra la lista (el país con más tiendas, las más cercanas o la tienda elegida), sin vista mundial, con «Centrar en mi ubicación».\n  - Plantillas de buscador, zona y ficha con `StoreSearch`, `StoreCard`, `StoreMap`, `StoreHours`, `OpenStatus` y `SocialLinks`; «abierta ahora» con la hora de cada tienda; «Cerca de mí» sin enviar la ubicación; nunca cero resultados; mapa a demanda con Leaflet empaquetado; Mapas de Apple o Google Maps; el correo fuera del HTML.\n  - Bloque «Buscador de oleotecas» (`lachinata/oleotecas`).\n  - `Store`, `ItemList`, `FAQPage` y migas en JSON-LD, Open Graph, títulos y descripciones; sin duplicar el schema de Rank Math o Yoast; zonas con página en el sitemap.\n  - Medición por el bus de `tracking` (`lc_store_*`) y el proveedor del mapa en la política de privacidad.\n  - Salud: tiendas sin posición u horario, geocodificador, JSON desactualizado y tipo registrado por otro plugin.\n  - Guías `docs/guias/oleotecas.md` y `docs/despliegue-oleotecas.md`.\n- **Plantillas de página de los módulos**: utilidad del núcleo `Templates` y sustitución desde el tema en `lachinata/<id>/`.\n- **Tema**: filtros `lachinata/breadcrumb/items`, `lachinata/view/secondary`, `lachinata/view/back_url` y `lachinata/view/editorial`; componentes de oleotecas en `components.css` y su layout.\n- Pruebas de JS con el runner de Node (`npm run test:js`). Lighthouse mide también el buscador y una ficha, y la accesibilidad bloquea: 100, salvo el buscador (95, por la `BottomNav` fija en la foto de 412×823).\n- **Tema**: hueco `lachinata/app_bar/section` para marcar la sección activa de la AppBar (OLEOTECAS en todas las páginas de oleotecas); los chips del buscador alineados con el campo en móvil.\n- **Tema**: `scroll-padding-bottom` con la altura de la `BottomNav` (y el de la AppBar arriba) para que el foco de teclado nunca quede tapado por las barras (WCAG 2.4.11).\n\n### Cambiado\n- El tipo `oleoteca` pasa a tener el slug fijo `oleoteca` (antes, traducible) y `/oleoteca/` redirige con 301 a `/oleotecas/`.",
+			"notes": "### Añadido\n- **API de socios (módulo `oleotecas`, sitio maestro)** para el panel de franquicias: `GET` y `PUT /lachinata/v1/oleotecas/partner/<slug>` con `Authorization: Bearer`. Solo horario semanal, horarios especiales y cierre temporal; lo demás se ignora y se dice. Misma validación que el editor con errores por campo (422, nada guardado), `X-LC-Actor` obligatorio para escribir, `ETag` e `If-Match` (412), 120 peticiones cada 10 minutos por token (429 con `Retry-After`) y el JSON del buscador reescrito al momento. Contrato con ejemplos en `docs/guias/oleotecas.md`.\n- Tokens de la API en WooCommerce → La Chinata → Oleotecas: varios con nombre, guardados como huella, se ven una vez, último uso, rotar (el anterior vale 24 horas) y revocar al momento. Fuera de la exportación.\n- **Cierre temporal**: un horario especial cerrado de tipo `closure` (uno a la vez), con su casilla en el editor y su campo `closure` en la API.\n- **Registro de cambios** de horario, especiales y cierre en cada tienda (API, editor o WP-CLI; quién, cuándo, antes y después), visible en el editor. Aviso opcional por correo a la central de los cambios hechos desde el panel (`partner_notify_email`).\n- **Modo cliente (módulo `oleotecas`)**: una tienda cliente enseña las tiendas de la maestra con el mismo buscador, sin fichas ni zonas propias. Su servidor lee el documento de la maestra cada hora y guarda una copia de respaldo; el navegador lee la copia del propio dominio. Tarjetas y zonas con las URL de la maestra; canonical al buscador de la maestra en el mismo idioma; salud con maestra caída y copia de más de 48 horas. Perfiles `canarias` y `cz` en modo cliente con un maestro de prueba.\n- El documento del buscador lleva `lang` y `finder` (lo leen las tiendas cliente).\n- **Tema**: variante corta de los mensajes de la PromoBar (`short`; en los menús, la descripción del elemento), que se ve en móvil junto a la `MarketBadge` sin repetir el destino: «Envío gratis desde 60 €».\n\n### Cambiado\n- El mapa del buscador encuadra al abrirse el grupo principal de tiendas del país con más tiendas (medoide y tres veces la mediana de las distancias, con «cerca» de mínimo); las lejanas, como Canarias, siguen en el mapa.\n- Desaparece el ajuste `partner_token` (hueco sin uso de la 0.12.0): los tokens no son ajustes.\n\n### Corregido\n- e2e intermitente de la factura de empresa en el checkout: el aviso de consola del 400 esperado de la Store API (NIF erróneo) podía llegar después de vaciar la lista de errores.",
 			"previous": [
+				{
+					"version": "0.12.0",
+					"date": "2026-10-27",
+					"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.12.0/lachinata-core-0.12.0.zip",
+					"sha256": "60710e329f2aca9101b0bad9181166a70893a6eb93a57bb55b6451fa807a68b2"
+				},
 				{
 					"version": "0.10.0",
 					"date": "2026-10-26",
@@ -38,28 +44,28 @@
 					"date": "2026-10-24",
 					"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.8.1/lachinata-core-0.8.1.zip",
 					"sha256": "74b31726157d8264ca9eca25c0f58e0bfa2220d713c2a38f92c296bc78b5cbc9"
-				},
-				{
-					"version": "0.8.0",
-					"date": "2026-10-24",
-					"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.8.0/lachinata-core-0.8.0.zip",
-					"sha256": "94b9679ce3aa3ab4d10462040f1c553bfa17f0970dc1d85ef8b1b1b2a7316096"
 				}
 			]
 		},
 		"lachinata": {
-			"version": "0.12.0",
+			"version": "0.12.1",
 			"date": "2026-10-27",
-			"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.12.0/lachinata-0.12.0.zip",
-			"sha256": "370b6765f286dc4d4cb4794701523132dbbdba8e2bf72e8adae5674c5598de86",
+			"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.12.1/lachinata-0.12.1.zip",
+			"sha256": "b33e3eba9bcd9a26ed5b021a06d69a73f5e935da4548ed32176f9412fdcec5d8",
 			"requires": {
 				"wordpress": "6.8",
 				"php": "8.2",
 				"woocommerce": "10.0",
-				"lachinata-core": "0.12.0"
+				"lachinata-core": "0.12.1"
 			},
-			"notes": "### Añadido\n- **Oleotecas (módulo `oleotecas`)**, para cualquier red de tiendas físicas:\n  - Tipo de contenido `oleoteca` con las mismas URL (`/oleoteca/{slug}/`), buscador en `/oleotecas/`, zonas País › Zona en `/oleotecas/{zona}/` (solo con dos o más tiendas que no repitan su país) y servicios.\n  - Campos propios en lugar de ACF: nombre corto, dirección por partes, coordenadas, zona horaria, teléfono y WhatsApp en E.164, correo, tienda online propia, redes, horario semanal con una o dos franjas, horarios especiales, fotos, texto y favoritos.\n  - Panel en el editor con «Buscar en el mapa» y marcador que se arrastra, horario con «copiar a toda la semana», días especiales y redes como lista. Zonas con texto, preguntas y «agrupar por ciudad».\n  - Geocodificador en el servidor (Nominatim de serie, sustituible por `lachinata/oleotecas/geocoder`), una petición por segundo y caché.\n  - `wp lachinata oleotecas migrate` desde los campos de ACF, con mapa por tienda e informe; lee todos los formatos de horario escritos a mano. `wp lachinata oleotecas json`.\n  - JSON versionado para el navegador y REST (`/lachinata/v1/oleotecas`, `/oleotecas/<slug>`, `/oleotecas/geocode`), con CORS solo para los dominios cliente.\n  - Mapa con teselas de CARTO y su clave como credencial del sitio (fuera de la exportación); sin clave no se ofrece el mapa y la salud lo avisa. «Ver en el mapa» es un botón a todo el ancho bajo el buscador en móvil (en escritorio, el del panel). El mapa encuadra la lista (el país con más tiendas, las más cercanas o la tienda elegida), sin vista mundial, con «Centrar en mi ubicación».\n  - Plantillas de buscador, zona y ficha con `StoreSearch`, `StoreCard`, `StoreMap`, `StoreHours`, `OpenStatus` y `SocialLinks`; «abierta ahora» con la hora de cada tienda; «Cerca de mí» sin enviar la ubicación; nunca cero resultados; mapa a demanda con Leaflet empaquetado; Mapas de Apple o Google Maps; el correo fuera del HTML.\n  - Bloque «Buscador de oleotecas» (`lachinata/oleotecas`).\n  - `Store`, `ItemList`, `FAQPage` y migas en JSON-LD, Open Graph, títulos y descripciones; sin duplicar el schema de Rank Math o Yoast; zonas con página en el sitemap.\n  - Medición por el bus de `tracking` (`lc_store_*`) y el proveedor del mapa en la política de privacidad.\n  - Salud: tiendas sin posición u horario, geocodificador, JSON desactualizado y tipo registrado por otro plugin.\n  - Guías `docs/guias/oleotecas.md` y `docs/despliegue-oleotecas.md`.\n- **Plantillas de página de los módulos**: utilidad del núcleo `Templates` y sustitución desde el tema en `lachinata/<id>/`.\n- **Tema**: filtros `lachinata/breadcrumb/items`, `lachinata/view/secondary`, `lachinata/view/back_url` y `lachinata/view/editorial`; componentes de oleotecas en `components.css` y su layout.\n- Pruebas de JS con el runner de Node (`npm run test:js`). Lighthouse mide también el buscador y una ficha, y la accesibilidad bloquea: 100, salvo el buscador (95, por la `BottomNav` fija en la foto de 412×823).\n- **Tema**: hueco `lachinata/app_bar/section` para marcar la sección activa de la AppBar (OLEOTECAS en todas las páginas de oleotecas); los chips del buscador alineados con el campo en móvil.\n- **Tema**: `scroll-padding-bottom` con la altura de la `BottomNav` (y el de la AppBar arriba) para que el foco de teclado nunca quede tapado por las barras (WCAG 2.4.11).\n\n### Cambiado\n- El tipo `oleoteca` pasa a tener el slug fijo `oleoteca` (antes, traducible) y `/oleoteca/` redirige con 301 a `/oleotecas/`.",
+			"notes": "### Añadido\n- **API de socios (módulo `oleotecas`, sitio maestro)** para el panel de franquicias: `GET` y `PUT /lachinata/v1/oleotecas/partner/<slug>` con `Authorization: Bearer`. Solo horario semanal, horarios especiales y cierre temporal; lo demás se ignora y se dice. Misma validación que el editor con errores por campo (422, nada guardado), `X-LC-Actor` obligatorio para escribir, `ETag` e `If-Match` (412), 120 peticiones cada 10 minutos por token (429 con `Retry-After`) y el JSON del buscador reescrito al momento. Contrato con ejemplos en `docs/guias/oleotecas.md`.\n- Tokens de la API en WooCommerce → La Chinata → Oleotecas: varios con nombre, guardados como huella, se ven una vez, último uso, rotar (el anterior vale 24 horas) y revocar al momento. Fuera de la exportación.\n- **Cierre temporal**: un horario especial cerrado de tipo `closure` (uno a la vez), con su casilla en el editor y su campo `closure` en la API.\n- **Registro de cambios** de horario, especiales y cierre en cada tienda (API, editor o WP-CLI; quién, cuándo, antes y después), visible en el editor. Aviso opcional por correo a la central de los cambios hechos desde el panel (`partner_notify_email`).\n- **Modo cliente (módulo `oleotecas`)**: una tienda cliente enseña las tiendas de la maestra con el mismo buscador, sin fichas ni zonas propias. Su servidor lee el documento de la maestra cada hora y guarda una copia de respaldo; el navegador lee la copia del propio dominio. Tarjetas y zonas con las URL de la maestra; canonical al buscador de la maestra en el mismo idioma; salud con maestra caída y copia de más de 48 horas. Perfiles `canarias` y `cz` en modo cliente con un maestro de prueba.\n- El documento del buscador lleva `lang` y `finder` (lo leen las tiendas cliente).\n- **Tema**: variante corta de los mensajes de la PromoBar (`short`; en los menús, la descripción del elemento), que se ve en móvil junto a la `MarketBadge` sin repetir el destino: «Envío gratis desde 60 €».\n\n### Cambiado\n- El mapa del buscador encuadra al abrirse el grupo principal de tiendas del país con más tiendas (medoide y tres veces la mediana de las distancias, con «cerca» de mínimo); las lejanas, como Canarias, siguen en el mapa.\n- Desaparece el ajuste `partner_token` (hueco sin uso de la 0.12.0): los tokens no son ajustes.\n\n### Corregido\n- e2e intermitente de la factura de empresa en el checkout: el aviso de consola del 400 esperado de la Store API (NIF erróneo) podía llegar después de vaciar la lista de errores.",
 			"previous": [
+				{
+					"version": "0.12.0",
+					"date": "2026-10-27",
+					"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.12.0/lachinata-0.12.0.zip",
+					"sha256": "370b6765f286dc4d4cb4794701523132dbbdba8e2bf72e8adae5674c5598de86"
+				},
 				{
 					"version": "0.10.0",
 					"date": "2026-10-26",
@@ -83,12 +89,6 @@
 					"date": "2026-10-24",
 					"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.8.1/lachinata-0.8.1.zip",
 					"sha256": "54e62326552672961d5d48fe764a3ecb7ff1f2ba7ff1707271a8c0d1720423d0"
-				},
-				{
-					"version": "0.8.0",
-					"date": "2026-10-24",
-					"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.8.0/lachinata-0.8.0.zip",
-					"sha256": "0aa6fff3273d8aae72c28b149ca8e805f7c4f42ceed32cf49d74966da4ec6d76"
 				}
 			]
 		}

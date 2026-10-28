@@ -170,6 +170,7 @@ footer { color: var(--soft); font-size: 14px; margin-top: 48px; }
 </tr>
 </tbody></table>
 <p><strong>Umbral en los textos del menú.</strong> No escribas importes, monedas ni destinos en los menús: cambian con el visitante. Si escribes <code>{envio_gratis}</code> en un texto de la barra superior o de la barra de ventajas, se sustituye por el umbral del destino del visitante, con la moneda de la tienda («60 €», «1 500 Kč»), y <code>{destino}</code>, por el nombre del destino («Portugal»; con el módulo Destino, su etiqueta, como «España · Península»). Por ejemplo, en la barra de ventajas: título «Envío gratis», descripción «{destino} desde {envio_gratis}». Si el destino no tiene envío gratis, el mensaje de la barra superior no sale y la ventaja dice «Envío a Alemania · Gastos calculados en la bolsa». Si ningún mensaje de la barra superior usa <code>{envio_gratis}</code>, el módulo añade «Envío gratis a {destino} desde {envio_gratis}».</p>
+<p><strong>Texto corto junto a la pastilla del destino.</strong> En el móvil, cuando la barra superior empieza con la pastilla del destino («España · Península»), el mensaje no repite el destino: cabe a 390 px. El mensaje que añade el módulo pasa a «Envío gratis desde {envio_gratis}». Para tus mensajes del menú, escribe la versión corta en la <strong>descripción</strong> del elemento (Apariencia → Menús → Opciones de pantalla → Descripción), por ejemplo título «Envío gratis a {destino} a partir de {envio_gratis}» y descripción «Envío gratis desde {envio_gratis}». Sin descripción se muestra siempre el título. En escritorio, y en las tiendas sin pastilla, siempre se ve el título.</p>
 <p><strong>Mensajes cuando no hay envío.</strong> Desplegable dentro de cada zona, con un mensaje por causa:</p>
 <table>
 <thead>
@@ -337,7 +338,7 @@ footer { color: var(--soft); font-size: 14px; margin-top: 48px; }
 <p>WooCommerce vuelve a ofrecer sus zonas y métodos tal cual: sin condiciones, sin peso máximo, sin umbral de envío gratis anunciado, sin restricciones de producto, sin mensajes propios de «sin envío» y sin «Tarifa en vivo» (esos métodos dejan de calcular). <a href="eta.html">Entrega estimada</a> se apaga con él.</p>
 <p><strong>Los datos se conservan</strong>: los límites y mensajes de zona, las restricciones y las condiciones guardadas en cada método vuelven al encenderlo. «Borrar datos…» (WooCommerce → La Chinata → Módulos, con el módulo apagado) borra los ajustes de zonas y restricciones tras descargar una copia; las condiciones de cada método y los pedidos no se tocan.</p>
 
-<footer>La Chinata Core 0.12.0</footer>
+<footer>La Chinata Core 0.12.1</footer>
 </main>
 </body>
 </html>

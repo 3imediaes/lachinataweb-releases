@@ -77,7 +77,7 @@ footer { color: var(--soft); font-size: 14px; margin-top: 48px; }
 <p>En el panel de la tienda, <strong>Cerrada desde</strong> (una fecha; si es futura, el cierre se hace ese día). Desde entonces:</p>
 <ul>
 <li>sale del buscador, el mapa, las zonas, el JSON de la red y los sitemaps;</li>
-<li>su página sigue, sin indexar, con su nombre y dirección, el aviso de cierre y las tres oleotecas más cercanas (sin horario ni botones de contacto), durante los meses del ajuste <strong>Meses de la ficha de una tienda cerrada</strong> (6 de serie); después lleva con 301 a su zona, o al buscador;</li>
+<li>su página sigue, sin indexar, con su nombre y dirección, el aviso de cierre y las tres oleotecas más cercanas (en escritorio, en una fila; su estado, solo con la frase, como «Abre mañana a las 10:30»), sin horario ni botones de contacto, durante los meses del ajuste <strong>Meses de la ficha de una tienda cerrada</strong> (6 de serie); después lleva con 301 a su zona, o al buscador;</li>
 <li>sus tokens de la API dejan de valer para ella en el acto (410), sin el día de gracia de la rotación; un token de varias tiendas sigue valiendo para las demás. La tabla de tokens lo dice: «Revocado para {tienda}: oleoteca cerrada». El registro de cambios se conserva;</li>
 <li>las entradas del blog que la mencionan avisan del cierre y pasan a «Revisar».</li>
 </ul>
@@ -308,7 +308,7 @@ curl -s -X PUT https://tienda-maestra.example/wp-json/lachinata/v1/oleotecas/par
 <h2>Salud</h2>
 <p>WooCommerce → Estado → La Chinata · módulos avisa de tiendas sin posición o sin horario, de un geocodificador que falla y de un JSON desactualizado. En una tienda cliente, de una maestra que no responde (y desde cuándo se enseña la copia) y de una copia de más de 48 horas. Recuerda también que nombre, dirección, teléfono y horario deben coincidir con el perfil de Google de cada tienda.</p>
 
-<footer>La Chinata Core 0.13.1</footer>
+<footer>La Chinata Core 0.13.2</footer>
 </main>
 </body>
 </html>

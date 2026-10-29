@@ -149,6 +149,9 @@ footer { color: var(--soft); font-size: 14px; margin-top: 48px; }
 <li>en Meta, la columna <code>id</code> de una exportación del catálogo.</li>
 </ul>
 <p>Debajo de cada destino, la pantalla muestra el ID que saldría para un producto simple y para una variación. Una plantilla personalizada tiene que incluir <code>{product_id}</code>, <code>{variation_id}</code> o <code>{sku}</code>, porque si no todos los productos tendrían el mismo ID. Si no es válida, no se guarda y el error sale junto al campo.</p>
+<h3>Estado del español</h3>
+<p>En las listas de <strong>Productos</strong>, <strong>Páginas</strong> y <strong>Entradas</strong> hay una columna <strong>Español</strong> con «Pendiente» o «Revisado», un filtro para ver solo uno de los dos y dos acciones en lote: <strong>Marcar el español como revisado</strong> y <strong>… como pendiente</strong>. En el editor de cada uno, la caja <strong>Texto en español</strong> cambia el de ese elemento.</p>
+<p>«Revisado» quiere decir que el texto en español está corregido y listo: solo lo revisado se traduce a los demás idiomas. Todo empieza como «Pendiente». El paquete editorial del <a href="catalog.html">Catálogo</a> puede marcar «Revisado» los productos que importa.</p>
 <h3>Exportar/importar</h3>
 <p>Descarga la configuración de esta tienda en un archivo JSON, o importa la de otra. Al importar se muestra antes qué cambiaría, y no se escribe nada si el archivo tiene errores. Viajan los módulos encendidos, sus ajustes de comportamiento y los IDs de producto. No viajan los datos propios de cada sitio: atención al cliente, datos de la empresa, credenciales ni los IDs de los servicios de medición.</p>
 <h3>Actualizaciones</h3>
@@ -167,7 +170,7 @@ footer { color: var(--soft); font-size: 14px; margin-top: 48px; }
 <h2>Al apagarlo</h2>
 <p>El núcleo no se apaga: es el plugin. Al desactivar el plugin, el tema sigue funcionando con WooCommerce de serie, sin las funciones de los módulos. Los datos se conservan.</p>
 
-<footer>La Chinata Core 0.13.2</footer>
+<footer>La Chinata Core 0.14.0</footer>
 </main>
 </body>
 </html>

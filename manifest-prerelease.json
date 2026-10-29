@@ -1,20 +1,26 @@
 {
 	"schema": 1,
-	"generated_at": "2026-10-28T23:25:01.988Z",
+	"generated_at": "2026-10-29T12:00:21.465Z",
 	"packages": {
 		"lachinata-core": {
-			"version": "0.13.2",
-			"date": "2026-10-28",
-			"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.13.2/lachinata-core-0.13.2.zip",
-			"sha256": "b42bdfb7e62ca699a747f78b3029aa547ffa4f5c408e0d58f667cc33a914a4ca",
+			"version": "0.14.0",
+			"date": "2026-10-29",
+			"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.14.0/lachinata-core-0.14.0.zip",
+			"sha256": "278bb54642dfc45c8dec2fbc8850d0781fd4edae4a07e0ee5ca081f85c88b9aa",
 			"requires": {
 				"wordpress": "6.8",
 				"php": "8.2",
 				"woocommerce": "10.0",
-				"lachinata": "0.13.2"
+				"lachinata": "0.14.0"
 			},
-			"notes": "Ajustes de la revisión de la 0.13.1 con las capturas de la vista real.\n\n### Cambiado\n- **Ficha de una oleoteca cerrada:**\n  - las tres más cercanas van en una fila en escritorio, con la misma tarjeta del buscador;\n  - su estado dice solo la frase («Abre mañana a las 10:30»), sin «Cerrada», que se leía como si también hubieran cerrado. Fuera de esa ficha no cambia.\n- **Entrada que menciona una oleoteca cerrada:**\n  - solo lleva ese aviso (sin el de noticia antigua);\n  - dice «La oleoteca La Chinata Vitoria ya no está abierta. Consulta las oleotecas más cercanas»;\n  - el enlace lleva a su ficha, que enseña las más cercanas.\n- **`llms.txt`:** las páginas clave (Acerca de, Envíos y devoluciones, Preguntas frecuentes, Contacto) se eligen una a una en la pestaña Blog. La salud del módulo dice cuáles faltan, y también las entradas retiradas cuyo destino ya no existe. Lo guardado en la 0.13.1 se lee en ese orden.\n\n### Corregido\n- Las migas de una oleoteca cerrada se quedaban en «Inicio › Oleotecas»: ahora llevan su país, su zona y la tienda, como las abiertas.\n- El motivo de «Revisar» por una oleoteca cerrada decía «oleoteca» escrito en el código: ahora usa el nombre del módulo.\n- La vista real pone los textos de oleotecas de .es (paso 3 del despliegue): «Oleotecas» en las migas, «OLEOTECA · {CIUDAD}» y «Oleoteca La Chinata {nombre}».",
+			"notes": "Traducción, primera parte (incremento 11a): el español primero.\n\n### Añadido\n- **Estado del español** de productos, páginas y entradas: «Pendiente» o «Revisado». Columna y filtro en las listas, acciones en lote «Marcar el español como revisado / pendiente» y caja «Texto en español» en el editor. Solo lo revisado se traducirá. Acción `lachinata/source_status/changed` y filtro `lachinata/source_status/post_types`.\n- **Paquete editorial de productos** (`wp lachinata catalog export-editorial` e `import-editorial`): los textos en español (nombre, descripciones, etiqueta, título y descripción SEO, texto alternativo de las imágenes y descripción de las variaciones que la tienen) salen como JSON con una huella por campo. Al importar, lo que cambió en la web desde la exportación es un conflicto y no se pisa; cada nombre que cambia sale aparte en el informe; `--mark-reviewed` marca «Revisado» lo que entra entero. Sin ingredientes ni valores nutricionales.\n\n### Cambiado\n- **Correo del enlace de pago** de un pedido telefónico: importe, pago «Pendiente» y dirección en los datos clave, y las direcciones, como en el inventario de correos. La factura de un pedido pagado también lleva las direcciones.\n- **Correo de transferencia:** «Lo tenemos reservado y lo preparamos en cuanto llegue la transferencia».\n- El perfil de pruebas `cz` ya no espera `translate`: lachinata.cz tiene un solo idioma.",
 			"previous": [
+				{
+					"version": "0.13.2",
+					"date": "2026-10-28",
+					"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.13.2/lachinata-core-0.13.2.zip",
+					"sha256": "b42bdfb7e62ca699a747f78b3029aa547ffa4f5c408e0d58f667cc33a914a4ca"
+				},
 				{
 					"version": "0.13.1",
 					"date": "2026-10-28",
@@ -38,28 +44,28 @@
 					"date": "2026-10-28",
 					"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.12.2/lachinata-core-0.12.2.zip",
 					"sha256": "524ce36828337197d8be3eeb8b1cf74cdac3403966f20eb98a8d3f948bfdba1e"
-				},
-				{
-					"version": "0.12.1",
-					"date": "2026-10-27",
-					"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.12.1/lachinata-core-0.12.1.zip",
-					"sha256": "fde680d2a580851db204782300ee311207da54ca43c6ca133322f3ec4551cd39"
 				}
 			]
 		},
 		"lachinata": {
-			"version": "0.13.2",
-			"date": "2026-10-28",
-			"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.13.2/lachinata-0.13.2.zip",
-			"sha256": "4f34b22257498cb1659c98bb293ea5472be27a046c5249fe9a034a434913b83b",
+			"version": "0.14.0",
+			"date": "2026-10-29",
+			"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.14.0/lachinata-0.14.0.zip",
+			"sha256": "5efa82c3f4154b1bc751d1b2880512dc35a61af3fac31acc5e464712bf368d36",
 			"requires": {
 				"wordpress": "6.8",
 				"php": "8.2",
 				"woocommerce": "10.0",
-				"lachinata-core": "0.13.2"
+				"lachinata-core": "0.14.0"
 			},
-			"notes": "Ajustes de la revisión de la 0.13.1 con las capturas de la vista real.\n\n### Cambiado\n- **Ficha de una oleoteca cerrada:**\n  - las tres más cercanas van en una fila en escritorio, con la misma tarjeta del buscador;\n  - su estado dice solo la frase («Abre mañana a las 10:30»), sin «Cerrada», que se leía como si también hubieran cerrado. Fuera de esa ficha no cambia.\n- **Entrada que menciona una oleoteca cerrada:**\n  - solo lleva ese aviso (sin el de noticia antigua);\n  - dice «La oleoteca La Chinata Vitoria ya no está abierta. Consulta las oleotecas más cercanas»;\n  - el enlace lleva a su ficha, que enseña las más cercanas.\n- **`llms.txt`:** las páginas clave (Acerca de, Envíos y devoluciones, Preguntas frecuentes, Contacto) se eligen una a una en la pestaña Blog. La salud del módulo dice cuáles faltan, y también las entradas retiradas cuyo destino ya no existe. Lo guardado en la 0.13.1 se lee en ese orden.\n\n### Corregido\n- Las migas de una oleoteca cerrada se quedaban en «Inicio › Oleotecas»: ahora llevan su país, su zona y la tienda, como las abiertas.\n- El motivo de «Revisar» por una oleoteca cerrada decía «oleoteca» escrito en el código: ahora usa el nombre del módulo.\n- La vista real pone los textos de oleotecas de .es (paso 3 del despliegue): «Oleotecas» en las migas, «OLEOTECA · {CIUDAD}» y «Oleoteca La Chinata {nombre}».",
+			"notes": "Traducción, primera parte (incremento 11a): el español primero.\n\n### Añadido\n- **Estado del español** de productos, páginas y entradas: «Pendiente» o «Revisado». Columna y filtro en las listas, acciones en lote «Marcar el español como revisado / pendiente» y caja «Texto en español» en el editor. Solo lo revisado se traducirá. Acción `lachinata/source_status/changed` y filtro `lachinata/source_status/post_types`.\n- **Paquete editorial de productos** (`wp lachinata catalog export-editorial` e `import-editorial`): los textos en español (nombre, descripciones, etiqueta, título y descripción SEO, texto alternativo de las imágenes y descripción de las variaciones que la tienen) salen como JSON con una huella por campo. Al importar, lo que cambió en la web desde la exportación es un conflicto y no se pisa; cada nombre que cambia sale aparte en el informe; `--mark-reviewed` marca «Revisado» lo que entra entero. Sin ingredientes ni valores nutricionales.\n\n### Cambiado\n- **Correo del enlace de pago** de un pedido telefónico: importe, pago «Pendiente» y dirección en los datos clave, y las direcciones, como en el inventario de correos. La factura de un pedido pagado también lleva las direcciones.\n- **Correo de transferencia:** «Lo tenemos reservado y lo preparamos en cuanto llegue la transferencia».\n- El perfil de pruebas `cz` ya no espera `translate`: lachinata.cz tiene un solo idioma.",
 			"previous": [
+				{
+					"version": "0.13.2",
+					"date": "2026-10-28",
+					"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.13.2/lachinata-0.13.2.zip",
+					"sha256": "4f34b22257498cb1659c98bb293ea5472be27a046c5249fe9a034a434913b83b"
+				},
 				{
 					"version": "0.13.1",
 					"date": "2026-10-28",
@@ -83,12 +89,6 @@
 					"date": "2026-10-28",
 					"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.12.2/lachinata-0.12.2.zip",
 					"sha256": "be08fc5178df003cab6a5dc40d4f4921115bbe49af35052e68e729361cff8623"
-				},
-				{
-					"version": "0.12.1",
-					"date": "2026-10-27",
-					"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.12.1/lachinata-0.12.1.zip",
-					"sha256": "b33e3eba9bcd9a26ed5b021a06d69a73f5e935da4548ed32176f9412fdcec5d8"
 				}
 			]
 		}

@@ -248,6 +248,21 @@ wp lachinata catalog normalize             # copia los valores
 <li>Con <code>--from-shipping-class=&lt;slug de la clase&gt;</code> marca además la <strong>Exclusión internacional</strong> en todos los productos de esa clase de envío.</li>
 <li>Los valores de ACF no se tocan nunca.</li>
 </ul>
+<h3>Revisar el español con el paquete editorial</h3>
+<p>Para corregir los textos en español de muchos productos fuera de la web (una revisión de ortografía, descripciones nuevas) y volver a meterlos sin pisar lo que alguien haya cambiado mientras tanto. Lo ejecuta quien mantiene el sitio con WP-CLI:</p>
+<pre><code class="language-bash">wp lachinata catalog export-editorial --file=editorial.json                  # los productos publicados
+wp lachinata catalog export-editorial --category=gourmet --source-status=pending --file=gourmet.json
+wp lachinata catalog import-editorial editorial.json --dry-run --report=informe.md   # simula
+wp lachinata catalog import-editorial editorial.json --mark-reviewed --report=informe.md
+</code></pre>
+<ul>
+<li><strong>Qué lleva</strong> cada producto: nombre, descripción corta, descripción, etiqueta, título y descripción SEO (Rank Math), el texto alternativo de sus imágenes y la descripción de cada variación que la tenga. Los campos vacíos también van, para poder rellenarlos. <strong>No lleva</strong> ingredientes ni valores nutricionales.</li>
+<li><strong>Solo de lectura</strong>: el ID, el SKU, la dirección, el estado del español y, en las variaciones, sus atributos. Sirven para encontrar el producto: si el SKU del paquete no es el del producto, ese producto no se importa.</li>
+<li><strong>Conflictos</strong>: cada texto lleva una huella del texto exportado. Si en la web ese campo ha cambiado desde la exportación, no se escribe y sale en el informe como conflicto. Lo demás del producto sí entra.</li>
+<li>Un texto que vuelve igual que salió no cambia nada.</li>
+<li><strong>Nombres</strong>: el informe saca aparte cada nombre que cambia (antes y después), porque el nombre es dato de calidad.</li>
+<li>Con <code>--mark-reviewed</code>, cada producto que entra entero (sin conflictos ni errores) pasa a «Revisado» (ver <a href="core.html">Núcleo</a>, «Estado del español»).</li>
+</ul>
 <h2>Comprobar que funciona</h2>
 <ol>
 <li>Edita un producto simple con precio. En la pestaña <strong>La Chinata</strong>, pon Contenido «500 ml» y Referencia «1 l». Guarda.</li>
@@ -310,7 +325,7 @@ wp lachinata catalog normalize             # copia los valores
 <p>La tienda vuelve a su aspecto neutro: sin tintas de categoría, sin precio por unidad, sin etiqueta, sin pestaña de ingredientes ni imagen de descripción, sin sellos y sin consumo preferente; las etiquetas en gris, sin copo ni aviso de refrigerado, todas las categorías principales en la cabecera y la venta cruzada «También te puede gustar». Los sellos dejan de estar disponibles en el menú Productos (siguen guardados) y <a href="shipping.html">Envíos</a> deja de ver la casilla de exclusión internacional: solo cuentan las restricciones por clase de envío.</p>
 <p><strong>Los datos se conservan</strong>: al encenderlo de nuevo, todo vuelve como estaba. Si quieres borrarlos, apaga el módulo y usa <strong>Borrar datos…</strong> en WooCommerce → La Chinata → Módulos: se descarga antes una copia y se borran los campos de productos, categorías y sellos de este módulo (nunca los valores antiguos de ACF ni los pedidos).</p>
 
-<footer>La Chinata Core 0.13.2</footer>
+<footer>La Chinata Core 0.14.0</footer>
 </main>
 </body>
 </html>

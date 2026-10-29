@@ -1,20 +1,26 @@
 {
 	"schema": 1,
-	"generated_at": "2026-10-29T12:00:21.465Z",
+	"generated_at": "2026-10-29T14:43:24.786Z",
 	"packages": {
 		"lachinata-core": {
-			"version": "0.14.0",
+			"version": "0.15.0",
 			"date": "2026-10-29",
-			"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.14.0/lachinata-core-0.14.0.zip",
-			"sha256": "278bb54642dfc45c8dec2fbc8850d0781fd4edae4a07e0ee5ca081f85c88b9aa",
+			"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.15.0/lachinata-core-0.15.0.zip",
+			"sha256": "46854adecfd2f72e939bd51d19e93f9e678100019bcba4f57127172753d60866",
 			"requires": {
 				"wordpress": "6.8",
 				"php": "8.2",
 				"woocommerce": "10.0",
-				"lachinata": "0.14.0"
+				"lachinata": "0.15.0"
 			},
-			"notes": "Traducción, primera parte (incremento 11a): el español primero.\n\n### Añadido\n- **Estado del español** de productos, páginas y entradas: «Pendiente» o «Revisado». Columna y filtro en las listas, acciones en lote «Marcar el español como revisado / pendiente» y caja «Texto en español» en el editor. Solo lo revisado se traducirá. Acción `lachinata/source_status/changed` y filtro `lachinata/source_status/post_types`.\n- **Paquete editorial de productos** (`wp lachinata catalog export-editorial` e `import-editorial`): los textos en español (nombre, descripciones, etiqueta, título y descripción SEO, texto alternativo de las imágenes y descripción de las variaciones que la tienen) salen como JSON con una huella por campo. Al importar, lo que cambió en la web desde la exportación es un conflicto y no se pisa; cada nombre que cambia sale aparte en el informe; `--mark-reviewed` marca «Revisado» lo que entra entero. Sin ingredientes ni valores nutricionales.\n\n### Cambiado\n- **Correo del enlace de pago** de un pedido telefónico: importe, pago «Pendiente» y dirección en los datos clave, y las direcciones, como en el inventario de correos. La factura de un pedido pagado también lleva las direcciones.\n- **Correo de transferencia:** «Lo tenemos reservado y lo preparamos en cuanto llegue la transferencia».\n- El perfil de pruebas `cz` ya no espera `translate`: lachinata.cz tiene un solo idioma.",
+			"notes": "Traducción, segunda parte (incremento 11b): el módulo `translate`.\n\n### Añadido\n- **Módulo `translate`** (WooCommerce → La Chinata → Traducción), que sustituirá a TranslatePress:\n  - cada idioma en su subdirectorio (`/en/`), con las direcciones traducidas: el slug de cada producto, página, categoría y sección, y la tienda, la bolsa, el checkout y la cuenta;\n  - una página existe en un idioma solo si está traducida entera; si no, sus enlaces llevan al español y pedirla en `/en/` también;\n  - `hreflang` con `x-default`, canónica de cada idioma y un sitemap por idioma en el de Rank Math;\n  - en el editor de productos, páginas, entradas y términos, las traducciones al lado del español, campo a campo; lo que corrige una persona queda «Editada» y no se pisa, y lo que cambia en español pasa a «Desfasada»;\n  - los correos al cliente salen en el idioma en que hizo el pedido; los de la tienda, en español; las líneas del pedido guardan el nombre en español para Odoo;\n  - `wp lachinata translate set|get|import|export|status|refresh`.\n- **Contrato `Languages` versión 2** para los demás módulos: idioma de la petición, si una página existe en un idioma, su dirección allí y pintar algo en otro idioma. Cada módulo declara sus campos traducibles con `lachinata/translate/fields` (`catalog`, `content`, `oleotecas`).\n- **Cadenas del tema y del plugin en inglés británico**, versionadas en `theme/languages/` y `plugin/languages/` con su archivo de correcciones (`npm run i18n`; la CI comprueba que ninguna quede sin traducir).\n- `llms.txt` y los feeds de cada idioma, en ese idioma y solo con lo que existe en él.\n- El selector de destino recuerda el idioma elegido (cookie `lc_idioma`) solo para preseleccionarlo; sin cookie, propone el del navegador si la tienda lo tiene.\n- Todos los eventos de medición llevan `site_language`.\n\n### Cambiado\n- Los avisos clásicos de WooCommerce dicen «bolsa», nunca «carrito» («Ver bolsa», «Bolsa actualizada», los de existencias…).\n- **Correo de transferencia:** los datos para la transferencia van justo después de los datos clave, antes de «Ver mi pedido».\n- **Enlace de pago de un pedido telefónico sin método:** en «Pago», «Pendiente» y nada debajo.\n- El perfil de pruebas `es` enciende `translate` con inglés.",
 			"previous": [
+				{
+					"version": "0.14.0",
+					"date": "2026-10-29",
+					"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.14.0/lachinata-core-0.14.0.zip",
+					"sha256": "278bb54642dfc45c8dec2fbc8850d0781fd4edae4a07e0ee5ca081f85c88b9aa"
+				},
 				{
 					"version": "0.13.2",
 					"date": "2026-10-28",
@@ -38,28 +44,28 @@
 					"date": "2026-10-28",
 					"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.12.3/lachinata-core-0.12.3.zip",
 					"sha256": "ccecf44871132c946078b526ade4ab480794234d45abce5b747855d364b29e25"
-				},
-				{
-					"version": "0.12.2",
-					"date": "2026-10-28",
-					"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.12.2/lachinata-core-0.12.2.zip",
-					"sha256": "524ce36828337197d8be3eeb8b1cf74cdac3403966f20eb98a8d3f948bfdba1e"
 				}
 			]
 		},
 		"lachinata": {
-			"version": "0.14.0",
+			"version": "0.15.0",
 			"date": "2026-10-29",
-			"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.14.0/lachinata-0.14.0.zip",
-			"sha256": "5efa82c3f4154b1bc751d1b2880512dc35a61af3fac31acc5e464712bf368d36",
+			"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.15.0/lachinata-0.15.0.zip",
+			"sha256": "392dc528f81494d13a86b3e7bb13fd8ecaa0c7ea7b06aaaafcc175e10d2b80ab",
 			"requires": {
 				"wordpress": "6.8",
 				"php": "8.2",
 				"woocommerce": "10.0",
-				"lachinata-core": "0.14.0"
+				"lachinata-core": "0.15.0"
 			},
-			"notes": "Traducción, primera parte (incremento 11a): el español primero.\n\n### Añadido\n- **Estado del español** de productos, páginas y entradas: «Pendiente» o «Revisado». Columna y filtro en las listas, acciones en lote «Marcar el español como revisado / pendiente» y caja «Texto en español» en el editor. Solo lo revisado se traducirá. Acción `lachinata/source_status/changed` y filtro `lachinata/source_status/post_types`.\n- **Paquete editorial de productos** (`wp lachinata catalog export-editorial` e `import-editorial`): los textos en español (nombre, descripciones, etiqueta, título y descripción SEO, texto alternativo de las imágenes y descripción de las variaciones que la tienen) salen como JSON con una huella por campo. Al importar, lo que cambió en la web desde la exportación es un conflicto y no se pisa; cada nombre que cambia sale aparte en el informe; `--mark-reviewed` marca «Revisado» lo que entra entero. Sin ingredientes ni valores nutricionales.\n\n### Cambiado\n- **Correo del enlace de pago** de un pedido telefónico: importe, pago «Pendiente» y dirección en los datos clave, y las direcciones, como en el inventario de correos. La factura de un pedido pagado también lleva las direcciones.\n- **Correo de transferencia:** «Lo tenemos reservado y lo preparamos en cuanto llegue la transferencia».\n- El perfil de pruebas `cz` ya no espera `translate`: lachinata.cz tiene un solo idioma.",
+			"notes": "Traducción, segunda parte (incremento 11b): el módulo `translate`.\n\n### Añadido\n- **Módulo `translate`** (WooCommerce → La Chinata → Traducción), que sustituirá a TranslatePress:\n  - cada idioma en su subdirectorio (`/en/`), con las direcciones traducidas: el slug de cada producto, página, categoría y sección, y la tienda, la bolsa, el checkout y la cuenta;\n  - una página existe en un idioma solo si está traducida entera; si no, sus enlaces llevan al español y pedirla en `/en/` también;\n  - `hreflang` con `x-default`, canónica de cada idioma y un sitemap por idioma en el de Rank Math;\n  - en el editor de productos, páginas, entradas y términos, las traducciones al lado del español, campo a campo; lo que corrige una persona queda «Editada» y no se pisa, y lo que cambia en español pasa a «Desfasada»;\n  - los correos al cliente salen en el idioma en que hizo el pedido; los de la tienda, en español; las líneas del pedido guardan el nombre en español para Odoo;\n  - `wp lachinata translate set|get|import|export|status|refresh`.\n- **Contrato `Languages` versión 2** para los demás módulos: idioma de la petición, si una página existe en un idioma, su dirección allí y pintar algo en otro idioma. Cada módulo declara sus campos traducibles con `lachinata/translate/fields` (`catalog`, `content`, `oleotecas`).\n- **Cadenas del tema y del plugin en inglés británico**, versionadas en `theme/languages/` y `plugin/languages/` con su archivo de correcciones (`npm run i18n`; la CI comprueba que ninguna quede sin traducir).\n- `llms.txt` y los feeds de cada idioma, en ese idioma y solo con lo que existe en él.\n- El selector de destino recuerda el idioma elegido (cookie `lc_idioma`) solo para preseleccionarlo; sin cookie, propone el del navegador si la tienda lo tiene.\n- Todos los eventos de medición llevan `site_language`.\n\n### Cambiado\n- Los avisos clásicos de WooCommerce dicen «bolsa», nunca «carrito» («Ver bolsa», «Bolsa actualizada», los de existencias…).\n- **Correo de transferencia:** los datos para la transferencia van justo después de los datos clave, antes de «Ver mi pedido».\n- **Enlace de pago de un pedido telefónico sin método:** en «Pago», «Pendiente» y nada debajo.\n- El perfil de pruebas `es` enciende `translate` con inglés.",
 			"previous": [
+				{
+					"version": "0.14.0",
+					"date": "2026-10-29",
+					"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.14.0/lachinata-0.14.0.zip",
+					"sha256": "5efa82c3f4154b1bc751d1b2880512dc35a61af3fac31acc5e464712bf368d36"
+				},
 				{
 					"version": "0.13.2",
 					"date": "2026-10-28",
@@ -83,12 +89,6 @@
 					"date": "2026-10-28",
 					"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.12.3/lachinata-0.12.3.zip",
 					"sha256": "97c31510f66a4678ec1d33cdcf7124f73745df568ff4db1a8d494f3ad239a98b"
-				},
-				{
-					"version": "0.12.2",
-					"date": "2026-10-28",
-					"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.12.2/lachinata-0.12.2.zip",
-					"sha256": "be08fc5178df003cab6a5dc40d4f4921115bbe49af35052e68e729361cff8623"
 				}
 			]
 		}

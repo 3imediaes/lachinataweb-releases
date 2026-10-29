@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Traducción · Guías de La Chinata Core</title>
+<style>
+:root { color-scheme: light dark; --ink: #231f20; --soft: #5b5657; --line: #e8ebed; --bg: #fff; --code: #f3eee6; }
+@media (prefers-color-scheme: dark) { :root { --ink: #f3eee6; --soft: #c9c3bd; --line: #3a3637; --bg: #1b1a18; --code: #2b2926; } }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 17px/1.6 system-ui, -apple-system, "Segoe UI", sans-serif; }
+main { max-width: 760px; margin: 0 auto; padding: 24px 16px 64px; }
+nav { font-size: 15px; margin-bottom: 24px; }
+a { color: inherit; }
+h1, h2, h3 { line-height: 1.25; }
+h2 { margin-top: 2em; border-top: 1px solid var(--line); padding-top: 1em; }
+code { background: var(--code); padding: 0 4px; border-radius: 4px; font-size: .9em; }
+pre { background: var(--code); padding: 12px; overflow-x: auto; border-radius: 6px; }
+table { border-collapse: collapse; width: 100%; display: block; overflow-x: auto; font-size: 15px; }
+th, td { border: 1px solid var(--line); padding: 6px 8px; text-align: left; vertical-align: top; }
+footer { color: var(--soft); font-size: 14px; margin-top: 48px; }
+</style>
+</head>
+<body>
+<main>
+<nav><a href="index.html">Guías de La Chinata Core</a></nav>
+<h1>Traducción</h1>
+<p>Sirve la tienda en <strong>otros idiomas</strong>, cada uno en su subdirectorio (<code>/en/</code>, <code>/de/</code>), con las direcciones traducidas, <code>hreflang</code> y un sitemap por idioma. El idioma de la tienda es siempre el <strong>origen</strong>: se escribe y se corrige en él, y los demás salen de él.</p>
+<p>Una traducción no es una copia del producto o de la página: es un campo más de la misma ficha. El producto es uno solo en todos los idiomas, con el mismo stock, precio y pedidos.</p>
+<p>Con el módulo apagado, la tienda sale solo en su idioma y las traducciones se conservan.</p>
+<h2>Antes de empezar</h2>
+<ul>
+<li>Los <strong>paquetes de idioma</strong> de WordPress y de WooCommerce de cada idioma: Escritorio → Actualizaciones, después de añadir el idioma en Ajustes → Generales («Idioma del sitio», sin guardarlo como idioma del sitio), o con WP-CLI (<code>wp language core install en_GB</code> y <code>wp language plugin install woocommerce en_GB</code>). Sin el de WooCommerce, sus textos salen en inglés de Estados Unidos («cart»); la salud del módulo lo avisa.</li>
+<li>Las cadenas del tema y del plugin vienen traducidas en cada versión: no gastan nada.</li>
+<li>Si la tienda usa <strong>caché de página</strong>, cada idioma tiene su propia dirección: no hace falta configurar nada más.</li>
+</ul>
+<h2>Dónde se configura</h2>
+<p>WooCommerce → La Chinata → <strong>Traducción</strong>. Para encender o apagar el módulo: La Chinata → Módulos.</p>
+<h2>Ajustes</h2>
+<h3>Idiomas</h3>
+<table>
+<thead>
+<tr>
+<th>Campo</th>
+<th>Qué es</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Locale</td>
+<td>El idioma de WordPress: <code>en_GB</code> (inglés británico), <code>de_DE</code>, <code>fr_FR</code></td>
+</tr>
+<tr>
+<td>Código</td>
+<td>El subdirectorio y el código de <code>hreflang</code>: <code>en</code> para <code>/en/</code>. Distinto en cada idioma y distinto del idioma de la tienda</td>
+</tr>
+<tr>
+<td>Nombre</td>
+<td>Lo que ve el visitante en el selector de idioma («English»)</td>
+</tr>
+</tbody></table>
+<p>Para quitar un idioma, vacía su fila: sus traducciones se conservan y vuelven si lo añades otra vez.</p>
+<h3>Qué se traduce</h3>
+<p>«Solo productos, páginas y entradas con el español Revisado»: encendido de serie. El estado del texto de origen («Pendiente» o «Revisado») se marca en el editor o en las listas (guía <a href="core.html">Núcleo</a>, «Estado del español»). Términos, menús y oleotecas no tienen estado.</p>
+<h2>Corregir una traducción</h2>
+<p>En el editor de cada producto, página o entrada, la caja <strong>Traducciones</strong> enseña una pestaña por idioma con el texto de origen y la traducción, campo a campo, uno al lado del otro. En categorías y términos, debajo del formulario.</p>
+<ul>
+<li>Cambia el campo y guarda: queda <strong>Editada</strong> y ninguna traducción automática lo vuelve a tocar.</li>
+<li><strong>Desfasada</strong> quiere decir que el texto de origen cambió después: la traducción sigue publicada hasta que se revise.</li>
+<li>Debajo de cada pestaña pone si la página <strong>existe</strong> en ese idioma (con su dirección) o qué campos faltan.</li>
+</ul>
+<p>No se puede editar desde la parte pública.</p>
+<h2>Cuándo existe una página en un idioma</h2>
+<p>Solo cuando está <strong>traducida entera</strong>: el nombre o el título, las descripciones y el contenido que tengan texto. Mientras falte algo, en ese idioma no hay dirección: sus enlaces llevan al idioma de origen, no sale en <code>hreflang</code> ni en el sitemap de ese idioma, y quien la pida en <code>/en/…</code> va a la del idioma de origen. Nunca se ve una página a medias.</p>
+<p>Los títulos y descripciones SEO no son obligatorios: sin ellos, el plugin de SEO escribe los suyos con el título traducido.</p>
+<h2>Lo que no se traduce</h2>
+<p>SKU, códigos, precios, cantidades, direcciones y teléfonos de las tiendas, nombres de marca y los ingredientes y valores nutricionales (vendrán de su propia fuente).</p>
+<h2>Direcciones</h2>
+<ul>
+<li>El idioma de la tienda va sin prefijo; los demás, en su subdirectorio. El idioma lo da la dirección, nunca el navegador.</li>
+<li>Las direcciones se traducen: el slug de cada producto, página, categoría y sección, y las páginas por las que pasan (la tienda, la bolsa, el checkout y la cuenta). Los apartados internos de la cuenta y del pedido recibido no.</li>
+<li>Si alguien entra con la dirección en el idioma de origen bajo <code>/en/</code>, va a la traducida.</li>
+</ul>
+<h2>Correos</h2>
+<p>Cada pedido guarda el idioma en que se hizo, y los correos al cliente salen en ese idioma. Los correos a la tienda, siempre en el idioma de la tienda. En el panel y en el ERP, las líneas del pedido conservan el nombre del producto en el idioma de origen.</p>
+<h2>WP-CLI</h2>
+<table>
+<thead>
+<tr>
+<th>Orden</th>
+<th>Qué hace</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>wp lachinata translate status</code></td>
+<td>Traducciones por idioma y estado, y cuántas páginas existen en cada idioma</td>
+</tr>
+<tr>
+<td><code>wp lachinata translate get post 123</code></td>
+<td>Las traducciones de un producto, página o entrada</td>
+</tr>
+<tr>
+<td><code>wp lachinata translate set post 123 name en_GB &quot;Olive oil soap&quot;</code></td>
+<td>Escribe un campo (queda «Editada»)</td>
+</tr>
+<tr>
+<td><code>wp lachinata translate import archivo.json [--dry-run]</code></td>
+<td>Importa traducciones (formato en el README del módulo)</td>
+</tr>
+<tr>
+<td><code>wp lachinata translate export --language=en_GB --file=en.json</code></td>
+<td>Exporta las de un idioma</td>
+</tr>
+<tr>
+<td><code>wp lachinata translate refresh</code></td>
+<td>Vuelve a calcular dónde existe cada página</td>
+</tr>
+</tbody></table>
+<h2>Cómo comprobarlo</h2>
+<ol>
+<li>Abre un producto traducido en <code>/en/</code>: título, descripción y botones en inglés, y en el código de la página tres <code>&lt;link rel=&quot;alternate&quot; hreflang&gt;</code> (el de origen, <code>en</code> y <code>x-default</code>).</li>
+<li>Abre uno sin traducir en <code>/en/</code>: te lleva a su dirección en el idioma de origen.</li>
+<li>En el índice de sitemaps aparece el del idioma (<code>translate-en-sitemap.xml</code>), solo con lo traducido.</li>
+<li>Haz un pedido desde <code>/en/</code>: el correo de confirmación llega en inglés.</li>
+</ol>
+
+<footer>La Chinata Core 0.15.0</footer>
+</main>
+</body>
+</html>

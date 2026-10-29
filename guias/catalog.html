@@ -25,7 +25,7 @@ footer { color: var(--soft); font-size: 14px; margin-top: 48px; }
 <nav><a href="index.html">Guías de La Chinata Core</a></nav>
 <h1>Catálogo</h1>
 <p>Añade a tus productos y categorías los datos que WooCommerce no trae de serie: contenido y precio por unidad («500 ml | 9,33 € / 1 l»), ingredientes, etiqueta, imagen de descripción, consumo preferente, sellos con icono y el color (tinta) de cada categoría. También marca los productos que no deben enviarse fuera de tu país.</p>
-<p>Además decide cómo se ven las etiquetas de producto, la categoría principal y la foto de tarjeta de cada producto, qué categorías salen en la cabecera (con campañas de temporada), la venta cruzada de cada familia y la marca de los productos refrigerados. Y te avisa de los datos que conviene revisar: la tienda los muestra tal como están (no abrevia nombres, no oculta etiquetas, no deduce unidades), así que lo que esté mal se corrige en la ficha.</p>
+<p>Además decide cómo se ven las etiquetas de producto, la categoría principal y la foto de tarjeta de cada producto, qué categorías salen en la cabecera (con campañas de temporada), la venta cruzada de cada familia, la marca de los productos refrigerados y los <strong>regalos compuestos</strong> (cajas, cestas, estuches): qué productos lleva cada uno, su presentación y el enlace «¿Es para tu empresa?». Y te avisa de los datos que conviene revisar: la tienda los muestra tal como están (no abrevia nombres, no oculta etiquetas, no deduce unidades), así que lo que esté mal se corrige en la ficha.</p>
 <h2>Antes de empezar</h2>
 <ul>
 <li>No necesita ningún otro módulo. Se enciende solo al activar el plugin.</li>
@@ -69,10 +69,22 @@ footer { color: var(--soft); font-size: 14px; margin-top: 48px; }
 <td>Categorías de la tienda, campañas, venta cruzada y marcas de las clases de envío</td>
 <td>WooCommerce → La Chinata → <strong>Catálogo</strong> → Tienda</td>
 </tr>
+<tr>
+<td>Qué lleva un regalo y su presentación</td>
+<td>Productos → editar el producto → caja <strong>Contenido del regalo</strong></td>
+</tr>
+<tr>
+<td>Presentaciones (caja de regalo, cesta…) y sus palabras</td>
+<td>Productos → <strong>Presentaciones</strong></td>
+</tr>
+<tr>
+<td>«¿Es para tu empresa?»</td>
+<td>WooCommerce → La Chinata → <strong>Catálogo</strong> → Regalos</td>
+</tr>
 </tbody></table>
 <p>Para encenderlo o apagarlo: WooCommerce → La Chinata → Módulos → <strong>Catálogo</strong>.</p>
 <h2>Ajustes</h2>
-<p>Los datos de cada producto, categoría, etiqueta o sello son contenido y <strong>no viajan</strong> en la exportación de WooCommerce → La Chinata → Exportar/importar. La configuración de la pestaña <strong>Catálogo → Tienda</strong> sí viaja (va por slug de categoría y de clase de envío, para que sirva en otra tienda).</p>
+<p>Los datos de cada producto, categoría, etiqueta o sello son contenido y <strong>no viajan</strong> en la exportación de WooCommerce → La Chinata → Exportar/importar. La configuración de las pestañas <strong>Catálogo → Tienda</strong> y <strong>Catálogo → Regalos</strong> sí viaja (va por slug de categoría y de clase de envío, para que sirva en otra tienda).</p>
 <h3>Pestaña «La Chinata» del producto</h3>
 <table>
 <thead>
@@ -201,6 +213,7 @@ footer { color: var(--soft); font-size: 14px; margin-top: 48px; }
 <li><strong>GTIN que no puede existir</strong>: un número de cifras que no es de GTIN o el último dígito que no es el de control (un error al teclearlo). Esos GTIN no salen en los feeds.</li>
 <li><strong>EAN antiguo distinto del GTIN</strong>: manda el GTIN de WooCommerce.</li>
 <li><strong>Sin imagen</strong>, <strong>sin categoría</strong> y <strong>categoría principal que ya no es del producto</strong>.</li>
+<li><strong>Regalos con un producto que no existe, sin publicar o agotado</strong>. Un producto sin publicar sigue saliendo en «Qué lleva», sin enlace; uno que ya no existe no sale.</li>
 </ul>
 <p>Nada de esto cambia lo que se ve en la tienda. Arriba de la portada de La Chinata verás «Salud del catálogo: N avisos» con un enlace a esta pantalla.</p>
 <p><strong>Tienda.</strong></p>
@@ -234,6 +247,66 @@ footer { color: var(--soft); font-size: 14px; margin-top: 48px; }
 </tr>
 </tbody></table>
 <p><strong>Cambios que cuentan.</strong> Los campos del producto cuyo cambio vale como cambio del producto para el contenido que lo menciona (claves separadas por comas; de serie, los ingredientes; si los alérgenos, las trazas o la nutrición van dentro de ese campo, también cuentan). Los sellos siempre cuentan. La descripción libre y el stock no. Al cambiar, el blog manda a «Revisar» las entradas que mencionan el producto; al dejar de estar publicado («descatalogado»), también.</p>
+<h3>Regalos compuestos</h3>
+<p>Un producto con contenido es un <strong>regalo compuesto</strong>: una caja, cesta o estuche con varios productos de la tienda. Para WooCommerce, el stock y los pedidos sigue siendo un producto normal: el contenido no los toca.</p>
+<p><strong>Contenido del regalo</strong> (en el producto). Busca cada producto por nombre o SKU, pon cuántas unidades lleva y, si quieres, una nota. Elige su <strong>Presentación</strong>. Con eso:</p>
+<ul>
+<li>la ficha muestra, entre el precio y la disponibilidad, un resumen con miniaturas, «7 productos · Caja de regalo», las medidas y el peso, que lleva a «Qué lleva»;</li>
+<li>debajo del bloque de compra, <strong>Qué lleva</strong>: los datos del regalo y una foto de cada producto, con su nombre y su formato. Al pulsar uno se abre su ficha resumida (foto, nombre, formato, descripción corta y «Ver el producto»; los ingredientes y alérgenos, cuando lleguen de la aplicación de La Chinata, nunca del campo «Ingredientes» del producto). Sin precios ni botón de añadir: el regalo se compra entero;</li>
+<li>la tarjeta del regalo en los listados dice «7 productos · Caja de regalo».</li>
+</ul>
+<p>Las <strong>medidas y el peso</strong> son los de la pestaña Envío de WooCommerce. Los <strong>alérgenos</strong> del conjunto salen solos cuando la tienda tenga esos datos (llegarán de la aplicación de La Chinata); mientras tanto, no se muestran. No se escriben a mano.</p>
+<p><strong>Presentaciones</strong> (Productos → Presentaciones). La lista de presentaciones de tu tienda. Se traducen como cualquier término (ver <a href="translate.html">Traducción</a>). Las <strong>palabras del nombre</strong> solo sirven para la migración: un producto cuyo nombre empieza por una de ellas toma esa presentación.</p>
+<p><strong>«¿Es para tu empresa?»</strong> (Catálogo → Regalos):</p>
+<table>
+<thead>
+<tr>
+<th>Ajuste</th>
+<th>Qué hace</th>
+<th>De serie</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Productos</strong></td>
+<td>Los regalos compuestos y, si quieres, los productos de unas categorías (con sus subcategorías).</td>
+<td>Los regalos compuestos</td>
+</tr>
+<tr>
+<td><strong>Cantidad mínima</strong></td>
+<td>La que dice el texto («a partir de 20 unidades»).</td>
+<td>20</td>
+</tr>
+<tr>
+<td><strong>Título, texto y enlace</strong></td>
+<td>Vacíos, usan los del plugin, ya traducidos. Puedes usar {nombre}, {sku} y {min}.</td>
+<td>Vacíos</td>
+</tr>
+<tr>
+<td><strong>Destino</strong></td>
+<td>Una página o formulario de tu tienda (con {sku} en la dirección para saber qué regalo es) o un chat de WhatsApp con el número de «Atención al cliente» y el mensaje ya escrito. Sin número de WhatsApp, el enlace no sale.</td>
+<td><code>/regalos-de-empresa/?producto={sku}</code></td>
+</tr>
+</tbody></table>
+<p>Cada clic se mide como <code>lc_bulk_quote</code> (ver <a href="medicion.html">Medición</a>).</p>
+<h3>Migrar los regalos de la descripción</h3>
+<p>Si el contenido de tus regalos está escrito en la descripción (un subtítulo «Contenido del…» o «Productos incluidos» y el bloque <strong>Productos</strong> o el código <code>[products skus=&quot;…&quot;]</code>), se pasa de una vez con WP-CLI. Antes, crea las presentaciones con sus palabras:</p>
+<pre><code class="language-bash">wp lachinata catalog migrate-gifts --dry-run --report=informe-regalos.md   # simula
+wp lachinata catalog migrate-gifts --report=informe-regalos.md
+</code></pre>
+<ul>
+<li>Lee los SKU del bloque; un SKU repetido es una unidad más. Quita de la descripción el bloque y su subtítulo.</li>
+<li>Pone la presentación por la primera palabra del nombre. La que no case queda sin presentación y sale en el informe.</li>
+<li>Pasa «Dimensiones (l x w x h): 26 x 26,6 x 9,3 cm» (o en mm) a las medidas de WooCommerce, en la unidad de tu tienda, y quita esa línea; si la sección «Datos del producto» se queda vacía, quita también su subtítulo. Si el producto ya tenía otras medidas, no las pisa, deja el texto y avisa.</li>
+<li>Lo que no case (un SKU sin producto, un subtítulo desconocido, un bloque sin subtítulo) va al informe.</li>
+<li>Un regalo que ya tiene contenido no se toca, así que se puede repetir.</li>
+</ul>
+<h3>Fotos recortadas</h3>
+<p>Las fotos principales de producto se irán cambiando por <strong>WebP recortadas, sin fondo</strong> (cómo deben ser: cuadradas, 1600 × 1600 px, producto de frente ocupando en torno al 84 %, sin sombra, con el slug del producto como nombre y el texto alternativo «Nombre, formato»). Sustituye el archivo del adjunto que ya existe siempre que puedas: así no se rompen galerías, regalos ni feeds.</p>
+<p>No se marca nada a mano. Al subir una imagen, el plugin mira si tiene fondo transparente; si lo tiene, la tienda la pinta <strong>centrada y con aire sobre la tinta de su familia</strong> (en la tarjeta, la bolsa, los regalos y la galería de la ficha). Las fotos con fondo gris o blanco <strong>llenan su pieza</strong>, como hasta ahora. Para las imágenes que ya estaban subidas:</p>
+<pre><code class="language-bash">wp lachinata catalog detect-cutouts --dry-run   # simula
+wp lachinata catalog detect-cutouts
+</code></pre>
+<p>Si recortas o giras una foto en el editor de imágenes de WordPress, vuelve a pasar el comando. Fuera de la web (Google, Meta, vistas previas al compartir) un recorte va en JPEG con fondo (ver <a href="feeds.html">Feeds</a>).</p>
 <h3>Pasar los datos antiguos de ACF</h3>
 <p>Solo si tu tienda viene de ACF. Lo ejecuta quien mantiene el sitio con WP-CLI, una vez por sitio:</p>
 <pre><code class="language-bash">wp lachinata catalog normalize --dry-run   # simula y avisa, sin escribir
@@ -274,6 +347,7 @@ wp lachinata catalog import-editorial editorial.json --mark-reviewed --report=in
 <li>Pon un tono a una etiqueta y asígnala con otra a un producto: la tarjeta muestra las dos, en el orden que hayas puesto.</li>
 <li>En <strong>Catálogo → Tienda</strong>, pon el copo y «Envío refrigerado» a una clase con <strong>Aviso en la ficha</strong>: sus productos llevan el copo en la tarjeta y el aviso con sus condiciones en la ficha.</li>
 <li>Abre <strong>Catálogo → Salud del catálogo</strong> y comprueba que la portada de La Chinata muestra el mismo número de avisos.</li>
+<li>Pon <strong>Contenido del regalo</strong> a un producto (dos productos, uno con 2 unidades) y una presentación: su ficha muestra el resumen, «¿Es para tu empresa?» y «Qué lleva»; al pulsar un producto se abre su ficha resumida y se cierra con Escape. Su tarjeta dice «3 productos · …».</li>
 <li>Si usas la exclusión internacional: marca la casilla en un producto, crea la restricción en <a href="shipping.html">Envíos</a> y prueba un destino no permitido en Envíos → Probador, marcando «Lleva un producto con exclusión internacional».</li>
 </ol>
 <h2>Si algo falla</h2>
@@ -317,15 +391,27 @@ wp lachinata catalog import-editorial editorial.json --mark-reviewed --report=in
 <td>Revisa <strong>Catálogo → Tienda</strong>: las campañas activas entran delante. Una categoría que no existe se ignora (el aviso al guardar te lo dice).</td>
 </tr>
 <tr>
+<td>Un producto del regalo no sale en «Qué lleva»</td>
+<td>Ya no existe (ni por su ID ni por su SKU): la salud del catálogo lo avisa. Corrige el contenido del regalo.</td>
+</tr>
+<tr>
+<td>«¿Es para tu empresa?» no sale</td>
+<td>Que el producto sea un regalo compuesto (o esté en una de las categorías de Catálogo → Regalos) y, con WhatsApp, que haya número en «Atención al cliente».</td>
+</tr>
+<tr>
+<td>No salen las medidas del regalo</td>
+<td>Que estén en la pestaña Envío del producto.</td>
+</tr>
+<tr>
 <td>Nada de lo anterior se ve</td>
 <td>WooCommerce → Estado, tabla «La Chinata · módulos»: el estado de <strong>Catálogo</strong> debe ser «Funcionando». Si pone que ha fallado, los detalles están en WooCommerce → Estado → Registros (<code>lachinata-catalog</code>).</td>
 </tr>
 </tbody></table>
 <h2>Al apagarlo</h2>
-<p>La tienda vuelve a su aspecto neutro: sin tintas de categoría, sin precio por unidad, sin etiqueta, sin pestaña de ingredientes ni imagen de descripción, sin sellos y sin consumo preferente; las etiquetas en gris, sin copo ni aviso de refrigerado, todas las categorías principales en la cabecera y la venta cruzada «También te puede gustar». Los sellos dejan de estar disponibles en el menú Productos (siguen guardados) y <a href="shipping.html">Envíos</a> deja de ver la casilla de exclusión internacional: solo cuentan las restricciones por clase de envío.</p>
-<p><strong>Los datos se conservan</strong>: al encenderlo de nuevo, todo vuelve como estaba. Si quieres borrarlos, apaga el módulo y usa <strong>Borrar datos…</strong> en WooCommerce → La Chinata → Módulos: se descarga antes una copia y se borran los campos de productos, categorías y sellos de este módulo (nunca los valores antiguos de ACF ni los pedidos).</p>
+<p>La tienda vuelve a su aspecto neutro: sin tintas de categoría, sin precio por unidad, sin etiqueta, sin pestaña de ingredientes ni imagen de descripción, sin sellos y sin consumo preferente; las etiquetas en gris, sin copo ni aviso de refrigerado, todas las categorías principales en la cabecera, la venta cruzada «También te puede gustar» y los regalos como productos normales (sin «Qué lleva» ni «¿Es para tu empresa?»). Los sellos dejan de estar disponibles en el menú Productos (siguen guardados) y <a href="shipping.html">Envíos</a> deja de ver la casilla de exclusión internacional: solo cuentan las restricciones por clase de envío.</p>
+<p><strong>Los datos se conservan</strong>: al encenderlo de nuevo, todo vuelve como estaba. Si quieres borrarlos, apaga el módulo y usa <strong>Borrar datos…</strong> en WooCommerce → La Chinata → Módulos: se descarga antes una copia y se borran los campos de productos, categorías y sellos de este módulo (también el contenido de los regalos) (nunca los valores antiguos de ACF ni los pedidos).</p>
 
-<footer>La Chinata Core 0.15.1</footer>
+<footer>La Chinata Core 0.16.0</footer>
 </main>
 </body>
 </html>

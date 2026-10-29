@@ -1,20 +1,26 @@
 {
 	"schema": 1,
-	"generated_at": "2026-10-29T17:59:44.887Z",
+	"generated_at": "2026-10-29T23:03:40.676Z",
 	"packages": {
 		"lachinata-core": {
-			"version": "0.15.1",
+			"version": "0.16.0",
 			"date": "2026-10-29",
-			"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.15.1/lachinata-core-0.15.1.zip",
-			"sha256": "3e94f521a82e3d074f7aee862f17c5ddaef67ae5cbeacd1d2e73ad31324068a9",
+			"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.16.0/lachinata-core-0.16.0.zip",
+			"sha256": "dfdb374cb7e39803bf2990ec2ba66fb8d3950fece8c9b384a7bf92ade835f634",
 			"requires": {
 				"wordpress": "6.8",
 				"php": "8.2",
 				"woocommerce": "10.0",
-				"lachinata": "0.15.1"
+				"lachinata": "0.16.0"
 			},
-			"notes": "Parche de la 0.15.0.\n\n### Corregido\n- **Quitar desde la hoja de la bolsa** abierta en una ficha o en la home la dejaba cargando para siempre (el producto sí se quitaba). Quitar, deshacer y quitar un cupón responden siempre con la bolsa, desde cualquier página y en cualquier idioma.\n- El aviso al quitar sale como «“X” ha salido de tu bolsa.» con «Deshacer» (WooCommerce 10 cambió sus textos).\n- Los zips llevaban `corrections-en_GB.json`, que solo lee la generación de cadenas. Ya no van, y la comprobación de los zips falla si llevan pruebas, mu-plugins o correcciones.\n\n### Cambiado\n- **Quitar en la bolsa** es un botón de icono (papelera), con «Quitar {producto} de la bolsa» para lectores de pantalla, en la hoja y en `/bolsa/`.\n- Lighthouse en la CI: completo en los PR que tocan el tema, estilos, bloques o assets; se salta en los demás; siempre en main y en cada versión.",
+			"notes": "Regalos compuestos (box, cesta, cubo, estuche).\n\n### Añadido\n- **Contenido del regalo** en el producto (`catalog`): los productos que lleva, buscados por nombre o SKU, con sus unidades y una nota, y su **presentación** (Productos → Presentaciones). Para el stock, los pedidos y Odoo sigue siendo un producto normal.\n- **Ficha de un regalo:**\n  - entre el precio y la disponibilidad, un resumen con miniaturas, «7 productos · Caja de regalo», medidas y peso, que lleva a «Qué lleva»;\n  - **Qué lleva**, a todo el ancho: los datos del regalo y una foto de cada producto con su nombre y formato, sin precios ni botón de añadir. Cada producto abre su ficha resumida (hoja en el móvil, diálogo en el escritorio, se cierra con Escape); sin JavaScript, enlaza a su ficha;\n  - los alérgenos del conjunto, cuando la tienda tenga esos datos (`lachinata/catalog/allergens`, vacío de serie);\n  - la ficha resumida lleva foto, nombre, formato, descripción corta y «Ver el producto»; los ingredientes, cuando lleguen de la aplicación de La Chinata (`lachinata/catalog/gift_item_ingredients`, vacío de serie), nunca del campo de ingredientes del producto.\n- **«¿Es para tu empresa?»** bajo «Añadir a la bolsa», en los regalos y en las categorías que elijas (Catálogo → Regalos): cantidad mínima, textos y destino (una página con el SKU en la dirección o un chat de WhatsApp con el mensaje escrito). Se mide como `lc_bulk_quote`.\n- La tarjeta de un regalo dice «6 productos · Caja de regalo».\n- **Salud del catálogo:** regalos con un producto que no existe, sin publicar o agotado.\n- **Fotos recortadas** (WebP sin fondo, que irán sustituyendo a las fotos principales): `catalog` marca la imagen al subirla si tiene transparencia, y `wp lachinata catalog detect-cutouts [--dry-run]` marca las que ya existen. El tema pinta un recorte centrado y con aire sobre la tinta de su familia; una foto con fondo llena la pieza. Vale para la tarjeta, la línea de la bolsa, los productos relacionados, los regalos y la galería de la ficha.\n- **Fuera de la web** (`feeds`): un recorte va a Google y Meta como JPEG sobre blanco, y la imagen de Open Graph de su ficha es el producto sobre la tinta de su familia, en JPEG de 1200 × 630 (con Rank Math o Yoast, en lugar de la suya).\n- `wp lachinata catalog migrate-gifts [--dry-run] [--report]`: pasa el contenido escrito en la descripción (bloque de productos o `[products]`) al regalo, con la presentación por el nombre y las medidas del texto a las de WooCommerce. Paso a producción en `docs/despliegue-regalos.md`.\n\n### Cambiado\n- Comillas españolas en los avisos de WooCommerce: «X» ha salido de tu bolsa., y los de cupones («El cupón «X» no existe.»).\n\n### Corregido\n- En el escritorio, la columna de compra de la ficha, que va fija al bajar, se montaba sobre lo que hay debajo (la ayuda, o «Qué lleva»).",
 			"previous": [
+				{
+					"version": "0.15.1",
+					"date": "2026-10-29",
+					"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.15.1/lachinata-core-0.15.1.zip",
+					"sha256": "3e94f521a82e3d074f7aee862f17c5ddaef67ae5cbeacd1d2e73ad31324068a9"
+				},
 				{
 					"version": "0.15.0",
 					"date": "2026-10-29",
@@ -38,28 +44,28 @@
 					"date": "2026-10-28",
 					"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.13.1/lachinata-core-0.13.1.zip",
 					"sha256": "6993ef5c9f9c9c9beed883ff83ab0a8e866787c7a2f0cd5f3c8610c69e65f59d"
-				},
-				{
-					"version": "0.13.0",
-					"date": "2026-10-28",
-					"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.13.0/lachinata-core-0.13.0.zip",
-					"sha256": "9140ecb5058ee9aae1db9ef294da32dd62003026ff4125d033d579e5a69ab387"
 				}
 			]
 		},
 		"lachinata": {
-			"version": "0.15.1",
+			"version": "0.16.0",
 			"date": "2026-10-29",
-			"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.15.1/lachinata-0.15.1.zip",
-			"sha256": "35103fd1d79eddfcddb95f8189fee2b41fdc887f8ca32db46db4fd258e88c3ed",
+			"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.16.0/lachinata-0.16.0.zip",
+			"sha256": "45d1d7d09c3ecaf4cf68a17b48edb1d99128a10e2599b53c3e5dc94f35ebe180",
 			"requires": {
 				"wordpress": "6.8",
 				"php": "8.2",
 				"woocommerce": "10.0",
-				"lachinata-core": "0.15.1"
+				"lachinata-core": "0.16.0"
 			},
-			"notes": "Parche de la 0.15.0.\n\n### Corregido\n- **Quitar desde la hoja de la bolsa** abierta en una ficha o en la home la dejaba cargando para siempre (el producto sí se quitaba). Quitar, deshacer y quitar un cupón responden siempre con la bolsa, desde cualquier página y en cualquier idioma.\n- El aviso al quitar sale como «“X” ha salido de tu bolsa.» con «Deshacer» (WooCommerce 10 cambió sus textos).\n- Los zips llevaban `corrections-en_GB.json`, que solo lee la generación de cadenas. Ya no van, y la comprobación de los zips falla si llevan pruebas, mu-plugins o correcciones.\n\n### Cambiado\n- **Quitar en la bolsa** es un botón de icono (papelera), con «Quitar {producto} de la bolsa» para lectores de pantalla, en la hoja y en `/bolsa/`.\n- Lighthouse en la CI: completo en los PR que tocan el tema, estilos, bloques o assets; se salta en los demás; siempre en main y en cada versión.",
+			"notes": "Regalos compuestos (box, cesta, cubo, estuche).\n\n### Añadido\n- **Contenido del regalo** en el producto (`catalog`): los productos que lleva, buscados por nombre o SKU, con sus unidades y una nota, y su **presentación** (Productos → Presentaciones). Para el stock, los pedidos y Odoo sigue siendo un producto normal.\n- **Ficha de un regalo:**\n  - entre el precio y la disponibilidad, un resumen con miniaturas, «7 productos · Caja de regalo», medidas y peso, que lleva a «Qué lleva»;\n  - **Qué lleva**, a todo el ancho: los datos del regalo y una foto de cada producto con su nombre y formato, sin precios ni botón de añadir. Cada producto abre su ficha resumida (hoja en el móvil, diálogo en el escritorio, se cierra con Escape); sin JavaScript, enlaza a su ficha;\n  - los alérgenos del conjunto, cuando la tienda tenga esos datos (`lachinata/catalog/allergens`, vacío de serie);\n  - la ficha resumida lleva foto, nombre, formato, descripción corta y «Ver el producto»; los ingredientes, cuando lleguen de la aplicación de La Chinata (`lachinata/catalog/gift_item_ingredients`, vacío de serie), nunca del campo de ingredientes del producto.\n- **«¿Es para tu empresa?»** bajo «Añadir a la bolsa», en los regalos y en las categorías que elijas (Catálogo → Regalos): cantidad mínima, textos y destino (una página con el SKU en la dirección o un chat de WhatsApp con el mensaje escrito). Se mide como `lc_bulk_quote`.\n- La tarjeta de un regalo dice «6 productos · Caja de regalo».\n- **Salud del catálogo:** regalos con un producto que no existe, sin publicar o agotado.\n- **Fotos recortadas** (WebP sin fondo, que irán sustituyendo a las fotos principales): `catalog` marca la imagen al subirla si tiene transparencia, y `wp lachinata catalog detect-cutouts [--dry-run]` marca las que ya existen. El tema pinta un recorte centrado y con aire sobre la tinta de su familia; una foto con fondo llena la pieza. Vale para la tarjeta, la línea de la bolsa, los productos relacionados, los regalos y la galería de la ficha.\n- **Fuera de la web** (`feeds`): un recorte va a Google y Meta como JPEG sobre blanco, y la imagen de Open Graph de su ficha es el producto sobre la tinta de su familia, en JPEG de 1200 × 630 (con Rank Math o Yoast, en lugar de la suya).\n- `wp lachinata catalog migrate-gifts [--dry-run] [--report]`: pasa el contenido escrito en la descripción (bloque de productos o `[products]`) al regalo, con la presentación por el nombre y las medidas del texto a las de WooCommerce. Paso a producción en `docs/despliegue-regalos.md`.\n\n### Cambiado\n- Comillas españolas en los avisos de WooCommerce: «X» ha salido de tu bolsa., y los de cupones («El cupón «X» no existe.»).\n\n### Corregido\n- En el escritorio, la columna de compra de la ficha, que va fija al bajar, se montaba sobre lo que hay debajo (la ayuda, o «Qué lleva»).",
 			"previous": [
+				{
+					"version": "0.15.1",
+					"date": "2026-10-29",
+					"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.15.1/lachinata-0.15.1.zip",
+					"sha256": "35103fd1d79eddfcddb95f8189fee2b41fdc887f8ca32db46db4fd258e88c3ed"
+				},
 				{
 					"version": "0.15.0",
 					"date": "2026-10-29",
@@ -83,12 +89,6 @@
 					"date": "2026-10-28",
 					"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.13.1/lachinata-0.13.1.zip",
 					"sha256": "72a6ce742df8851f0353b12c7b199851c5351bb333816bc29702ab05d1a203f3"
-				},
-				{
-					"version": "0.13.0",
-					"date": "2026-10-28",
-					"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.13.0/lachinata-0.13.0.zip",
-					"sha256": "0da098422e3e367dfc3f344fae6b3f5cfe0c7460999655b7e1ed47ad4a985637"
 				}
 			]
 		}

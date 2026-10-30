@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bodega · Guías de La Chinata Core</title>
+<style>
+:root { color-scheme: light dark; --ink: #231f20; --soft: #5b5657; --line: #e8ebed; --bg: #fff; --code: #f3eee6; }
+@media (prefers-color-scheme: dark) { :root { --ink: #f3eee6; --soft: #c9c3bd; --line: #3a3637; --bg: #1b1a18; --code: #2b2926; } }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 17px/1.6 system-ui, -apple-system, "Segoe UI", sans-serif; }
+main { max-width: 760px; margin: 0 auto; padding: 24px 16px 64px; }
+nav { font-size: 15px; margin-bottom: 24px; }
+a { color: inherit; }
+h1, h2, h3 { line-height: 1.25; }
+h2 { margin-top: 2em; border-top: 1px solid var(--line); padding-top: 1em; }
+code { background: var(--code); padding: 0 4px; border-radius: 4px; font-size: .9em; }
+pre { background: var(--code); padding: 12px; overflow-x: auto; border-radius: 6px; }
+table { border-collapse: collapse; width: 100%; display: block; overflow-x: auto; font-size: 15px; }
+th, td { border: 1px solid var(--line); padding: 6px 8px; text-align: left; vertical-align: top; }
+footer { color: var(--soft); font-size: 14px; margin-top: 48px; }
+</style>
+</head>
+<body>
+<main>
+<nav><a href="index.html">Guías de La Chinata Core</a></nav>
+<h1>Bodega</h1>
+<p>Una sección de vinos con su ficha técnica, su cata, las puntuaciones de críticos y las medallas de cada añada, el maridaje con productos de tu tienda, un listado con filtros, cajas de 6 con descuento y los avisos de edad que pide la venta de alcohol.</p>
+<h2>Antes de empezar</h2>
+<ul>
+<li>Una <strong>categoría de productos</strong> para la Bodega (con sus subcategorías, como la de accesorios). Su dirección es la del listado, y de ella cuelgan las páginas de tipo y de origen: «…/tintos/», «…/extremadura/».</li>
+<li>Dos <strong>atributos globales</strong> de WooCommerce (Productos → Atributos): uno para la <strong>añada</strong> y otro para el <strong>formato</strong>. Cada añada, y cada formato (un mágnum), es una variación del vino.</li>
+<li>El checkout de bloques de WooCommerce: la casilla de edad es uno de sus campos.</li>
+<li>Opcional: el módulo <strong>Catálogo</strong> (el contenido de cada botella da su volumen y si cuenta para la caja) y <strong>Cookies y medición</strong> (eventos de la caja y del maridaje).</li>
+</ul>
+<h2>Dónde se configura</h2>
+<ul>
+<li><strong>Cada vino</strong>: la caja <strong>Vino</strong> del editor del producto, encima de los datos de WooCommerce.</li>
+<li><strong>Bodegas, orígenes, tipos, elaboraciones, uvas y maridajes</strong>: en el menú Productos.</li>
+<li><strong>El resto</strong>: WooCommerce → La Chinata → <strong>Bodega</strong>.</li>
+</ul>
+<h2>Un vino</h2>
+<p>La caja «Vino» tiene cinco pestañas. Arriba dice cuánto falta («Completa 9 de 12 · faltan temperatura, cata y maridaje») con un enlace a cada pestaña; en pantallas anchas, a la derecha, una vista previa de la cabecera de la ficha. Los avisos nunca impiden guardar.</p>
+<table>
+<thead>
+<tr>
+<th>Pestaña</th>
+<th>Qué va</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Ficha</td>
+<td><strong>Bodega</strong> (buscador con alta rápida; al elegirla propone su origen), <strong>origen</strong> (escribe la D.O. y se rellenan el país y la región), <strong>tipo</strong>, <strong>elaboración</strong> y <strong>viticultura</strong> con botones (el elegido, relleno), <strong>uvas</strong> con su porcentaje (la suma se ve; el % es opcional; si una uva no está, escríbela en el buscador y elige «Crear»), grado (con coma), grado, crianza y temperatura de servicio (propuesta según el tipo)</td>
+</tr>
+<tr>
+<td>Cata</td>
+<td>Vista, nariz y boca, una o dos frases cada una, y el perfil opcional: cuerpo, madera, dulzor y acidez de 1 a 5</td>
+</tr>
+<tr>
+<td>Añadas y puntuaciones</td>
+<td>Un bloque por añada (sale de las variaciones) con <strong>+ Puntuación</strong> (crítico de la lista y puntos) y <strong>+ Premio</strong> (concurso y medalla), y la insignia tal como se verá. Cada crítico o concurso, una vez por añada. Las importadas sin confirmar dicen «Sin publicar» y tienen su botón <strong>Publicar</strong>. <strong>Nueva añada</strong> crea la variación copiando precio, peso y formato de la última</td>
+</tr>
+<tr>
+<td>Maridaje</td>
+<td>Los platos y hasta 3 productos de tu tienda; «Sugerir por plato si no hay productos»</td>
+</tr>
+<tr>
+<td>Etiqueta</td>
+<td>Ingredientes e información nutricional (texto o enlace a la etiqueta electrónica), sulfitos y otros alérgenos, «Contiene alcohol» y «Cuenta para la caja», ya con sus valores de serie</td>
+</tr>
+</tbody></table>
+<p>El texto largo «Viñedo y elaboración» va en la descripción, con el editor de siempre; el de la bodega, en su ficha (Productos → Bodegas), una sola vez. <strong>Crear a partir de este vino</strong> da de alta otro vino de la misma bodega con su ficha copiada. En el panel de cada variación, el grado, la crianza y «Cuenta para la caja» se pueden cambiar solo para esa añada o formato.</p>
+<h2>Qué ve el cliente</h2>
+<ul>
+<li><strong>Ficha</strong>: «Bodega · D.O.», el nombre con «bodega · tipo · añada», las insignias de la añada que ve (cambian al elegir otra), el precio, «1 botella» o «Caja de 6» con lo que ahorra, el aviso «+18», la ficha técnica, la cata, «Marida con» con «Añadir los dos», la bodega con más vinos suyos y el desplegable de ingredientes. Lo que no está relleno no aparece.</li>
+<li><strong>Tarjeta</strong>: el punto de color del tipo, «D.O. · añada» y la insignia más alta en la foto.</li>
+<li><strong>Listado</strong>: chips de tipo, las entradas que configures y filtros por tipo, origen, uva, precio, 90 puntos o más, viticultura ecológica, plato y bodega; orden «Mejor puntuados».</li>
+<li><strong>Bolsa</strong>: el progreso de la caja variada, la caja de cada línea y «Descuento por caja» en el resumen; el checkout pide «Confirmo que soy mayor de 18 años» solo si la bolsa lleva alcohol.</li>
+</ul>
+<h2>Ajustes</h2>
+<table>
+<thead>
+<tr>
+<th>Ajuste</th>
+<th>Qué hace</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Categoría de la Bodega y de accesorios</td>
+<td>El listado con filtros y sus páginas; los accesorios, sin alcohol ni caja de serie</td>
+</tr>
+<tr>
+<td>Atributos de añada y de formato</td>
+<td>Los atributos globales de las variaciones. Vacíos: los que se llaman «Añada» y «Formato»</td>
+</tr>
+<tr>
+<td>Cajas de 6</td>
+<td>Descuento de la caja de iguales (10 % de serie) y de la variada (5 %). Primero se forman las de iguales; con lo que sobra, las variadas. «Sumar a la oferta» y «Sumar a los cupones», apagados de serie: entonces se aplica lo más ventajoso (con un cupón, la bolsa lo avisa). Los cupones de envío gratis siempre se suman</td>
+</tr>
+<tr>
+<td>Críticos, concursos y medallas</td>
+<td>Las listas que se pueden usar, por peso («Nombre completo | Como se ve»). Se enseñan las puntuaciones desde 90 y las medallas desde Oro (ajustables), de la añada que se ve y tres como mucho</td>
+</tr>
+<tr>
+<td>Maridaje</td>
+<td>Sugerir un producto por plato cuando el vino no tiene ninguno elegido: el más vendido de la categoría de cada plato (Productos → Maridajes)</td>
+</tr>
+<tr>
+<td>Textos</td>
+<td>Aviso de edad, nota para el transportista (en los pedidos con alcohol, si se enciende), antetítulo y texto del listado</td>
+</tr>
+<tr>
+<td>Chips</td>
+<td>Los chips de tipo del listado («Generosos y dulces | generosos, dulces»). Vacíos: un chip por tipo con vinos</td>
+</tr>
+<tr>
+<td>Origen destacado y entradas</td>
+<td>Antes de la rejilla salen solas, cada una cuando tiene vinos: la del origen destacado («Vinos de Extremadura»), «Mejor puntuados» (con puntuaciones publicadas) y «Arma tu caja». Las entradas que escribas van detrás</td>
+</tr>
+<tr>
+<td>Páginas de tipo y origen</td>
+<td>Se indexan con 3 vinos o más; las combinaciones de filtros, nunca</td>
+</tr>
+</tbody></table>
+<p>Debajo, la lista de <strong>fichas sin completar</strong>.</p>
+<h2>Bodegas duplicadas</h2>
+<p>Si una bodega se escribió de dos maneras, en Productos › Bodegas abre la que va a desaparecer y usa <strong>Fusionar con…</strong>: sus vinos pasan a la otra, que conserva sus textos y toma los de la primera donde no tenga, y la dirección de la que desaparece lleva a la otra. <code>wp lachinata bodega duplicates</code> lista las que probablemente son la misma; nada se fusiona solo.</p>
+<h2>Traer los vinos que ya tienes</h2>
+<p>Si la ficha técnica está escrita en la descripción, la migración la pasa a sus campos:</p>
+<pre><code class="language-bash">wp lachinata bodega migrate --dry-run --report=informe.md   # qué cambiaría, sin tocar nada
+wp lachinata bodega migrate --xlsx=datos.xlsx                # de verdad, con las celdas que complete marketing
+</code></pre>
+<p>Saca la bodega (con su ficha), el origen, el tipo, las uvas, el grado, la crianza, la viticultura y la cata; deja «Viñedo y elaboración» en la descripción; convierte los vinos simples en variables (el SKU, el precio y el stock pasan a la variación de su añada) y deja las puntuaciones del texto <strong>sin publicar</strong> hasta confirmar su añada. Se puede repetir.</p>
+<p>Las puntuaciones y los premios de cada añada se cargan desde una hoja de cálculo (o un CSV con las mismas columnas), las veces que haga falta, sin duplicar:</p>
+<pre><code class="language-bash">wp lachinata bodega import-scores puntuaciones.xlsx --dry-run
+wp lachinata bodega import-scores puntuaciones.xlsx
+</code></pre>
+<p>Con el módulo <strong>Traducción</strong>, <code>wp lachinata bodega glossary --file=glosario.csv</code> prepara los nombres de vinos, bodegas, D.O. y uvas como «no traducir» para importarlos en su glosario.</p>
+<h2>Si lo apagas</h2>
+<p>Los vinos se ven como cualquier producto, la bolsa no aplica el descuento por caja y el checkout no pide la edad. Los datos se quedan.</p>
+
+<footer>La Chinata Core 0.18.0</footer>
+</main>
+</body>
+</html>

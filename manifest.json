@@ -1,20 +1,26 @@
 {
 	"schema": 1,
-	"generated_at": "2026-10-30T14:33:08.635Z",
+	"generated_at": "2026-10-30T18:11:27.248Z",
 	"packages": {
 		"lachinata-core": {
-			"version": "0.17.2",
+			"version": "0.18.0",
 			"date": "2026-10-30",
-			"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.17.2/lachinata-core-0.17.2.zip",
-			"sha256": "249775aed3c04a570d868d158c928fdfac854cab266dad88b0018f3cad8fcaf5",
+			"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.18.0/lachinata-core-0.18.0.zip",
+			"sha256": "7105d4ac85f3263c173485015100dbf899a363dc9629c404a0165ea1477b7967",
 			"requires": {
 				"wordpress": "6.8",
 				"php": "8.2",
 				"woocommerce": "10.0",
-				"lachinata": "0.17.2"
+				"lachinata": "0.18.0"
 			},
-			"notes": "Primer lote de issues (#39, #40, #41, #42 y #44) y el protocolo de trabajo con issues.\n\n### Arreglado\n- **Botones que son enlaces** (como «Tramitar pedido» en la hoja de la bolsa y en `/bolsa/`): al pasar el ratón ya no quedan negro sobre negro. La regla general de los enlaces ya no gana a los componentes, y los botones secundarios, fantasma y de icono mantienen su color en hover (#39).\n- **Sellos de la ficha**: la imagen del sello va tal cual, sin el aro oscuro alrededor. Un sello sin imagen lleva en su lugar un círculo suave con un check, y la salud del catálogo avisa de cada sello con productos y sin imagen (#40).\n- **Descripción corta** en la ficha, justo después del precio; en otros idiomas, la traducida (#41).\n- **Medidas de los regalos**: la línea «Dimensiones (l x w x h): …» de la descripción corta o de la descripción de cualquier producto pasa a las medidas de WooCommerce con `wp lachinata catalog normalize` (también `migrate-gifts`), y la salud del catálogo avisa de un regalo sin medidas o sin peso (#42). La simulación (`--dry-run`) ya no cuenta como copiable un EAN que es el GTIN de otro producto: WooCommerce no lo deja repetir, y ahora lo avisan los dos pasos.\n- **Contorno de foco** en el botón que abrió una capa (bolsa, selector, menú…): al cerrarla con el ratón o el dedo ya no queda; con el teclado se sigue viendo (#44).\n\n### Añadido\n- Plantillas de issues (fallo, detalle, mejora) y la sección «Issues» de `CLAUDE.md`.",
+			"notes": "La Bodega (módulo `bodega`, solo en lachinata.es): vinos con sus añadas, cajas de 6 y maridaje (`design-system/sistema/10-bodega.md`; paso a producción en `docs/despliegue-bodega.md`).\n\n### Añadido\n- **Datos de cada vino**: tipo, elaboración, bodega (con su ficha), origen País › Región › D.O., uvas con su %, grado, crianza, viticultura, temperatura, cata, perfil, puntuaciones y premios por añada, maridaje, etiqueta, «Cuenta para la caja» y «Contiene alcohol». Añadas y formatos son variaciones con los atributos globales que se eligen en los ajustes.\n- **Caja «Vino» en el editor** con pestañas (Ficha, Cata, Añadas y puntuaciones, Maridaje, Etiqueta), botones en vez de desplegables, «Completa 9 de 12», vista previa, «Nueva añada» y «Crear a partir de este vino»; columnas y filtros de vino en el listado de productos; fichas de bodega, tipo y maridaje.\n- **Ficha de vino**: antetítulo con la D.O., «bodega · tipo · añada», insignias de críticos y concursos de la añada que se ve (como mucho tres, desde 90 puntos y Oro), «1 botella» o «Caja de 6», ficha técnica, cata, «Marida con» con «Añadir los dos», la bodega con «Más vinos de…» e ingredientes. Sin datos, sin sección.\n- **Listado de la Bodega**: chips de tipo, entradas, filtros (tipo, origen, uva, precio, 90 puntos o más, ecológico, maridaje y bodega) y «Mejor puntuados»; páginas de tipo y origen («…/tintos/», «…/extremadura/») indexables con 3 vinos o más. Tarjeta de vino con el punto del tipo, «D.O. · añada» y la mejor insignia.\n- **Cajas de 6**: 10 % iguales y 5 % variada (ajustes), como descuento por línea («Descuento por caja») en la bolsa, el pedido, los correos y la API para Odoo. No se suma a ofertas ni a cupones: se aplica lo más ventajoso, con aviso en la bolsa; los cupones de envío gratis sí se suman. Progreso de la caja en la bolsa.\n- **Edad**: aviso «+18» en la ficha y en la bolsa con alcohol; casilla obligatoria «Confirmo que soy mayor de 18 años» en el checkout solo con alcohol, guardada en el pedido; nota para el transportista como ajuste.\n- **SEO**: `Product` con la bodega como marca y `additionalProperty`; las puntuaciones nunca como `Review`; títulos de vino y de las páginas de tipo y origen.\n- **Migración** `wp lachinata bodega migrate` (descripción a campos, vinos simples a variables con su SKU), `import-scores`, `refresh-scores` y `glossary`.\n- **Fusionar bodegas** («Fusionar con…» en Productos › Bodegas y `merge-wineries`), con 301 de la que desaparece, y la lista de probables duplicadas (`duplicates` y el informe de la migración).\n- Medición: `lc_case_select`, `lc_case_complete` y `lc_pairing_add`.\n- Clave `bodega` del objeto `lachinata` de la API de pedidos.\n- Tema: huecos `lachinata/catalog/filters`, `lachinata/category/header`, `lachinata/product/wine`, `lachinata/product/age_notice`, `lachinata/product_card/wine`, `lachinata/cart/case_progress`, `lachinata/cart/age_notice`, `lachinata/cart/coupon` y `lachinata/order/discounts`, y los componentes del grupo «Bodega».\n\n### Cambiado\n- El «+» de la tarjeta añade directamente un producto variable con una sola variación (un vino de una añada).\n- El stepper avanza según el paso del campo (de 6 en 6 con «Caja de 6»).\n- `catalog`: tinta «Bodega» para las categorías; la venta cruzada se configura por cualquier categoría (vale la de la categoría principal del producto o la más cercana por encima), no solo por la raíz.",
 			"previous": [
+				{
+					"version": "0.17.2",
+					"date": "2026-10-30",
+					"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.17.2/lachinata-core-0.17.2.zip",
+					"sha256": "249775aed3c04a570d868d158c928fdfac854cab266dad88b0018f3cad8fcaf5"
+				},
 				{
 					"version": "0.17.1",
 					"date": "2026-10-30",
@@ -38,28 +44,28 @@
 					"date": "2026-10-29",
 					"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.15.1/lachinata-core-0.15.1.zip",
 					"sha256": "3e94f521a82e3d074f7aee862f17c5ddaef67ae5cbeacd1d2e73ad31324068a9"
-				},
-				{
-					"version": "0.15.0",
-					"date": "2026-10-29",
-					"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.15.0/lachinata-core-0.15.0.zip",
-					"sha256": "46854adecfd2f72e939bd51d19e93f9e678100019bcba4f57127172753d60866"
 				}
 			]
 		},
 		"lachinata": {
-			"version": "0.17.2",
+			"version": "0.18.0",
 			"date": "2026-10-30",
-			"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.17.2/lachinata-0.17.2.zip",
-			"sha256": "8e9fbc792bf044c8283bf8e406505161d1e5cb9030e2bfd4fd7d7ce4694309d9",
+			"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.18.0/lachinata-0.18.0.zip",
+			"sha256": "9a388a48e7b736db40ca767c03d4880730823772674346f8086b8315ec95c94b",
 			"requires": {
 				"wordpress": "6.8",
 				"php": "8.2",
 				"woocommerce": "10.0",
-				"lachinata-core": "0.17.2"
+				"lachinata-core": "0.18.0"
 			},
-			"notes": "Primer lote de issues (#39, #40, #41, #42 y #44) y el protocolo de trabajo con issues.\n\n### Arreglado\n- **Botones que son enlaces** (como «Tramitar pedido» en la hoja de la bolsa y en `/bolsa/`): al pasar el ratón ya no quedan negro sobre negro. La regla general de los enlaces ya no gana a los componentes, y los botones secundarios, fantasma y de icono mantienen su color en hover (#39).\n- **Sellos de la ficha**: la imagen del sello va tal cual, sin el aro oscuro alrededor. Un sello sin imagen lleva en su lugar un círculo suave con un check, y la salud del catálogo avisa de cada sello con productos y sin imagen (#40).\n- **Descripción corta** en la ficha, justo después del precio; en otros idiomas, la traducida (#41).\n- **Medidas de los regalos**: la línea «Dimensiones (l x w x h): …» de la descripción corta o de la descripción de cualquier producto pasa a las medidas de WooCommerce con `wp lachinata catalog normalize` (también `migrate-gifts`), y la salud del catálogo avisa de un regalo sin medidas o sin peso (#42). La simulación (`--dry-run`) ya no cuenta como copiable un EAN que es el GTIN de otro producto: WooCommerce no lo deja repetir, y ahora lo avisan los dos pasos.\n- **Contorno de foco** en el botón que abrió una capa (bolsa, selector, menú…): al cerrarla con el ratón o el dedo ya no queda; con el teclado se sigue viendo (#44).\n\n### Añadido\n- Plantillas de issues (fallo, detalle, mejora) y la sección «Issues» de `CLAUDE.md`.",
+			"notes": "La Bodega (módulo `bodega`, solo en lachinata.es): vinos con sus añadas, cajas de 6 y maridaje (`design-system/sistema/10-bodega.md`; paso a producción en `docs/despliegue-bodega.md`).\n\n### Añadido\n- **Datos de cada vino**: tipo, elaboración, bodega (con su ficha), origen País › Región › D.O., uvas con su %, grado, crianza, viticultura, temperatura, cata, perfil, puntuaciones y premios por añada, maridaje, etiqueta, «Cuenta para la caja» y «Contiene alcohol». Añadas y formatos son variaciones con los atributos globales que se eligen en los ajustes.\n- **Caja «Vino» en el editor** con pestañas (Ficha, Cata, Añadas y puntuaciones, Maridaje, Etiqueta), botones en vez de desplegables, «Completa 9 de 12», vista previa, «Nueva añada» y «Crear a partir de este vino»; columnas y filtros de vino en el listado de productos; fichas de bodega, tipo y maridaje.\n- **Ficha de vino**: antetítulo con la D.O., «bodega · tipo · añada», insignias de críticos y concursos de la añada que se ve (como mucho tres, desde 90 puntos y Oro), «1 botella» o «Caja de 6», ficha técnica, cata, «Marida con» con «Añadir los dos», la bodega con «Más vinos de…» e ingredientes. Sin datos, sin sección.\n- **Listado de la Bodega**: chips de tipo, entradas, filtros (tipo, origen, uva, precio, 90 puntos o más, ecológico, maridaje y bodega) y «Mejor puntuados»; páginas de tipo y origen («…/tintos/», «…/extremadura/») indexables con 3 vinos o más. Tarjeta de vino con el punto del tipo, «D.O. · añada» y la mejor insignia.\n- **Cajas de 6**: 10 % iguales y 5 % variada (ajustes), como descuento por línea («Descuento por caja») en la bolsa, el pedido, los correos y la API para Odoo. No se suma a ofertas ni a cupones: se aplica lo más ventajoso, con aviso en la bolsa; los cupones de envío gratis sí se suman. Progreso de la caja en la bolsa.\n- **Edad**: aviso «+18» en la ficha y en la bolsa con alcohol; casilla obligatoria «Confirmo que soy mayor de 18 años» en el checkout solo con alcohol, guardada en el pedido; nota para el transportista como ajuste.\n- **SEO**: `Product` con la bodega como marca y `additionalProperty`; las puntuaciones nunca como `Review`; títulos de vino y de las páginas de tipo y origen.\n- **Migración** `wp lachinata bodega migrate` (descripción a campos, vinos simples a variables con su SKU), `import-scores`, `refresh-scores` y `glossary`.\n- **Fusionar bodegas** («Fusionar con…» en Productos › Bodegas y `merge-wineries`), con 301 de la que desaparece, y la lista de probables duplicadas (`duplicates` y el informe de la migración).\n- Medición: `lc_case_select`, `lc_case_complete` y `lc_pairing_add`.\n- Clave `bodega` del objeto `lachinata` de la API de pedidos.\n- Tema: huecos `lachinata/catalog/filters`, `lachinata/category/header`, `lachinata/product/wine`, `lachinata/product/age_notice`, `lachinata/product_card/wine`, `lachinata/cart/case_progress`, `lachinata/cart/age_notice`, `lachinata/cart/coupon` y `lachinata/order/discounts`, y los componentes del grupo «Bodega».\n\n### Cambiado\n- El «+» de la tarjeta añade directamente un producto variable con una sola variación (un vino de una añada).\n- El stepper avanza según el paso del campo (de 6 en 6 con «Caja de 6»).\n- `catalog`: tinta «Bodega» para las categorías; la venta cruzada se configura por cualquier categoría (vale la de la categoría principal del producto o la más cercana por encima), no solo por la raíz.",
 			"previous": [
+				{
+					"version": "0.17.2",
+					"date": "2026-10-30",
+					"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.17.2/lachinata-0.17.2.zip",
+					"sha256": "8e9fbc792bf044c8283bf8e406505161d1e5cb9030e2bfd4fd7d7ce4694309d9"
+				},
 				{
 					"version": "0.17.1",
 					"date": "2026-10-30",
@@ -83,12 +89,6 @@
 					"date": "2026-10-29",
 					"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.15.1/lachinata-0.15.1.zip",
 					"sha256": "35103fd1d79eddfcddb95f8189fee2b41fdc887f8ca32db46db4fd258e88c3ed"
-				},
-				{
-					"version": "0.15.0",
-					"date": "2026-10-29",
-					"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.15.0/lachinata-0.15.0.zip",
-					"sha256": "392dc528f81494d13a86b3e7bb13fd8ecaa0c7ea7b06aaaafcc175e10d2b80ab"
 				}
 			]
 		}

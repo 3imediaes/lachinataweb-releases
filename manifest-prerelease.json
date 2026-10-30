@@ -1,20 +1,26 @@
 {
 	"schema": 1,
-	"generated_at": "2026-10-30T10:03:43.221Z",
+	"generated_at": "2026-10-30T14:33:08.635Z",
 	"packages": {
 		"lachinata-core": {
-			"version": "0.17.1",
+			"version": "0.17.2",
 			"date": "2026-10-30",
-			"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.17.1/lachinata-core-0.17.1.zip",
-			"sha256": "6bbf6f079579e26c25acd1fe5b2e2d33cca2331a2b8326fbb7186ae5a65f32ee",
+			"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.17.2/lachinata-core-0.17.2.zip",
+			"sha256": "249775aed3c04a570d868d158c928fdfac854cab266dad88b0018f3cad8fcaf5",
 			"requires": {
 				"wordpress": "6.8",
 				"php": "8.2",
 				"woocommerce": "10.0",
-				"lachinata": "0.17.1"
+				"lachinata": "0.17.2"
 			},
-			"notes": "Migración desde TranslatePress (incremento 11d): el cambio de `/en/` en lachinata.es (`docs/despliegue-translate.md`, paso 4).\n\n### Añadido\n- **Direcciones antiguas en otro idioma**, por reglas y sin tablas atadas al catálogo: un slug cambiado lleva a la dirección actual (como hace WordPress en español); una dirección con regla en la lista de redirecciones sigue esa regla en el idioma; una página de un listado que ya no existe va a la página 1; la basura (`/comment-page-1/`, parámetros) responde 410. Lo traducido va con 301; lo que aún no, con 302 al español, y pasa solo a 301 el día que se traduce.\n- **Redirecciones** (WooCommerce → La Chinata, y `wp lachinata redirections import`): carga un CSV (`url`, `destino_url`, `codigo`) en la lista de redirecciones de Rank Math, que no tiene importación propia.\n- **Productos borrados**: al borrar un producto definitivamente, una 301 de su dirección a su categoría principal en esa misma lista, editable. Ajuste del Catálogo, encendido de serie.\n- **Sellos en otro idioma**: `/en/tipo/{sello}/` va a la tienda en inglés.\n- **Entradas retiradas** del blog: su 410 o su 301 valen también bajo `/en/`.\n- `wp lachinata translate migrate-tp`: las cadenas corregidas a mano en TranslatePress, como propuestas de glosario, y un informe de qué responde cada dirección antigua de Search Console, con un CSV de los 404 para darles destino si se quiere.\n\n### Cambiado\n- Instrucciones de serie del inglés: titulares de blog, recetas y páginas en *sentence case*; nombres de producto en *Title Case*.\n- Ninguna orden de WP-CLI del plugin escribe encima de un archivo que ya existe (informes, exportaciones, la copia antes de borrar los datos de un módulo) sin `--force`.\n- CI: Lighthouse en dos trabajos en paralelo; el seed y los perfiles, en un solo `wp eval-file` (cada comando sin volver a entrar en el contenedor).",
+			"notes": "Primer lote de issues (#39, #40, #41, #42 y #44) y el protocolo de trabajo con issues.\n\n### Arreglado\n- **Botones que son enlaces** (como «Tramitar pedido» en la hoja de la bolsa y en `/bolsa/`): al pasar el ratón ya no quedan negro sobre negro. La regla general de los enlaces ya no gana a los componentes, y los botones secundarios, fantasma y de icono mantienen su color en hover (#39).\n- **Sellos de la ficha**: la imagen del sello va tal cual, sin el aro oscuro alrededor. Un sello sin imagen lleva en su lugar un círculo suave con un check, y la salud del catálogo avisa de cada sello con productos y sin imagen (#40).\n- **Descripción corta** en la ficha, justo después del precio; en otros idiomas, la traducida (#41).\n- **Medidas de los regalos**: la línea «Dimensiones (l x w x h): …» de la descripción corta o de la descripción de cualquier producto pasa a las medidas de WooCommerce con `wp lachinata catalog normalize` (también `migrate-gifts`), y la salud del catálogo avisa de un regalo sin medidas o sin peso (#42). La simulación (`--dry-run`) ya no cuenta como copiable un EAN que es el GTIN de otro producto: WooCommerce no lo deja repetir, y ahora lo avisan los dos pasos.\n- **Contorno de foco** en el botón que abrió una capa (bolsa, selector, menú…): al cerrarla con el ratón o el dedo ya no queda; con el teclado se sigue viendo (#44).\n\n### Añadido\n- Plantillas de issues (fallo, detalle, mejora) y la sección «Issues» de `CLAUDE.md`.",
 			"previous": [
+				{
+					"version": "0.17.1",
+					"date": "2026-10-30",
+					"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.17.1/lachinata-core-0.17.1.zip",
+					"sha256": "6bbf6f079579e26c25acd1fe5b2e2d33cca2331a2b8326fbb7186ae5a65f32ee"
+				},
 				{
 					"version": "0.17.0",
 					"date": "2026-10-30",
@@ -38,28 +44,28 @@
 					"date": "2026-10-29",
 					"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.15.0/lachinata-core-0.15.0.zip",
 					"sha256": "46854adecfd2f72e939bd51d19e93f9e678100019bcba4f57127172753d60866"
-				},
-				{
-					"version": "0.14.0",
-					"date": "2026-10-29",
-					"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.14.0/lachinata-core-0.14.0.zip",
-					"sha256": "278bb54642dfc45c8dec2fbc8850d0781fd4edae4a07e0ee5ca081f85c88b9aa"
 				}
 			]
 		},
 		"lachinata": {
-			"version": "0.17.1",
+			"version": "0.17.2",
 			"date": "2026-10-30",
-			"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.17.1/lachinata-0.17.1.zip",
-			"sha256": "341a777db1fcb1c3b18911671cafd0f3673c2a7f643a846b2ae8e8fc48a82d07",
+			"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.17.2/lachinata-0.17.2.zip",
+			"sha256": "8e9fbc792bf044c8283bf8e406505161d1e5cb9030e2bfd4fd7d7ce4694309d9",
 			"requires": {
 				"wordpress": "6.8",
 				"php": "8.2",
 				"woocommerce": "10.0",
-				"lachinata-core": "0.17.1"
+				"lachinata-core": "0.17.2"
 			},
-			"notes": "Migración desde TranslatePress (incremento 11d): el cambio de `/en/` en lachinata.es (`docs/despliegue-translate.md`, paso 4).\n\n### Añadido\n- **Direcciones antiguas en otro idioma**, por reglas y sin tablas atadas al catálogo: un slug cambiado lleva a la dirección actual (como hace WordPress en español); una dirección con regla en la lista de redirecciones sigue esa regla en el idioma; una página de un listado que ya no existe va a la página 1; la basura (`/comment-page-1/`, parámetros) responde 410. Lo traducido va con 301; lo que aún no, con 302 al español, y pasa solo a 301 el día que se traduce.\n- **Redirecciones** (WooCommerce → La Chinata, y `wp lachinata redirections import`): carga un CSV (`url`, `destino_url`, `codigo`) en la lista de redirecciones de Rank Math, que no tiene importación propia.\n- **Productos borrados**: al borrar un producto definitivamente, una 301 de su dirección a su categoría principal en esa misma lista, editable. Ajuste del Catálogo, encendido de serie.\n- **Sellos en otro idioma**: `/en/tipo/{sello}/` va a la tienda en inglés.\n- **Entradas retiradas** del blog: su 410 o su 301 valen también bajo `/en/`.\n- `wp lachinata translate migrate-tp`: las cadenas corregidas a mano en TranslatePress, como propuestas de glosario, y un informe de qué responde cada dirección antigua de Search Console, con un CSV de los 404 para darles destino si se quiere.\n\n### Cambiado\n- Instrucciones de serie del inglés: titulares de blog, recetas y páginas en *sentence case*; nombres de producto en *Title Case*.\n- Ninguna orden de WP-CLI del plugin escribe encima de un archivo que ya existe (informes, exportaciones, la copia antes de borrar los datos de un módulo) sin `--force`.\n- CI: Lighthouse en dos trabajos en paralelo; el seed y los perfiles, en un solo `wp eval-file` (cada comando sin volver a entrar en el contenedor).",
+			"notes": "Primer lote de issues (#39, #40, #41, #42 y #44) y el protocolo de trabajo con issues.\n\n### Arreglado\n- **Botones que son enlaces** (como «Tramitar pedido» en la hoja de la bolsa y en `/bolsa/`): al pasar el ratón ya no quedan negro sobre negro. La regla general de los enlaces ya no gana a los componentes, y los botones secundarios, fantasma y de icono mantienen su color en hover (#39).\n- **Sellos de la ficha**: la imagen del sello va tal cual, sin el aro oscuro alrededor. Un sello sin imagen lleva en su lugar un círculo suave con un check, y la salud del catálogo avisa de cada sello con productos y sin imagen (#40).\n- **Descripción corta** en la ficha, justo después del precio; en otros idiomas, la traducida (#41).\n- **Medidas de los regalos**: la línea «Dimensiones (l x w x h): …» de la descripción corta o de la descripción de cualquier producto pasa a las medidas de WooCommerce con `wp lachinata catalog normalize` (también `migrate-gifts`), y la salud del catálogo avisa de un regalo sin medidas o sin peso (#42). La simulación (`--dry-run`) ya no cuenta como copiable un EAN que es el GTIN de otro producto: WooCommerce no lo deja repetir, y ahora lo avisan los dos pasos.\n- **Contorno de foco** en el botón que abrió una capa (bolsa, selector, menú…): al cerrarla con el ratón o el dedo ya no queda; con el teclado se sigue viendo (#44).\n\n### Añadido\n- Plantillas de issues (fallo, detalle, mejora) y la sección «Issues» de `CLAUDE.md`.",
 			"previous": [
+				{
+					"version": "0.17.1",
+					"date": "2026-10-30",
+					"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.17.1/lachinata-0.17.1.zip",
+					"sha256": "341a777db1fcb1c3b18911671cafd0f3673c2a7f643a846b2ae8e8fc48a82d07"
+				},
 				{
 					"version": "0.17.0",
 					"date": "2026-10-30",
@@ -83,12 +89,6 @@
 					"date": "2026-10-29",
 					"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.15.0/lachinata-0.15.0.zip",
 					"sha256": "392dc528f81494d13a86b3e7bb13fd8ecaa0c7ea7b06aaaafcc175e10d2b80ab"
-				},
-				{
-					"version": "0.14.0",
-					"date": "2026-10-29",
-					"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.14.0/lachinata-0.14.0.zip",
-					"sha256": "5efa82c3f4154b1bc751d1b2880512dc35a61af3fac31acc5e464712bf368d36"
 				}
 			]
 		}

@@ -207,13 +207,15 @@ footer { color: var(--soft); font-size: 14px; margin-top: 48px; }
 </tbody></table>
 <p>Cada sello tiene además su propia página pública con los productos que lo llevan, como cualquier etiqueta.</p>
 <h3>Pestaña «Catálogo» (WooCommerce → La Chinata)</h3>
-<p><strong>Salud del catálogo.</strong> Se calcula al abrirla y lista, por grupos y con enlace a cada producto, lo que conviene revisar:</p>
+<p><strong>Salud del catálogo.</strong> Se calcula al abrirla y lista, por grupos y con enlace a cada producto (o sello), lo que conviene revisar:</p>
 <ul>
 <li><strong>Precio por unidad</strong>: contenido sin referencia (solo se ve «500 ml»), referencia sin contenido, magnitudes distintas (contenido en ml y referencia en kg) o una referencia cien veces mayor que el contenido (4 g por 1 kg). Un producto de 4 g con su precio por 100 g está bien: es lo que dice la ficha.</li>
 <li><strong>GTIN que no puede existir</strong>: un número de cifras que no es de GTIN o el último dígito que no es el de control (un error al teclearlo). Esos GTIN no salen en los feeds.</li>
 <li><strong>EAN antiguo distinto del GTIN</strong>: manda el GTIN de WooCommerce.</li>
 <li><strong>Sin imagen</strong>, <strong>sin categoría</strong> y <strong>categoría principal que ya no es del producto</strong>.</li>
 <li><strong>Regalos con un producto que no existe, sin publicar o agotado</strong>. Un producto sin publicar sigue saliendo en «Qué lleva», sin enlace; uno que ya no existe no sale.</li>
+<li><strong>Regalos sin medidas o sin peso</strong>. Sin ellos, la ficha no muestra esa línea ni su icono. Se ponen en el producto, en <strong>Datos del producto › Envío › Peso y Dimensiones</strong>: son los campos de WooCommerce, no el texto.</li>
+<li><strong>Sellos con productos y sin imagen</strong>, con cuántos productos lo llevan y enlace al sello. Mientras no tenga imagen, la ficha enseña en su lugar un círculo con un check. La imagen se sube en <strong>Productos › Sellos</strong>.</li>
 </ul>
 <p>Nada de esto cambia lo que se ve en la tienda. Arriba de la portada de La Chinata verás «Salud del catálogo: N avisos» con un enlace a esta pantalla.</p>
 <p><strong>Tienda.</strong></p>
@@ -319,6 +321,7 @@ wp lachinata catalog normalize             # copia los valores
 <li>El EAN antiguo solo se copia como GTIN si el producto no tiene GTIN y el dígito de control es correcto; si no, manda el GTIN de WooCommerce y el comando avisa de los que no coinciden.</li>
 <li>La <strong>categoría principal</strong> de Rank Math pasa a la de este módulo, si el producto sigue en esa categoría.</li>
 <li>En las descripciones, los subtítulos hechos con una negrita en su propia línea pasan a ser subtítulos de verdad (<code>h3</code>), con el mismo texto; y el código <code>[products skus=&quot;…&quot;]</code> pasa a ser el bloque <strong>Productos</strong> (ver <a href="blocks.html">Bloques</a>). Lo que el bloque no guarda (límite, columnas…) sale en el aviso. Las maquetaciones antiguas (columnas, estilos en línea) no se tocan.</li>
+<li>La línea «Dimensiones (l x w x h): 26 x 26,6 x 9,3 cm» que esté en la descripción corta o en la descripción de cualquier producto pasa a las <strong>medidas</strong> de WooCommerce y sale del texto. Si el producto ya tiene otras medidas, no las pisa y lo avisa.</li>
 <li>Con <code>--from-shipping-class=&lt;slug de la clase&gt;</code> marca además la <strong>Exclusión internacional</strong> en todos los productos de esa clase de envío.</li>
 <li>Los valores de ACF no se tocan nunca.</li>
 </ul>
@@ -412,7 +415,7 @@ wp lachinata catalog import-editorial editorial.json --mark-reviewed --report=in
 <p>La tienda vuelve a su aspecto neutro: sin tintas de categoría, sin precio por unidad, sin etiqueta, sin pestaña de ingredientes ni imagen de descripción, sin sellos y sin consumo preferente; las etiquetas en gris, sin copo ni aviso de refrigerado, todas las categorías principales en la cabecera, la venta cruzada «También te puede gustar» y los regalos como productos normales (sin «Qué lleva» ni «¿Es para tu empresa?»). Los sellos dejan de estar disponibles en el menú Productos (siguen guardados) y <a href="shipping.html">Envíos</a> deja de ver la casilla de exclusión internacional: solo cuentan las restricciones por clase de envío.</p>
 <p><strong>Los datos se conservan</strong>: al encenderlo de nuevo, todo vuelve como estaba. Si quieres borrarlos, apaga el módulo y usa <strong>Borrar datos…</strong> en WooCommerce → La Chinata → Módulos: se descarga antes una copia y se borran los campos de productos, categorías y sellos de este módulo (también el contenido de los regalos) (nunca los valores antiguos de ACF ni los pedidos).</p>
 
-<footer>La Chinata Core 0.17.1</footer>
+<footer>La Chinata Core 0.17.2</footer>
 </main>
 </body>
 </html>

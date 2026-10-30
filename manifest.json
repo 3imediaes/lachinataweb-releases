@@ -1,20 +1,26 @@
 {
 	"schema": 1,
-	"generated_at": "2026-10-29T23:03:40.676Z",
+	"generated_at": "2026-10-30T08:21:35.803Z",
 	"packages": {
 		"lachinata-core": {
-			"version": "0.16.0",
-			"date": "2026-10-29",
-			"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.16.0/lachinata-core-0.16.0.zip",
-			"sha256": "dfdb374cb7e39803bf2990ec2ba66fb8d3950fece8c9b384a7bf92ade835f634",
+			"version": "0.17.0",
+			"date": "2026-10-30",
+			"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.17.0/lachinata-core-0.17.0.zip",
+			"sha256": "a14e2a2c59151d78c985807d832eba68e9ac9f55a8df812ea525b809abe2170f",
 			"requires": {
 				"wordpress": "6.8",
 				"php": "8.2",
 				"woocommerce": "10.0",
-				"lachinata": "0.16.0"
+				"lachinata": "0.17.0"
 			},
-			"notes": "Regalos compuestos (box, cesta, cubo, estuche).\n\n### Añadido\n- **Contenido del regalo** en el producto (`catalog`): los productos que lleva, buscados por nombre o SKU, con sus unidades y una nota, y su **presentación** (Productos → Presentaciones). Para el stock, los pedidos y Odoo sigue siendo un producto normal.\n- **Ficha de un regalo:**\n  - entre el precio y la disponibilidad, un resumen con miniaturas, «7 productos · Caja de regalo», medidas y peso, que lleva a «Qué lleva»;\n  - **Qué lleva**, a todo el ancho: los datos del regalo y una foto de cada producto con su nombre y formato, sin precios ni botón de añadir. Cada producto abre su ficha resumida (hoja en el móvil, diálogo en el escritorio, se cierra con Escape); sin JavaScript, enlaza a su ficha;\n  - los alérgenos del conjunto, cuando la tienda tenga esos datos (`lachinata/catalog/allergens`, vacío de serie);\n  - la ficha resumida lleva foto, nombre, formato, descripción corta y «Ver el producto»; los ingredientes, cuando lleguen de la aplicación de La Chinata (`lachinata/catalog/gift_item_ingredients`, vacío de serie), nunca del campo de ingredientes del producto.\n- **«¿Es para tu empresa?»** bajo «Añadir a la bolsa», en los regalos y en las categorías que elijas (Catálogo → Regalos): cantidad mínima, textos y destino (una página con el SKU en la dirección o un chat de WhatsApp con el mensaje escrito). Se mide como `lc_bulk_quote`.\n- La tarjeta de un regalo dice «6 productos · Caja de regalo».\n- **Salud del catálogo:** regalos con un producto que no existe, sin publicar o agotado.\n- **Fotos recortadas** (WebP sin fondo, que irán sustituyendo a las fotos principales): `catalog` marca la imagen al subirla si tiene transparencia, y `wp lachinata catalog detect-cutouts [--dry-run]` marca las que ya existen. El tema pinta un recorte centrado y con aire sobre la tinta de su familia; una foto con fondo llena la pieza. Vale para la tarjeta, la línea de la bolsa, los productos relacionados, los regalos y la galería de la ficha.\n- **Fuera de la web** (`feeds`): un recorte va a Google y Meta como JPEG sobre blanco, y la imagen de Open Graph de su ficha es el producto sobre la tinta de su familia, en JPEG de 1200 × 630 (con Rank Math o Yoast, en lugar de la suya).\n- `wp lachinata catalog migrate-gifts [--dry-run] [--report]`: pasa el contenido escrito en la descripción (bloque de productos o `[products]`) al regalo, con la presentación por el nombre y las medidas del texto a las de WooCommerce. Paso a producción en `docs/despliegue-regalos.md`.\n\n### Cambiado\n- Comillas españolas en los avisos de WooCommerce: «X» ha salido de tu bolsa., y los de cupones («El cupón «X» no existe.»).\n\n### Corregido\n- En el escritorio, la columna de compra de la ficha, que va fija al bajar, se montaba sobre lo que hay debajo (la ayuda, o «Qué lleva»).",
+			"notes": "",
 			"previous": [
+				{
+					"version": "0.16.0",
+					"date": "2026-10-29",
+					"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.16.0/lachinata-core-0.16.0.zip",
+					"sha256": "dfdb374cb7e39803bf2990ec2ba66fb8d3950fece8c9b384a7bf92ade835f634"
+				},
 				{
 					"version": "0.15.1",
 					"date": "2026-10-29",
@@ -38,28 +44,28 @@
 					"date": "2026-10-28",
 					"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.13.2/lachinata-core-0.13.2.zip",
 					"sha256": "b42bdfb7e62ca699a747f78b3029aa547ffa4f5c408e0d58f667cc33a914a4ca"
-				},
-				{
-					"version": "0.13.1",
-					"date": "2026-10-28",
-					"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.13.1/lachinata-core-0.13.1.zip",
-					"sha256": "6993ef5c9f9c9c9beed883ff83ab0a8e866787c7a2f0cd5f3c8610c69e65f59d"
 				}
 			]
 		},
 		"lachinata": {
-			"version": "0.16.0",
-			"date": "2026-10-29",
-			"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.16.0/lachinata-0.16.0.zip",
-			"sha256": "45d1d7d09c3ecaf4cf68a17b48edb1d99128a10e2599b53c3e5dc94f35ebe180",
+			"version": "0.17.0",
+			"date": "2026-10-30",
+			"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.17.0/lachinata-0.17.0.zip",
+			"sha256": "b6281fea965ec1add3a5713a689c62002fffedefa86ca0aba8a3444d87c723ce",
 			"requires": {
 				"wordpress": "6.8",
 				"php": "8.2",
 				"woocommerce": "10.0",
-				"lachinata-core": "0.16.0"
+				"lachinata-core": "0.17.0"
 			},
-			"notes": "Regalos compuestos (box, cesta, cubo, estuche).\n\n### Añadido\n- **Contenido del regalo** en el producto (`catalog`): los productos que lleva, buscados por nombre o SKU, con sus unidades y una nota, y su **presentación** (Productos → Presentaciones). Para el stock, los pedidos y Odoo sigue siendo un producto normal.\n- **Ficha de un regalo:**\n  - entre el precio y la disponibilidad, un resumen con miniaturas, «7 productos · Caja de regalo», medidas y peso, que lleva a «Qué lleva»;\n  - **Qué lleva**, a todo el ancho: los datos del regalo y una foto de cada producto con su nombre y formato, sin precios ni botón de añadir. Cada producto abre su ficha resumida (hoja en el móvil, diálogo en el escritorio, se cierra con Escape); sin JavaScript, enlaza a su ficha;\n  - los alérgenos del conjunto, cuando la tienda tenga esos datos (`lachinata/catalog/allergens`, vacío de serie);\n  - la ficha resumida lleva foto, nombre, formato, descripción corta y «Ver el producto»; los ingredientes, cuando lleguen de la aplicación de La Chinata (`lachinata/catalog/gift_item_ingredients`, vacío de serie), nunca del campo de ingredientes del producto.\n- **«¿Es para tu empresa?»** bajo «Añadir a la bolsa», en los regalos y en las categorías que elijas (Catálogo → Regalos): cantidad mínima, textos y destino (una página con el SKU en la dirección o un chat de WhatsApp con el mensaje escrito). Se mide como `lc_bulk_quote`.\n- La tarjeta de un regalo dice «6 productos · Caja de regalo».\n- **Salud del catálogo:** regalos con un producto que no existe, sin publicar o agotado.\n- **Fotos recortadas** (WebP sin fondo, que irán sustituyendo a las fotos principales): `catalog` marca la imagen al subirla si tiene transparencia, y `wp lachinata catalog detect-cutouts [--dry-run]` marca las que ya existen. El tema pinta un recorte centrado y con aire sobre la tinta de su familia; una foto con fondo llena la pieza. Vale para la tarjeta, la línea de la bolsa, los productos relacionados, los regalos y la galería de la ficha.\n- **Fuera de la web** (`feeds`): un recorte va a Google y Meta como JPEG sobre blanco, y la imagen de Open Graph de su ficha es el producto sobre la tinta de su familia, en JPEG de 1200 × 630 (con Rank Math o Yoast, en lugar de la suya).\n- `wp lachinata catalog migrate-gifts [--dry-run] [--report]`: pasa el contenido escrito en la descripción (bloque de productos o `[products]`) al regalo, con la presentación por el nombre y las medidas del texto a las de WooCommerce. Paso a producción en `docs/despliegue-regalos.md`.\n\n### Cambiado\n- Comillas españolas en los avisos de WooCommerce: «X» ha salido de tu bolsa., y los de cupones («El cupón «X» no existe.»).\n\n### Corregido\n- En el escritorio, la columna de compra de la ficha, que va fija al bajar, se montaba sobre lo que hay debajo (la ayuda, o «Qué lleva»).",
+			"notes": "",
 			"previous": [
+				{
+					"version": "0.16.0",
+					"date": "2026-10-29",
+					"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.16.0/lachinata-0.16.0.zip",
+					"sha256": "45d1d7d09c3ecaf4cf68a17b48edb1d99128a10e2599b53c3e5dc94f35ebe180"
+				},
 				{
 					"version": "0.15.1",
 					"date": "2026-10-29",
@@ -83,12 +89,6 @@
 					"date": "2026-10-28",
 					"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.13.2/lachinata-0.13.2.zip",
 					"sha256": "4f34b22257498cb1659c98bb293ea5472be27a046c5249fe9a034a434913b83b"
-				},
-				{
-					"version": "0.13.1",
-					"date": "2026-10-28",
-					"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.13.1/lachinata-0.13.1.zip",
-					"sha256": "72a6ce742df8851f0353b12c7b199851c5351bb333816bc29702ab05d1a203f3"
 				}
 			]
 		}

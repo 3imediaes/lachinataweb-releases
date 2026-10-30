@@ -26,12 +26,15 @@ footer { color: var(--soft); font-size: 14px; margin-top: 48px; }
 <h1>Traducción</h1>
 <p>Sirve la tienda en <strong>otros idiomas</strong>, cada uno en su subdirectorio (<code>/en/</code>, <code>/de/</code>), con las direcciones traducidas, <code>hreflang</code> y un sitemap por idioma. El idioma de la tienda es siempre el <strong>origen</strong>: se escribe y se corrige en él, y los demás salen de él.</p>
 <p>Una traducción no es una copia del producto o de la página: es un campo más de la misma ficha. El producto es uno solo en todos los idiomas, con el mismo stock, precio y pedidos.</p>
+<p>Las traducciones las hace <strong>Claude</strong> (la IA de Anthropic) y se publican solas si pasan siete controles automáticos; lo que no los pasa espera a una persona en «Revisar». Las personas corrigen después, sobre lo publicado, y lo que corrigen no se vuelve a tocar.</p>
 <p>Con el módulo apagado, la tienda sale solo en su idioma y las traducciones se conservan.</p>
 <h2>Antes de empezar</h2>
 <ul>
 <li>Los <strong>paquetes de idioma</strong> de WordPress y de WooCommerce de cada idioma: Escritorio → Actualizaciones, después de añadir el idioma en Ajustes → Generales («Idioma del sitio», sin guardarlo como idioma del sitio), o con WP-CLI (<code>wp language core install en_GB</code> y <code>wp language plugin install woocommerce en_GB</code>). Sin el de WooCommerce, sus textos salen en inglés de Estados Unidos («cart»); la salud del módulo lo avisa.</li>
 <li>Las cadenas del tema y del plugin vienen traducidas en cada versión: no gastan nada.</li>
 <li>Si la tienda usa <strong>caché de página</strong>, cada idioma tiene su propia dirección: no hace falta configurar nada más.</li>
+<li>Para traducir con Claude: una <strong>clave de la API de Claude</strong> (de la consola de Anthropic) y un <strong>límite de gasto</strong> al mes. Pon el mismo límite en la consola de Anthropic como segunda red.</li>
+<li>Revisa antes el texto de origen: solo se traduce lo «Revisado» (guía <a href="core.html">Núcleo</a>, «Estado del español»). Traducir es la última capa, no un arreglo.</li>
 </ul>
 <h2>Dónde se configura</h2>
 <p>WooCommerce → La Chinata → <strong>Traducción</strong>. Para encender o apagar el módulo: La Chinata → Módulos.</p>
@@ -59,11 +62,81 @@ footer { color: var(--soft); font-size: 14px; margin-top: 48px; }
 </tbody></table>
 <p>Para quitar un idioma, vacía su fila: sus traducciones se conservan y vuelven si lo añades otra vez.</p>
 <h3>Qué se traduce</h3>
-<p>«Solo productos, páginas y entradas con el español Revisado»: encendido de serie. El estado del texto de origen («Pendiente» o «Revisado») se marca en el editor o en las listas (guía <a href="core.html">Núcleo</a>, «Estado del español»). Términos, menús y oleotecas no tienen estado.</p>
+<p>«Solo productos, páginas y entradas con el español Revisado»: encendido de serie. El estado del texto de origen («Pendiente» o «Revisado») se marca en el editor o en las listas (guía <a href="core.html">Núcleo</a>, «Estado del español»). Términos, menús, oleotecas y textos de los ajustes no tienen estado y se traducen siempre.</p>
+<h3>API de Claude</h3>
+<table>
+<thead>
+<tr>
+<th>Campo</th>
+<th>Qué es</th>
+<th>De serie</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Clave de la API</td>
+<td>Se guarda cifrada; no se vuelve a mostrar ni viaja en la exportación. Si cambian las claves de seguridad de WordPress (<code>wp-config.php</code>), hay que volver a pegarla: el panel lo avisa y la cola se para</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Modelo</td>
+<td>El modelo de Claude que traduce</td>
+<td><code>claude-sonnet-5-5</code></td>
+</tr>
+<tr>
+<td>Esfuerzo</td>
+<td>Cuánto razona antes de traducir: más esfuerzo, más gasto</td>
+<td><code>medium</code></td>
+</tr>
+<tr>
+<td>Límite de gasto al mes (USD)</td>
+<td>Con 0, no se traduce nada. Al alcanzarlo, la cola se para hasta el mes siguiente o hasta que lo subas. Cuenta el coste real de cada respuesta</td>
+<td>0</td>
+</tr>
+<tr>
+<td>Tanda diaria de lo «Revisado» (USD)</td>
+<td>Cada día a las 4:00, lo que ha pasado a «Revisado» sale en una tanda si su coste estimado está por debajo de esta cifra; si la supera, espera a que alguien la lance. Con 0, siempre a mano</td>
+<td>5</td>
+</tr>
+<tr>
+<td>Precio del modelo</td>
+<td>Solo si la API cambia sus precios; vacío, el que trae el plugin</td>
+<td>—</td>
+</tr>
+</tbody></table>
+<h3>Instrucciones</h3>
+<p>Por idioma: el <strong>tono</strong>, el <strong>tratamiento</strong> (<em>you</em> en inglés, <em>Sie</em> en alemán, <em>vous</em> en francés) y la <strong>línea de las páginas legales</strong> («In case of discrepancy, the Spanish version prevails.»), que se añade al final de las páginas legales traducidas. Siempre van además: unidades métricas, cifras intactas y nada de afirmaciones nuevas, sobre todo de salud y cosmética.</p>
+<h3>Glosario</h3>
+<p>Una línea por término: idioma, término y traducción fija («AOVE» → «EVOO»). Con la traducción vacía, el término <strong>no se traduce nunca</strong>: la marca y sus gamas, las denominaciones de origen, los nombres de vinos, bodegas y uvas. Con el idioma vacío, vale para todos. Desde el editor se pueden <strong>proponer</strong> términos: esperan debajo del glosario hasta que alguien los acepta o descarta.</p>
+<p>Para empezar, <code>wp lachinata translate glossary-suggest --wine-category=&lt;slug&gt; --file=glosario.csv</code> propone una lista leyendo el catálogo; revísala y apruébala antes de importarla con <code>glossary-import</code>.</p>
+<h2>Traducir lo que ya existe: tandas</h2>
+<p>Traducción → <strong>Tandas</strong>: elige idioma y qué (productos, páginas, entradas, términos, textos de los ajustes) y pulsa <strong>Calcular</strong>: verás cuántas fichas, cuántas palabras y el coste estimado. <strong>Lanzar la tanda</strong> las pone en la cola, que las envía a la API por lotes (a mitad de precio; suele tardar de minutos a unas horas). Una tanda se envía hasta donde quepa en el límite del mes; el resto espera.</p>
+<p>Lo que pasa a «Revisado» espera a la <strong>tanda diaria</strong> de las 4:00 (hora de la tienda). Sale sola si su coste estimado está por debajo del umbral de «API de Claude» (de serie 5 USD). Si lo supera, por ejemplo el día que se marcan cientos de fichas de golpe, espera: en «Tandas» verás cuántas fichas esperan y lo que pasó con la última, y <strong>Lanzarla ahora</strong> la envía. Una tanda lanzada a mano también se las lleva.</p>
+<p>Lo que cambia después en algo ya revisado se traduce <strong>al momento</strong>, en segundo plano, primero lo «Desfasado».</p>
+<h2>Revisar</h2>
+<p>Lo que no pasa un control no se publica y espera aquí, con el motivo y la propuesta al lado del texto de origen:</p>
+<ol>
+<li><strong>Cifras</strong>: números, porcentajes, cantidades y precios iguales.</li>
+<li><strong>Glosario</strong>: los términos fijos con su traducción y los de «no traducir» intactos.</li>
+<li><strong>HTML y bloques</strong>: la misma estructura y los mismos enlaces.</li>
+<li><strong>Marcadores</strong> (<code>%s</code>, <code>{nombre}</code>) sin tocar.</li>
+<li><strong>Longitud</strong> del campo (título SEO 60, descripción 155).</li>
+<li><strong>Idioma</strong>: el texto está en el idioma pedido.</li>
+<li><strong>Sin añadidos</strong>: no más de un 40 % más larga ni más corta.</li>
+</ol>
+<p>También esperan aquí las <strong>páginas legales</strong> (aviso legal, privacidad, cookies y condiciones), que nunca se publican solas, y los campos que corrigió una persona cuando cambia su texto de origen.</p>
+<p><strong>Publicar</strong> publica la propuesta; <strong>Volver a traducir</strong> la manda otra vez a la cola; <strong>Descartar</strong> no publica nada. Para cambiar algo, ábrela en el editor.</p>
+<h2>Muestra y gasto</h2>
+<ul>
+<li><strong>Muestra</strong>: 20 traducciones automáticas al azar por idioma, las mismas toda la semana, para leerlas cuando se pueda.</li>
+<li><strong>Este mes</strong>: fichas, palabras, coste y correcciones por idioma, el gasto de cada mes y los párrafos de la memoria de traducción (lo ya traducido se reutiliza sin volver a pagarlo).</li>
+<li>Si la cola está parada (sin clave, sin límite o con el límite alcanzado) o algo lleva más de 7 días «Desfasado», lo dice arriba.</li>
+</ul>
 <h2>Corregir una traducción</h2>
 <p>En el editor de cada producto, página o entrada, la caja <strong>Traducciones</strong> enseña una pestaña por idioma con el texto de origen y la traducción, campo a campo, uno al lado del otro. En categorías y términos, debajo del formulario.</p>
 <ul>
-<li>Cambia el campo y guarda: queda <strong>Editada</strong> y ninguna traducción automática lo vuelve a tocar.</li>
+<li>Cambia el campo y guarda: queda <strong>Editada</strong> y ninguna traducción automática lo vuelve a tocar. Lo que corriges entra en la memoria y manda.</li>
+<li><strong>Volver a traducir</strong> (debajo de cada campo) descarta esa traducción y la pone la primera en la cola.</li>
+<li><strong>Proponer al glosario</strong>, debajo de cada pestaña.</li>
 <li><strong>Desfasada</strong> quiere decir que el texto de origen cambió después: la traducción sigue publicada hasta que se revise.</li>
 <li>Debajo de cada pestaña pone si la página <strong>existe</strong> en ese idioma (con su dirección) o qué campos faltan.</li>
 </ul>
@@ -72,7 +145,8 @@ footer { color: var(--soft); font-size: 14px; margin-top: 48px; }
 <p>Solo cuando está <strong>traducida entera</strong>: el nombre o el título, las descripciones y el contenido que tengan texto. Mientras falte algo, en ese idioma no hay dirección: sus enlaces llevan al idioma de origen, no sale en <code>hreflang</code> ni en el sitemap de ese idioma, y quien la pida en <code>/en/…</code> va a la del idioma de origen. Nunca se ve una página a medias.</p>
 <p>Los títulos y descripciones SEO no son obligatorios: sin ellos, el plugin de SEO escribe los suyos con el título traducido.</p>
 <h2>Lo que no se traduce</h2>
-<p>SKU, códigos, precios, cantidades, direcciones y teléfonos de las tiendas, nombres de marca y los ingredientes y valores nutricionales (vendrán de su propia fuente).</p>
+<p>SKU, códigos, precios, cantidades, direcciones y teléfonos de las tiendas, los términos del glosario de «no traducir» y los ingredientes y valores nutricionales (vendrán de su propia fuente).</p>
+<p>Los atributos que define cada producto (no los globales) se traducen como un campo más: en otro idioma cambian su nombre y el texto de cada valor; el valor que elige la variación no cambia, así que la bolsa y los pedidos siguen funcionando.</p>
 <h2>Direcciones</h2>
 <ul>
 <li>El idioma de la tienda va sin prefijo; los demás, en su subdirectorio. El idioma lo da la dirección, nunca el navegador.</li>
@@ -113,16 +187,41 @@ footer { color: var(--soft); font-size: 14px; margin-top: 48px; }
 <td><code>wp lachinata translate refresh</code></td>
 <td>Vuelve a calcular dónde existe cada página</td>
 </tr>
+<tr>
+<td><code>wp lachinata translate run --lang=en_GB --type=product --limit=30 --dry-run</code></td>
+<td>Calcula una tanda (fichas, palabras, coste); sin <code>--dry-run</code>, la lanza</td>
+</tr>
+<tr>
+<td><code>wp lachinata translate tick</code></td>
+<td>Mueve la cola ahora (sin esperar a los cinco minutos)</td>
+</tr>
+<tr>
+<td><code>wp lachinata translate daily</code></td>
+<td>La tanda diaria de lo «Revisado» ahora, con su umbral</td>
+</tr>
+<tr>
+<td><code>wp lachinata translate retry [--review]</code></td>
+<td>Devuelve a la cola lo que dio error (y, con <code>--review</code>, lo de «Revisar»)</td>
+</tr>
+<tr>
+<td><code>wp lachinata translate glossary-suggest --wine-category=&lt;slug&gt; --file=glosario.csv</code></td>
+<td>Propone el glosario inicial desde el catálogo</td>
+</tr>
+<tr>
+<td><code>wp lachinata translate glossary-import glosario.csv</code> / <code>glossary-export</code></td>
+<td>Sustituye el glosario por un CSV / lo imprime</td>
+</tr>
 </tbody></table>
 <h2>Cómo comprobarlo</h2>
 <ol>
 <li>Abre un producto traducido en <code>/en/</code>: título, descripción y botones en inglés, y en el código de la página tres <code>&lt;link rel=&quot;alternate&quot; hreflang&gt;</code> (el de origen, <code>en</code> y <code>x-default</code>).</li>
 <li>Abre uno sin traducir en <code>/en/</code>: te lleva a su dirección en el idioma de origen.</li>
 <li>En el índice de sitemaps aparece el del idioma (<code>translate-en-sitemap.xml</code>), solo con lo traducido.</li>
+<li>Con la clave y un límite pequeño, marca «Revisado» un producto, lanza <code>wp lachinata translate daily</code> y <code>wp lachinata translate tick</code> un par de veces (la tanda tarda) y mira en Traducción → Este mes el coste real; el producto existe en <code>/en/</code> si pasó los controles, o está en «Revisar» con el motivo.</li>
 <li>Haz un pedido desde <code>/en/</code>: el correo de confirmación llega en inglés.</li>
 </ol>
 
-<footer>La Chinata Core 0.16.0</footer>
+<footer>La Chinata Core 0.17.0</footer>
 </main>
 </body>
 </html>

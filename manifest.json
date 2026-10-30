@@ -1,20 +1,26 @@
 {
 	"schema": 1,
-	"generated_at": "2026-10-30T18:11:27.248Z",
+	"generated_at": "2026-10-30T21:48:07.579Z",
 	"packages": {
 		"lachinata-core": {
-			"version": "0.18.0",
+			"version": "0.18.1",
 			"date": "2026-10-30",
-			"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.18.0/lachinata-core-0.18.0.zip",
-			"sha256": "7105d4ac85f3263c173485015100dbf899a363dc9629c404a0165ea1477b7967",
+			"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.18.1/lachinata-core-0.18.1.zip",
+			"sha256": "75474334959169cd72bb6662252d74066184c64f20075fc7ba8c3fd017e4fddf",
 			"requires": {
 				"wordpress": "6.8",
 				"php": "8.2",
 				"woocommerce": "10.0",
-				"lachinata": "0.18.0"
+				"lachinata": "0.18.1"
 			},
-			"notes": "La Bodega (módulo `bodega`, solo en lachinata.es): vinos con sus añadas, cajas de 6 y maridaje (`design-system/sistema/10-bodega.md`; paso a producción en `docs/despliegue-bodega.md`).\n\n### Añadido\n- **Datos de cada vino**: tipo, elaboración, bodega (con su ficha), origen País › Región › D.O., uvas con su %, grado, crianza, viticultura, temperatura, cata, perfil, puntuaciones y premios por añada, maridaje, etiqueta, «Cuenta para la caja» y «Contiene alcohol». Añadas y formatos son variaciones con los atributos globales que se eligen en los ajustes.\n- **Caja «Vino» en el editor** con pestañas (Ficha, Cata, Añadas y puntuaciones, Maridaje, Etiqueta), botones en vez de desplegables, «Completa 9 de 12», vista previa, «Nueva añada» y «Crear a partir de este vino»; columnas y filtros de vino en el listado de productos; fichas de bodega, tipo y maridaje.\n- **Ficha de vino**: antetítulo con la D.O., «bodega · tipo · añada», insignias de críticos y concursos de la añada que se ve (como mucho tres, desde 90 puntos y Oro), «1 botella» o «Caja de 6», ficha técnica, cata, «Marida con» con «Añadir los dos», la bodega con «Más vinos de…» e ingredientes. Sin datos, sin sección.\n- **Listado de la Bodega**: chips de tipo, entradas, filtros (tipo, origen, uva, precio, 90 puntos o más, ecológico, maridaje y bodega) y «Mejor puntuados»; páginas de tipo y origen («…/tintos/», «…/extremadura/») indexables con 3 vinos o más. Tarjeta de vino con el punto del tipo, «D.O. · añada» y la mejor insignia.\n- **Cajas de 6**: 10 % iguales y 5 % variada (ajustes), como descuento por línea («Descuento por caja») en la bolsa, el pedido, los correos y la API para Odoo. No se suma a ofertas ni a cupones: se aplica lo más ventajoso, con aviso en la bolsa; los cupones de envío gratis sí se suman. Progreso de la caja en la bolsa.\n- **Edad**: aviso «+18» en la ficha y en la bolsa con alcohol; casilla obligatoria «Confirmo que soy mayor de 18 años» en el checkout solo con alcohol, guardada en el pedido; nota para el transportista como ajuste.\n- **SEO**: `Product` con la bodega como marca y `additionalProperty`; las puntuaciones nunca como `Review`; títulos de vino y de las páginas de tipo y origen.\n- **Migración** `wp lachinata bodega migrate` (descripción a campos, vinos simples a variables con su SKU), `import-scores`, `refresh-scores` y `glossary`.\n- **Fusionar bodegas** («Fusionar con…» en Productos › Bodegas y `merge-wineries`), con 301 de la que desaparece, y la lista de probables duplicadas (`duplicates` y el informe de la migración).\n- Medición: `lc_case_select`, `lc_case_complete` y `lc_pairing_add`.\n- Clave `bodega` del objeto `lachinata` de la API de pedidos.\n- Tema: huecos `lachinata/catalog/filters`, `lachinata/category/header`, `lachinata/product/wine`, `lachinata/product/age_notice`, `lachinata/product_card/wine`, `lachinata/cart/case_progress`, `lachinata/cart/age_notice`, `lachinata/cart/coupon` y `lachinata/order/discounts`, y los componentes del grupo «Bodega».\n\n### Cambiado\n- El «+» de la tarjeta añade directamente un producto variable con una sola variación (un vino de una añada).\n- El stepper avanza según el paso del campo (de 6 en 6 con «Caja de 6»).\n- `catalog`: tinta «Bodega» para las categorías; la venta cruzada se configura por cualquier categoría (vale la de la categoría principal del producto o la más cercana por encima), no solo por la raíz.",
+			"notes": "Textos de los vinos: el paquete editorial lleva los campos y los términos de otros módulos, para importar los textos revisados de la Bodega sin pisar nada.\n\n### Añadido\n- **Paquete editorial con campos de módulos** (versión 2; se siguen importando los de la 1): `bodega` añade vista, nariz y boca de cada vino, cada uno con su huella.\n- **Sección de términos** en el paquete: el texto de cada bodega, buscada por su slug; una que no existe va al informe y no se crea.\n- `export-editorial --fields=…` exporta solo los campos que se piden.\n- En el informe de `import-editorial`, cada conflicto con el texto del sitio y el del paquete, uno debajo del otro, con el ID y el nombre.\n\n### Cambiado\n- `docs/despliegue-bodega.md`: en producción, `migrate` → `import-editorial` (textos revisados) → `import-scores`.\n\n### Arreglado\n- **Nombres con «&»** (bodega «Alonso & Pedrajo»): WordPress guarda el «&» de los nombres de término como `&amp;` y la ficha, la tarjeta, los filtros, el editor y el panel lo pintaban así. El módulo da ahora los nombres como texto, y `migrate` compara y crea los términos con el nombre decodificado (el de la descripción y el del Excel son la misma bodega).",
 			"previous": [
+				{
+					"version": "0.18.0",
+					"date": "2026-10-30",
+					"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.18.0/lachinata-core-0.18.0.zip",
+					"sha256": "7105d4ac85f3263c173485015100dbf899a363dc9629c404a0165ea1477b7967"
+				},
 				{
 					"version": "0.17.2",
 					"date": "2026-10-30",
@@ -38,28 +44,28 @@
 					"date": "2026-10-29",
 					"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.16.0/lachinata-core-0.16.0.zip",
 					"sha256": "dfdb374cb7e39803bf2990ec2ba66fb8d3950fece8c9b384a7bf92ade835f634"
-				},
-				{
-					"version": "0.15.1",
-					"date": "2026-10-29",
-					"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.15.1/lachinata-core-0.15.1.zip",
-					"sha256": "3e94f521a82e3d074f7aee862f17c5ddaef67ae5cbeacd1d2e73ad31324068a9"
 				}
 			]
 		},
 		"lachinata": {
-			"version": "0.18.0",
+			"version": "0.18.1",
 			"date": "2026-10-30",
-			"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.18.0/lachinata-0.18.0.zip",
-			"sha256": "9a388a48e7b736db40ca767c03d4880730823772674346f8086b8315ec95c94b",
+			"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.18.1/lachinata-0.18.1.zip",
+			"sha256": "88f886d0ff66b192a281342cf7a87638836fe85930b802c8c046cbec16011ac8",
 			"requires": {
 				"wordpress": "6.8",
 				"php": "8.2",
 				"woocommerce": "10.0",
-				"lachinata-core": "0.18.0"
+				"lachinata-core": "0.18.1"
 			},
-			"notes": "La Bodega (módulo `bodega`, solo en lachinata.es): vinos con sus añadas, cajas de 6 y maridaje (`design-system/sistema/10-bodega.md`; paso a producción en `docs/despliegue-bodega.md`).\n\n### Añadido\n- **Datos de cada vino**: tipo, elaboración, bodega (con su ficha), origen País › Región › D.O., uvas con su %, grado, crianza, viticultura, temperatura, cata, perfil, puntuaciones y premios por añada, maridaje, etiqueta, «Cuenta para la caja» y «Contiene alcohol». Añadas y formatos son variaciones con los atributos globales que se eligen en los ajustes.\n- **Caja «Vino» en el editor** con pestañas (Ficha, Cata, Añadas y puntuaciones, Maridaje, Etiqueta), botones en vez de desplegables, «Completa 9 de 12», vista previa, «Nueva añada» y «Crear a partir de este vino»; columnas y filtros de vino en el listado de productos; fichas de bodega, tipo y maridaje.\n- **Ficha de vino**: antetítulo con la D.O., «bodega · tipo · añada», insignias de críticos y concursos de la añada que se ve (como mucho tres, desde 90 puntos y Oro), «1 botella» o «Caja de 6», ficha técnica, cata, «Marida con» con «Añadir los dos», la bodega con «Más vinos de…» e ingredientes. Sin datos, sin sección.\n- **Listado de la Bodega**: chips de tipo, entradas, filtros (tipo, origen, uva, precio, 90 puntos o más, ecológico, maridaje y bodega) y «Mejor puntuados»; páginas de tipo y origen («…/tintos/», «…/extremadura/») indexables con 3 vinos o más. Tarjeta de vino con el punto del tipo, «D.O. · añada» y la mejor insignia.\n- **Cajas de 6**: 10 % iguales y 5 % variada (ajustes), como descuento por línea («Descuento por caja») en la bolsa, el pedido, los correos y la API para Odoo. No se suma a ofertas ni a cupones: se aplica lo más ventajoso, con aviso en la bolsa; los cupones de envío gratis sí se suman. Progreso de la caja en la bolsa.\n- **Edad**: aviso «+18» en la ficha y en la bolsa con alcohol; casilla obligatoria «Confirmo que soy mayor de 18 años» en el checkout solo con alcohol, guardada en el pedido; nota para el transportista como ajuste.\n- **SEO**: `Product` con la bodega como marca y `additionalProperty`; las puntuaciones nunca como `Review`; títulos de vino y de las páginas de tipo y origen.\n- **Migración** `wp lachinata bodega migrate` (descripción a campos, vinos simples a variables con su SKU), `import-scores`, `refresh-scores` y `glossary`.\n- **Fusionar bodegas** («Fusionar con…» en Productos › Bodegas y `merge-wineries`), con 301 de la que desaparece, y la lista de probables duplicadas (`duplicates` y el informe de la migración).\n- Medición: `lc_case_select`, `lc_case_complete` y `lc_pairing_add`.\n- Clave `bodega` del objeto `lachinata` de la API de pedidos.\n- Tema: huecos `lachinata/catalog/filters`, `lachinata/category/header`, `lachinata/product/wine`, `lachinata/product/age_notice`, `lachinata/product_card/wine`, `lachinata/cart/case_progress`, `lachinata/cart/age_notice`, `lachinata/cart/coupon` y `lachinata/order/discounts`, y los componentes del grupo «Bodega».\n\n### Cambiado\n- El «+» de la tarjeta añade directamente un producto variable con una sola variación (un vino de una añada).\n- El stepper avanza según el paso del campo (de 6 en 6 con «Caja de 6»).\n- `catalog`: tinta «Bodega» para las categorías; la venta cruzada se configura por cualquier categoría (vale la de la categoría principal del producto o la más cercana por encima), no solo por la raíz.",
+			"notes": "Textos de los vinos: el paquete editorial lleva los campos y los términos de otros módulos, para importar los textos revisados de la Bodega sin pisar nada.\n\n### Añadido\n- **Paquete editorial con campos de módulos** (versión 2; se siguen importando los de la 1): `bodega` añade vista, nariz y boca de cada vino, cada uno con su huella.\n- **Sección de términos** en el paquete: el texto de cada bodega, buscada por su slug; una que no existe va al informe y no se crea.\n- `export-editorial --fields=…` exporta solo los campos que se piden.\n- En el informe de `import-editorial`, cada conflicto con el texto del sitio y el del paquete, uno debajo del otro, con el ID y el nombre.\n\n### Cambiado\n- `docs/despliegue-bodega.md`: en producción, `migrate` → `import-editorial` (textos revisados) → `import-scores`.\n\n### Arreglado\n- **Nombres con «&»** (bodega «Alonso & Pedrajo»): WordPress guarda el «&» de los nombres de término como `&amp;` y la ficha, la tarjeta, los filtros, el editor y el panel lo pintaban así. El módulo da ahora los nombres como texto, y `migrate` compara y crea los términos con el nombre decodificado (el de la descripción y el del Excel son la misma bodega).",
 			"previous": [
+				{
+					"version": "0.18.0",
+					"date": "2026-10-30",
+					"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.18.0/lachinata-0.18.0.zip",
+					"sha256": "9a388a48e7b736db40ca767c03d4880730823772674346f8086b8315ec95c94b"
+				},
 				{
 					"version": "0.17.2",
 					"date": "2026-10-30",
@@ -83,12 +89,6 @@
 					"date": "2026-10-29",
 					"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.16.0/lachinata-0.16.0.zip",
 					"sha256": "45d1d7d09c3ecaf4cf68a17b48edb1d99128a10e2599b53c3e5dc94f35ebe180"
-				},
-				{
-					"version": "0.15.1",
-					"date": "2026-10-29",
-					"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.15.1/lachinata-0.15.1.zip",
-					"sha256": "35103fd1d79eddfcddb95f8189fee2b41fdc887f8ca32db46db4fd258e88c3ed"
 				}
 			]
 		}

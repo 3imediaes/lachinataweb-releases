@@ -32,7 +32,7 @@ footer { color: var(--soft); font-size: 14px; margin-top: 48px; }
 <li>Los datos de cada tienda (contacto, empresa, IDs de los servicios) se rellenan en cada sitio. La exportación de configuración no los copia.</li>
 </ul>
 <h2>Dónde se configura</h2>
-<p>WooCommerce → La Chinata, con una pestaña por área: <strong>Módulos</strong>, <strong>Atención al cliente</strong>, <strong>Datos de la empresa</strong>, <strong>IDs de producto</strong>, <strong>Exportar/importar</strong> y <strong>Actualizaciones</strong>. Los módulos encendidos añaden sus pestañas.</p>
+<p>WooCommerce → La Chinata, con una pestaña por área: <strong>Módulos</strong>, <strong>Atención al cliente</strong>, <strong>Datos de la empresa</strong>, <strong>IDs de producto</strong>, <strong>Redirecciones</strong>, <strong>Exportar/importar</strong> y <strong>Actualizaciones</strong>. Los módulos encendidos añaden sus pestañas.</p>
 <h2>Ajustes</h2>
 <h3>Módulos</h3>
 <p>Cada módulo se enciende o se apaga para esta tienda. Junto a cada uno verás qué hace, desde qué versión existe y un enlace a su guía.</p>
@@ -152,6 +152,9 @@ footer { color: var(--soft); font-size: 14px; margin-top: 48px; }
 <h3>Estado del español</h3>
 <p>En las listas de <strong>Productos</strong>, <strong>Páginas</strong> y <strong>Entradas</strong> hay una columna <strong>Español</strong> con «Pendiente» o «Revisado», un filtro para ver solo uno de los dos y dos acciones en lote: <strong>Marcar el español como revisado</strong> y <strong>… como pendiente</strong>. En el editor de cada uno, la caja <strong>Texto en español</strong> cambia el de ese elemento.</p>
 <p>«Revisado» quiere decir que el texto en español está corregido y listo: solo lo revisado se traduce a los demás idiomas. Todo empieza como «Pendiente». El paquete editorial del <a href="catalog.html">Catálogo</a> puede marcar «Revisado» los productos que importa.</p>
+<h3>Redirecciones</h3>
+<p>Las 301, 302 y 410 de la tienda están en la lista de redirecciones de Rank Math (Rank Math → Redirecciones), y allí se editan. Esta pestaña carga en esa lista un CSV con las columnas <code>url</code> y <code>destino_url</code> y, si hace falta, <code>codigo</code> (301 si no se pone; 410 sin destino). Una dirección que ya tiene regla la conserva. Marca <strong>Solo comprobar</strong> para ver antes cuántas se añadirían. Lo mismo con WP-CLI: <code>wp lachinata redirections import archivo.csv [--dry-run]</code>.</p>
+<p>Hace falta Rank Math con su módulo de redirecciones encendido (Rank Math → Panel → Módulos). Las reglas valen también para la misma dirección en otros idiomas: si <code>/producto-viejo.html</code> va a una categoría, <code>/en/producto-viejo.html</code> va a esa categoría en inglés.</p>
 <h3>Exportar/importar</h3>
 <p>Descarga la configuración de esta tienda en un archivo JSON, o importa la de otra. Al importar se muestra antes qué cambiaría, y no se escribe nada si el archivo tiene errores. Viajan los módulos encendidos, sus ajustes de comportamiento y los IDs de producto. No viajan los datos propios de cada sitio: atención al cliente, datos de la empresa, credenciales ni los IDs de los servicios de medición.</p>
 <h3>Actualizaciones</h3>
@@ -170,7 +173,7 @@ footer { color: var(--soft); font-size: 14px; margin-top: 48px; }
 <h2>Al apagarlo</h2>
 <p>El núcleo no se apaga: es el plugin. Al desactivar el plugin, el tema sigue funcionando con WooCommerce de serie, sin las funciones de los módulos. Los datos se conservan.</p>
 
-<footer>La Chinata Core 0.17.0</footer>
+<footer>La Chinata Core 0.17.1</footer>
 </main>
 </body>
 </html>

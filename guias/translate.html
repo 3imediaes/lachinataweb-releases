@@ -152,10 +152,19 @@ footer { color: var(--soft); font-size: 14px; margin-top: 48px; }
 <li>El idioma de la tienda va sin prefijo; los demás, en su subdirectorio. El idioma lo da la dirección, nunca el navegador.</li>
 <li>Las direcciones se traducen: el slug de cada producto, página, categoría y sección, y las páginas por las que pasan (la tienda, la bolsa, el checkout y la cuenta). Los apartados internos de la cuenta y del pedido recibido no.</li>
 <li>Si alguien entra con la dirección en el idioma de origen bajo <code>/en/</code>, va a la traducida.</li>
+<li>Las direcciones antiguas que ya no existen se resuelven por reglas, en este orden:<ol>
+<li>un slug cambiado lleva a la dirección actual de su producto, página o entrada;</li>
+<li>una dirección con regla en la lista de redirecciones (ver la guía del núcleo) sigue esa regla en el idioma;</li>
+<li>una página de un listado que ya no existe (<code>/page/26/</code>) lleva a la página 1;</li>
+<li>las direcciones basura (<code>/comment-page-1/</code>, con parámetros) responden 410.
+Lo demás responde 404. Si el destino está traducido, la redirección es 301 a su dirección en el idioma; si no, 302 a la del idioma de origen, y pasa sola a 301 el día que se traduzca.</li>
+</ol>
+</li>
 </ul>
 <h2>Correos</h2>
 <p>Cada pedido guarda el idioma en que se hizo, y los correos al cliente salen en ese idioma. Los correos a la tienda, siempre en el idioma de la tienda. En el panel y en el ERP, las líneas del pedido conservan el nombre del producto en el idioma de origen.</p>
 <h2>WP-CLI</h2>
+<p>Ninguna orden que escribe un archivo (<code>--file</code>, <code>--report</code>, <code>--missing</code>) lo hace encima de uno que ya existe: elige otro nombre o añade <code>--force</code>.</p>
 <table>
 <thead>
 <tr>
@@ -211,6 +220,10 @@ footer { color: var(--soft); font-size: 14px; margin-top: 48px; }
 <td><code>wp lachinata translate glossary-import glosario.csv</code> / <code>glossary-export</code></td>
 <td>Sustituye el glosario por un CSV / lo imprime</td>
 </tr>
+<tr>
+<td><code>wp lachinata translate migrate-tp [--csv=urls.csv --report=informe.md --missing=en-404-productos.csv]</code></td>
+<td>Desde TranslatePress: propone al glosario sus cadenas corregidas a mano y, con <code>--csv</code>, comprueba qué responde cada dirección antigua; <code>--missing</code> deja los 404 en un CSV para la lista de redirecciones</td>
+</tr>
 </tbody></table>
 <h2>Cómo comprobarlo</h2>
 <ol>
@@ -221,7 +234,7 @@ footer { color: var(--soft); font-size: 14px; margin-top: 48px; }
 <li>Haz un pedido desde <code>/en/</code>: el correo de confirmación llega en inglés.</li>
 </ol>
 
-<footer>La Chinata Core 0.17.0</footer>
+<footer>La Chinata Core 0.17.1</footer>
 </main>
 </body>
 </html>

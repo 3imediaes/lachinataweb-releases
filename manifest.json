@@ -1,20 +1,26 @@
 {
 	"schema": 1,
-	"generated_at": "2026-10-30T08:21:35.803Z",
+	"generated_at": "2026-10-30T10:03:43.221Z",
 	"packages": {
 		"lachinata-core": {
-			"version": "0.17.0",
+			"version": "0.17.1",
 			"date": "2026-10-30",
-			"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.17.0/lachinata-core-0.17.0.zip",
-			"sha256": "a14e2a2c59151d78c985807d832eba68e9ac9f55a8df812ea525b809abe2170f",
+			"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.17.1/lachinata-core-0.17.1.zip",
+			"sha256": "6bbf6f079579e26c25acd1fe5b2e2d33cca2331a2b8326fbb7186ae5a65f32ee",
 			"requires": {
 				"wordpress": "6.8",
 				"php": "8.2",
 				"woocommerce": "10.0",
-				"lachinata": "0.17.0"
+				"lachinata": "0.17.1"
 			},
-			"notes": "",
+			"notes": "Migración desde TranslatePress (incremento 11d): el cambio de `/en/` en lachinata.es (`docs/despliegue-translate.md`, paso 4).\n\n### Añadido\n- **Direcciones antiguas en otro idioma**, por reglas y sin tablas atadas al catálogo: un slug cambiado lleva a la dirección actual (como hace WordPress en español); una dirección con regla en la lista de redirecciones sigue esa regla en el idioma; una página de un listado que ya no existe va a la página 1; la basura (`/comment-page-1/`, parámetros) responde 410. Lo traducido va con 301; lo que aún no, con 302 al español, y pasa solo a 301 el día que se traduce.\n- **Redirecciones** (WooCommerce → La Chinata, y `wp lachinata redirections import`): carga un CSV (`url`, `destino_url`, `codigo`) en la lista de redirecciones de Rank Math, que no tiene importación propia.\n- **Productos borrados**: al borrar un producto definitivamente, una 301 de su dirección a su categoría principal en esa misma lista, editable. Ajuste del Catálogo, encendido de serie.\n- **Sellos en otro idioma**: `/en/tipo/{sello}/` va a la tienda en inglés.\n- **Entradas retiradas** del blog: su 410 o su 301 valen también bajo `/en/`.\n- `wp lachinata translate migrate-tp`: las cadenas corregidas a mano en TranslatePress, como propuestas de glosario, y un informe de qué responde cada dirección antigua de Search Console, con un CSV de los 404 para darles destino si se quiere.\n\n### Cambiado\n- Instrucciones de serie del inglés: titulares de blog, recetas y páginas en *sentence case*; nombres de producto en *Title Case*.\n- Ninguna orden de WP-CLI del plugin escribe encima de un archivo que ya existe (informes, exportaciones, la copia antes de borrar los datos de un módulo) sin `--force`.\n- CI: Lighthouse en dos trabajos en paralelo; el seed y los perfiles, en un solo `wp eval-file` (cada comando sin volver a entrar en el contenedor).",
 			"previous": [
+				{
+					"version": "0.17.0",
+					"date": "2026-10-30",
+					"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.17.0/lachinata-core-0.17.0.zip",
+					"sha256": "a14e2a2c59151d78c985807d832eba68e9ac9f55a8df812ea525b809abe2170f"
+				},
 				{
 					"version": "0.16.0",
 					"date": "2026-10-29",
@@ -38,28 +44,28 @@
 					"date": "2026-10-29",
 					"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.14.0/lachinata-core-0.14.0.zip",
 					"sha256": "278bb54642dfc45c8dec2fbc8850d0781fd4edae4a07e0ee5ca081f85c88b9aa"
-				},
-				{
-					"version": "0.13.2",
-					"date": "2026-10-28",
-					"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.13.2/lachinata-core-0.13.2.zip",
-					"sha256": "b42bdfb7e62ca699a747f78b3029aa547ffa4f5c408e0d58f667cc33a914a4ca"
 				}
 			]
 		},
 		"lachinata": {
-			"version": "0.17.0",
+			"version": "0.17.1",
 			"date": "2026-10-30",
-			"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.17.0/lachinata-0.17.0.zip",
-			"sha256": "b6281fea965ec1add3a5713a689c62002fffedefa86ca0aba8a3444d87c723ce",
+			"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.17.1/lachinata-0.17.1.zip",
+			"sha256": "341a777db1fcb1c3b18911671cafd0f3673c2a7f643a846b2ae8e8fc48a82d07",
 			"requires": {
 				"wordpress": "6.8",
 				"php": "8.2",
 				"woocommerce": "10.0",
-				"lachinata-core": "0.17.0"
+				"lachinata-core": "0.17.1"
 			},
-			"notes": "",
+			"notes": "Migración desde TranslatePress (incremento 11d): el cambio de `/en/` en lachinata.es (`docs/despliegue-translate.md`, paso 4).\n\n### Añadido\n- **Direcciones antiguas en otro idioma**, por reglas y sin tablas atadas al catálogo: un slug cambiado lleva a la dirección actual (como hace WordPress en español); una dirección con regla en la lista de redirecciones sigue esa regla en el idioma; una página de un listado que ya no existe va a la página 1; la basura (`/comment-page-1/`, parámetros) responde 410. Lo traducido va con 301; lo que aún no, con 302 al español, y pasa solo a 301 el día que se traduce.\n- **Redirecciones** (WooCommerce → La Chinata, y `wp lachinata redirections import`): carga un CSV (`url`, `destino_url`, `codigo`) en la lista de redirecciones de Rank Math, que no tiene importación propia.\n- **Productos borrados**: al borrar un producto definitivamente, una 301 de su dirección a su categoría principal en esa misma lista, editable. Ajuste del Catálogo, encendido de serie.\n- **Sellos en otro idioma**: `/en/tipo/{sello}/` va a la tienda en inglés.\n- **Entradas retiradas** del blog: su 410 o su 301 valen también bajo `/en/`.\n- `wp lachinata translate migrate-tp`: las cadenas corregidas a mano en TranslatePress, como propuestas de glosario, y un informe de qué responde cada dirección antigua de Search Console, con un CSV de los 404 para darles destino si se quiere.\n\n### Cambiado\n- Instrucciones de serie del inglés: titulares de blog, recetas y páginas en *sentence case*; nombres de producto en *Title Case*.\n- Ninguna orden de WP-CLI del plugin escribe encima de un archivo que ya existe (informes, exportaciones, la copia antes de borrar los datos de un módulo) sin `--force`.\n- CI: Lighthouse en dos trabajos en paralelo; el seed y los perfiles, en un solo `wp eval-file` (cada comando sin volver a entrar en el contenedor).",
 			"previous": [
+				{
+					"version": "0.17.0",
+					"date": "2026-10-30",
+					"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.17.0/lachinata-0.17.0.zip",
+					"sha256": "b6281fea965ec1add3a5713a689c62002fffedefa86ca0aba8a3444d87c723ce"
+				},
 				{
 					"version": "0.16.0",
 					"date": "2026-10-29",
@@ -83,12 +89,6 @@
 					"date": "2026-10-29",
 					"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.14.0/lachinata-0.14.0.zip",
 					"sha256": "5efa82c3f4154b1bc751d1b2880512dc35a61af3fac31acc5e464712bf368d36"
-				},
-				{
-					"version": "0.13.2",
-					"date": "2026-10-28",
-					"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.13.2/lachinata-0.13.2.zip",
-					"sha256": "4f34b22257498cb1659c98bb293ea5472be27a046c5249fe9a034a434913b83b"
 				}
 			]
 		}

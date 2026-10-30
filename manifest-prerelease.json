@@ -1,20 +1,26 @@
 {
 	"schema": 1,
-	"generated_at": "2026-10-30T21:48:07.579Z",
+	"generated_at": "2026-10-30T22:53:41.509Z",
 	"packages": {
 		"lachinata-core": {
-			"version": "0.18.1",
+			"version": "0.18.2",
 			"date": "2026-10-30",
-			"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.18.1/lachinata-core-0.18.1.zip",
-			"sha256": "75474334959169cd72bb6662252d74066184c64f20075fc7ba8c3fd017e4fddf",
+			"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.18.2/lachinata-core-0.18.2.zip",
+			"sha256": "4d0153008c32d707c828a35a4083c819a8dd10fca9d55c4795b99ece047cc85d",
 			"requires": {
 				"wordpress": "6.8",
 				"php": "8.2",
 				"woocommerce": "10.0",
-				"lachinata": "0.18.1"
+				"lachinata": "0.18.2"
 			},
-			"notes": "Textos de los vinos: el paquete editorial lleva los campos y los términos de otros módulos, para importar los textos revisados de la Bodega sin pisar nada.\n\n### Añadido\n- **Paquete editorial con campos de módulos** (versión 2; se siguen importando los de la 1): `bodega` añade vista, nariz y boca de cada vino, cada uno con su huella.\n- **Sección de términos** en el paquete: el texto de cada bodega, buscada por su slug; una que no existe va al informe y no se crea.\n- `export-editorial --fields=…` exporta solo los campos que se piden.\n- En el informe de `import-editorial`, cada conflicto con el texto del sitio y el del paquete, uno debajo del otro, con el ID y el nombre.\n\n### Cambiado\n- `docs/despliegue-bodega.md`: en producción, `migrate` → `import-editorial` (textos revisados) → `import-scores`.\n\n### Arreglado\n- **Nombres con «&»** (bodega «Alonso & Pedrajo»): WordPress guarda el «&» de los nombres de término como `&amp;` y la ficha, la tarjeta, los filtros, el editor y el panel lo pintaban así. El módulo da ahora los nombres como texto, y `migrate` compara y crea los términos con el nombre decodificado (el de la descripción y el del Excel son la misma bodega).",
+			"notes": "Segundo lote de issues (#48).\n\n### Arreglado\n- **Nombres de término con «&» o comillas** («Click & Collect», «REvista HG&T»): WordPress los guarda con entidades HTML y se pintaban como «&amp;». Una función del núcleo (`LaChinata\\Core\\Terms::name()`) y su gemela del tema (`lachinata_term_name()`) decodifican una vez y escapan una vez según el contexto (HTML, atributo o texto para JSON-LD). La usan el tema (categorías, etiquetas, filtros, migas, menú, buscador, ficha y correos) y los módulos: sellos y presentaciones de regalo (`catalog`), servicios y zonas (`oleotecas`), secciones del blog (`content`), bloques, el título SEO de `translate` y `bodega`, que deja su `Taxonomies::name()` (#48).",
 			"previous": [
+				{
+					"version": "0.18.1",
+					"date": "2026-10-30",
+					"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.18.1/lachinata-core-0.18.1.zip",
+					"sha256": "75474334959169cd72bb6662252d74066184c64f20075fc7ba8c3fd017e4fddf"
+				},
 				{
 					"version": "0.18.0",
 					"date": "2026-10-30",
@@ -38,28 +44,28 @@
 					"date": "2026-10-30",
 					"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.17.0/lachinata-core-0.17.0.zip",
 					"sha256": "a14e2a2c59151d78c985807d832eba68e9ac9f55a8df812ea525b809abe2170f"
-				},
-				{
-					"version": "0.16.0",
-					"date": "2026-10-29",
-					"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.16.0/lachinata-core-0.16.0.zip",
-					"sha256": "dfdb374cb7e39803bf2990ec2ba66fb8d3950fece8c9b384a7bf92ade835f634"
 				}
 			]
 		},
 		"lachinata": {
-			"version": "0.18.1",
+			"version": "0.18.2",
 			"date": "2026-10-30",
-			"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.18.1/lachinata-0.18.1.zip",
-			"sha256": "88f886d0ff66b192a281342cf7a87638836fe85930b802c8c046cbec16011ac8",
+			"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.18.2/lachinata-0.18.2.zip",
+			"sha256": "c698c95debd2e27315a07fdebefa3204c5658c12687e1e7e0f708e1a5053a890",
 			"requires": {
 				"wordpress": "6.8",
 				"php": "8.2",
 				"woocommerce": "10.0",
-				"lachinata-core": "0.18.1"
+				"lachinata-core": "0.18.2"
 			},
-			"notes": "Textos de los vinos: el paquete editorial lleva los campos y los términos de otros módulos, para importar los textos revisados de la Bodega sin pisar nada.\n\n### Añadido\n- **Paquete editorial con campos de módulos** (versión 2; se siguen importando los de la 1): `bodega` añade vista, nariz y boca de cada vino, cada uno con su huella.\n- **Sección de términos** en el paquete: el texto de cada bodega, buscada por su slug; una que no existe va al informe y no se crea.\n- `export-editorial --fields=…` exporta solo los campos que se piden.\n- En el informe de `import-editorial`, cada conflicto con el texto del sitio y el del paquete, uno debajo del otro, con el ID y el nombre.\n\n### Cambiado\n- `docs/despliegue-bodega.md`: en producción, `migrate` → `import-editorial` (textos revisados) → `import-scores`.\n\n### Arreglado\n- **Nombres con «&»** (bodega «Alonso & Pedrajo»): WordPress guarda el «&» de los nombres de término como `&amp;` y la ficha, la tarjeta, los filtros, el editor y el panel lo pintaban así. El módulo da ahora los nombres como texto, y `migrate` compara y crea los términos con el nombre decodificado (el de la descripción y el del Excel son la misma bodega).",
+			"notes": "Segundo lote de issues (#48).\n\n### Arreglado\n- **Nombres de término con «&» o comillas** («Click & Collect», «REvista HG&T»): WordPress los guarda con entidades HTML y se pintaban como «&amp;». Una función del núcleo (`LaChinata\\Core\\Terms::name()`) y su gemela del tema (`lachinata_term_name()`) decodifican una vez y escapan una vez según el contexto (HTML, atributo o texto para JSON-LD). La usan el tema (categorías, etiquetas, filtros, migas, menú, buscador, ficha y correos) y los módulos: sellos y presentaciones de regalo (`catalog`), servicios y zonas (`oleotecas`), secciones del blog (`content`), bloques, el título SEO de `translate` y `bodega`, que deja su `Taxonomies::name()` (#48).",
 			"previous": [
+				{
+					"version": "0.18.1",
+					"date": "2026-10-30",
+					"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.18.1/lachinata-0.18.1.zip",
+					"sha256": "88f886d0ff66b192a281342cf7a87638836fe85930b802c8c046cbec16011ac8"
+				},
 				{
 					"version": "0.18.0",
 					"date": "2026-10-30",
@@ -83,12 +89,6 @@
 					"date": "2026-10-30",
 					"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.17.0/lachinata-0.17.0.zip",
 					"sha256": "b6281fea965ec1add3a5713a689c62002fffedefa86ca0aba8a3444d87c723ce"
-				},
-				{
-					"version": "0.16.0",
-					"date": "2026-10-29",
-					"url": "https://3imediaes.github.io/lachinataweb-releases/releases/0.16.0/lachinata-0.16.0.zip",
-					"sha256": "45d1d7d09c3ecaf4cf68a17b48edb1d99128a10e2599b53c3e5dc94f35ebe180"
 				}
 			]
 		}
